@@ -36,7 +36,7 @@ Original numbered sections: 82
 - 81. Default Working Loop
 - 82. Project-Specific Section
 
-## `.agents/skills/code-quality/SKILL.md`
+## `skills/code-quality/SKILL.md`
 
 - 5. Model the Domain Before the Framework
 - 6. Build Deep Modules
@@ -92,6 +92,6 @@ Original numbered sections: 82
 - 77. Background Jobs Need Observable State
 - 78. Feature Flags Are Temporary Architecture
 
-The original preamble/reward model and final principle live in `AGENT_RULES.md`.
+The original preamble/reward model and final principle live in `.agents/core/AGENT_RULES.md`.
 
 The original numbering is preserved inside the moved section text so the split can be audited.

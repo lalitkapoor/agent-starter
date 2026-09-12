@@ -5,8 +5,8 @@ This file is the canonical always-loaded operating contract for autonomous codin
 It contains repository-wide agent behavior, instruction precedence, anti-reward-hacking rules,
 verification/completion discipline, repository hygiene, handoff rules, and skill triggers.
 
-Detailed engineering/design rules live in `.agents/skills/code-quality/SKILL.md`.
-Persistent architecture workflow lives in `.agents/skills/semantic-architecture/SKILL.md`.
+Detailed engineering/design rules live in the reusable plugin skill `skills/code-quality/SKILL.md`.
+Persistent architecture workflow lives in the reusable plugin skill `skills/semantic-architecture/SKILL.md`.
 
 ---
 
@@ -51,10 +51,10 @@ When tradeoffs exist, prefer:
 
 For every non-trivial engineering task:
 
-1. Read `.agents/skills/code-quality/SKILL.md` completely before substantial implementation.
+1. Read the reusable plugin's `skills/code-quality/SKILL.md` completely before substantial implementation.
 2. Do not rely on memory, a previous session, or a partial excerpt of that skill.
 3. Apply the subset of quality rules relevant to the task.
-4. If architectural intent or system semantics may change, also read `.agents/skills/semantic-architecture/SKILL.md`.
+4. If architectural intent or system semantics may change, also read the reusable plugin's `skills/semantic-architecture/SKILL.md`.
 5. If pstack is available, use it as the primary engineering workflow/orchestration layer.
 6. Load any project-specific skill whose trigger applies.
 
@@ -820,56 +820,32 @@ Repeat until the requested behavior is actually complete.
 
 # 82. Project-Specific Section
 
-The principles above are intentionally reusable.
+This repository is the reusable Agent Plugins 1.0 engineering package.
 
-Every repository should supplement them with a concise project-specific section covering facts that materially affect implementation.
-
-Recommended structure:
-
-```md
 ## Project Architecture
 
-- Runtime:
-- Package manager:
-- Primary frameworks:
-- Data store:
-- Validation:
-- Test framework:
-- E2E framework:
-
-## Repository Layout
-
-- `packages/domain` — ...
-- `packages/api` — ...
-- `packages/web` — ...
+- Runtime: Node.js bootstrap plus POSIX shell setup and verification scripts.
+- Package format: Agent Plugins 1.0 with root `plugin.json` and portable `skills/`.
+- Persistent architecture: `.agents/architecture/`.
+- Repository-specific skills: `.agents/skills/`.
 
 ## Canonical Commands
 
-- Setup:
-- Development:
-- Verification:
-- Unit tests:
-- Integration tests:
-- E2E tests:
-- Build:
+- Setup without network: `./setup.sh --local-only`.
+- Compatibility generation: `./setup.sh --local-only --compat`.
+- Verification: `./scripts/verify-plugin.sh`.
 
 ## Architectural Invariants
 
-- ...
-- ...
-- ...
+- Root `skills/` is the only canonical copy of reusable plugin skills.
+- Compatibility directories are generated only when `--compat` is requested.
+- pstack and selected upstream skills remain separate setup dependencies.
+- Architecture state stays in the host repository and is not stored in plugin data.
 
 ## Known External Constraints
 
-- ...
-
-```
-
-Keep this section concrete.
-
-Do not duplicate generic engineering advice here.
-
-Project-specific instructions should describe **what is uniquely true about this repository**.
+- Agent Plugins 1.0 discovers portable skills from fixed locations; client-specific components require a namespace such as `com.github.copilot/`.
+- Consuming repositories must supply their own `AGENTS.md`, architecture model, and project-specific skills.
 
 ---
 

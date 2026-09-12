@@ -1,7 +1,8 @@
 # Upstream Agent Workflow Dependencies
 
-Project-owned policy lives in `.agents/`.
+Project-owned policy and architecture state live in `.agents/`.
 Project-owned skills live under `.agents/skills/`.
+Reusable engineering skills are published from the plugin root under `skills/`.
 
 Upstream skills supplement the repository; they do not become the source of truth for product behavior or architectural intent.
 
@@ -47,8 +48,9 @@ Do not install overlapping Matt workflow skills such as TDD as the primary workf
 
 ## Project-owned skills
 
-Canonical copies live under `.agents/skills/`.
-`setup.sh` copies them into runtime-specific discovery directories.
+Canonical project-specific copies live under `.agents/skills/`.
+`setup.sh --compat` can copy them, together with plugin skills from `skills/`,
+into runtime-specific discovery directories.
 
 ## Updating dependencies
 
@@ -56,7 +58,7 @@ Canonical copies live under `.agents/skills/`.
 2. rerun setup,
 3. review `.agent-deps.lock`,
 4. ensure upstream instructions do not conflict with `AGENTS.md`,
-5. run `scripts/verify-agent-setup.sh`.
+5. run `scripts/verify-plugin.sh`.
 
 
 ## code-quality
@@ -64,7 +66,7 @@ Canonical copies live under `.agents/skills/`.
 Canonical source:
 
 ```text
-.agents/skills/code-quality/SKILL.md
+skills/code-quality/SKILL.md
 ```
 
 This is the reusable engineering operating system for non-trivial implementation and review work. It intentionally contains the detailed rules that would be too large and noisy for the always-loaded `AGENTS.md`.

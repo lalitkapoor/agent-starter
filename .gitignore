@@ -1,4 +1,6 @@
 .agent-vendor/
+.claude/skills/
+.cursor/skills/
 # Logs
 logs
 *.log

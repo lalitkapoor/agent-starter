@@ -1,3 +1,8 @@
+---
+name: project-research
+description: Captures repository-specific research practice for changing external APIs, standards, and platform semantics.
+---
+
 # Skill: Project Research
 
 Use when implementation depends on current external APIs, standards, platform limits, or third-party semantics that may have changed.

@@ -4,5 +4,6 @@
 
 Read and follow `AGENTS.md`.
 
-Use `.agents/skills/code-quality/SKILL.md` for non-trivial engineering work.
-For architectural work, also use `.agents/skills/semantic-architecture/SKILL.md` and progressively inspect `.agents/architecture/`.
+Use the installed Agent Plugins 1.0 engineering plugin for reusable skills.
+Use project-local skills under `.agents/skills/` when their triggers apply.
+For architectural work, also use the plugin semantic-architecture skill and progressively inspect `.agents/architecture/`.

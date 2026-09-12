@@ -1,3 +1,8 @@
+---
+name: code-quality
+description: Detailed engineering quality and design rules for non-trivial implementation, refactors, debugging, integration, and migration work.
+---
+
 # Skill: Code Quality
 
 Use this skill for any non-trivial implementation, refactor, debugging task, integration change,

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "agent-engineering-system",
+  "version": "0.1.0",
+  "description": "Engineering quality, semantic architecture, and workflow guidance for autonomous coding agents",
+  "author": {
+    "name": "Lalit Kapoor",
+    "email": "lalitkapoor@gmail.com"
+  },
+  "homepage": "https://github.com/lalitkapoor/agent-starter",
+  "repository": "https://github.com/lalitkapoor/agent-starter",
+  "license": "MIT",
+  "keywords": [
+    "coding-agents",
+    "architecture",
+    "code-quality",
+    "engineering"
+  ]
+}

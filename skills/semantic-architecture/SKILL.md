@@ -1,3 +1,8 @@
+---
+name: semantic-architecture
+description: Maintains a hierarchical semantic model of system responsibilities, ownership, relationships, invariants, and architectural decisions.
+---
+
 # Skill: Semantic Architecture
 
 Use for a new system, feature, subsystem, significant refactor, or architectural change.
