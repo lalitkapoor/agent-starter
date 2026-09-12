@@ -1,0 +1,10 @@
+---
+description: Canonical repository engineering instructions
+alwaysApply: true
+---
+
+Read and follow `AGENTS.md`.
+
+Use installed pstack as the primary non-trivial engineering workflow.
+Use `.agents/skills/code-quality/SKILL.md` for detailed engineering quality constraints.
+For architectural work, also use `.agents/skills/semantic-architecture/SKILL.md` and progressively inspect the relevant path under `.agents/architecture/`.

@@ -1,0 +1,338 @@
+{
+  "source": "Pasted markdown(20260912-080353).md",
+  "source_numbered_sections": 82,
+  "core_sections": [
+    {
+      "number": 1,
+      "title": "Source of Truth and Instruction Precedence"
+    },
+    {
+      "number": 2,
+      "title": "Start by Understanding the Existing System"
+    },
+    {
+      "number": 3,
+      "title": "Define the Observable Outcome First"
+    },
+    {
+      "number": 4,
+      "title": "Plan for Verification Before Coding"
+    },
+    {
+      "number": 30,
+      "title": "Separate Facts, Hypotheses, Experiments, and Conclusions"
+    },
+    {
+      "number": 39,
+      "title": "Plans Are for Execution"
+    },
+    {
+      "number": 40,
+      "title": "Keep Scope Tight"
+    },
+    {
+      "number": 42,
+      "title": "Architecture Changes Must Be Deliberate"
+    },
+    {
+      "number": 51,
+      "title": "Use the Repository\u2019s Canonical Verification Entry Point"
+    },
+    {
+      "number": 52,
+      "title": "Focused Verification First, Broad Verification Before Completion"
+    },
+    {
+      "number": 53,
+      "title": "Real Integration Paths Need Real Evidence"
+    },
+    {
+      "number": 54,
+      "title": "Preserve Verification Evidence When It Matters"
+    },
+    {
+      "number": 55,
+      "title": "Commit at Meaningful Verified Boundaries"
+    },
+    {
+      "number": 56,
+      "title": "Push Along the Way When Appropriate"
+    },
+    {
+      "number": 57,
+      "title": "Keep the Worktree Healthy"
+    },
+    {
+      "number": 58,
+      "title": "Definition of Done"
+    },
+    {
+      "number": 59,
+      "title": "Do Not Claim More Than the Evidence Supports"
+    },
+    {
+      "number": 60,
+      "title": "Do Not Hide Failures"
+    },
+    {
+      "number": 64,
+      "title": "Self-Review Before Completion"
+    },
+    {
+      "number": 65,
+      "title": "When Blocked, Keep Making Progress"
+    },
+    {
+      "number": 66,
+      "title": "Do Not Stop at the Plan"
+    },
+    {
+      "number": 67,
+      "title": "Do Not Stop at Compilation"
+    },
+    {
+      "number": 68,
+      "title": "Do Not Stop at Tests You Just Wrote"
+    },
+    {
+      "number": 69,
+      "title": "Preserve Existing Behavior Intentionally"
+    },
+    {
+      "number": 70,
+      "title": "Generated Code and Artifacts"
+    },
+    {
+      "number": 79,
+      "title": "External Research Must Be Source-Grounded"
+    },
+    {
+      "number": 80,
+      "title": "Optimize for Handoffs"
+    },
+    {
+      "number": 81,
+      "title": "Default Working Loop"
+    },
+    {
+      "number": 82,
+      "title": "Project-Specific Section"
+    }
+  ],
+  "code_quality_sections": [
+    {
+      "number": 5,
+      "title": "Model the Domain Before the Framework"
+    },
+    {
+      "number": 6,
+      "title": "Build Deep Modules"
+    },
+    {
+      "number": 7,
+      "title": "Use Interfaces at Real Seams"
+    },
+    {
+      "number": 8,
+      "title": "Keep Dependency Direction Clear"
+    },
+    {
+      "number": 9,
+      "title": "Provider Types Stop at Adapters"
+    },
+    {
+      "number": 10,
+      "title": "TypeScript Is Not Runtime Validation"
+    },
+    {
+      "number": 11,
+      "title": "Avoid `any`"
+    },
+    {
+      "number": 12,
+      "title": "Make Invalid States Hard to Represent"
+    },
+    {
+      "number": 13,
+      "title": "Mutable State Must Have an Owner"
+    },
+    {
+      "number": 14,
+      "title": "Async Work Must Have a Lifetime"
+    },
+    {
+      "number": 15,
+      "title": "Concurrency Must Be Intentional"
+    },
+    {
+      "number": 16,
+      "title": "Side Effects Belong at Clear Edges"
+    },
+    {
+      "number": 17,
+      "title": "Keep Orchestration Thin"
+    },
+    {
+      "number": 18,
+      "title": "Validate at Boundaries and Trust Internally"
+    },
+    {
+      "number": 19,
+      "title": "Treat Errors as Part of the Contract"
+    },
+    {
+      "number": 20,
+      "title": "Configuration Is an Input Boundary"
+    },
+    {
+      "number": 21,
+      "title": "Secrets Must Stay Secret"
+    },
+    {
+      "number": 22,
+      "title": "Logging Is an Interface"
+    },
+    {
+      "number": 23,
+      "title": "Use the Cheapest Test That Proves the Behavior"
+    },
+    {
+      "number": 24,
+      "title": "Every Module Needs a Verification Story"
+    },
+    {
+      "number": 25,
+      "title": "Test Contracts, Not Decomposition"
+    },
+    {
+      "number": 26,
+      "title": "Use Fakes at Genuine Effect Boundaries"
+    },
+    {
+      "number": 27,
+      "title": "Inject Time When Time Affects Behavior"
+    },
+    {
+      "number": 28,
+      "title": "Do Not Synchronize Tests With Arbitrary Sleeps"
+    },
+    {
+      "number": 29,
+      "title": "Reproduce Bugs Before Fixing Them"
+    },
+    {
+      "number": 31,
+      "title": "Performance Work Requires Measurement"
+    },
+    {
+      "number": 32,
+      "title": "Infrastructure Must Earn Its Complexity"
+    },
+    {
+      "number": 33,
+      "title": "Prefer Boring, Established Technology"
+    },
+    {
+      "number": 34,
+      "title": "UI Code Should Express Product Behavior, Not Own Everything"
+    },
+    {
+      "number": 35,
+      "title": "Keep HTTP Boundaries Thin"
+    },
+    {
+      "number": 36,
+      "title": "Persistence Is an Adapter Boundary"
+    },
+    {
+      "number": 37,
+      "title": "Public Contracts Require Compatibility Thinking"
+    },
+    {
+      "number": 38,
+      "title": "Work in Vertical, Verifiable Slices"
+    },
+    {
+      "number": 41,
+      "title": "Refactor With Behavioral Safety"
+    },
+    {
+      "number": 43,
+      "title": "Comments Explain Why"
+    },
+    {
+      "number": 44,
+      "title": "Name Things From the Domain"
+    },
+    {
+      "number": 45,
+      "title": "File Size Is Not an Architecture Metric"
+    },
+    {
+      "number": 46,
+      "title": "Dependency Injection Should Stay Simple"
+    },
+    {
+      "number": 47,
+      "title": "Avoid Mutable Global State"
+    },
+    {
+      "number": 48,
+      "title": "Security Is Behavior"
+    },
+    {
+      "number": 49,
+      "title": "Privacy and Data Minimization"
+    },
+    {
+      "number": 50,
+      "title": "Accessibility Is Correctness"
+    },
+    {
+      "number": 61,
+      "title": "Do Not Add Future Architecture Without Present Need"
+    },
+    {
+      "number": 62,
+      "title": "Prefer Reversible Decisions Early"
+    },
+    {
+      "number": 63,
+      "title": "Know What Must Stay Local"
+    },
+    {
+      "number": 71,
+      "title": "Dependency Changes Need Justification"
+    },
+    {
+      "number": 72,
+      "title": "Migrations Must Be Forward-Safe"
+    },
+    {
+      "number": 73,
+      "title": "Idempotency for Repeatable Effects"
+    },
+    {
+      "number": 74,
+      "title": "Retry Only Known-Transient Failures"
+    },
+    {
+      "number": 75,
+      "title": "Cache Only With Explicit Semantics"
+    },
+    {
+      "number": 76,
+      "title": "Events Need Contracts and Ownership"
+    },
+    {
+      "number": 77,
+      "title": "Background Jobs Need Observable State"
+    },
+    {
+      "number": 78,
+      "title": "Feature Flags Are Temporary Architecture"
+    }
+  ],
+  "final_principle_location": ".agents/core/AGENT_RULES.md",
+  "preamble_location": ".agents/core/AGENT_RULES.md"
+}
