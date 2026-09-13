@@ -21,12 +21,27 @@ When skills overlap, do not mechanically execute both workflows. pstack owns pro
 Official source:
 `https://github.com/cursor/plugins/tree/main/pstack`
 
-The setup installs the complete official pstack Cursor plugin for Cursor and exposes official pstack skill directories to project-local discovery when possible.
+The setup installs the complete official pstack Cursor plugin for Cursor and
+exposes official pstack skill directories to project-local discovery when
+possible. It does not fold pstack into this repository's root `skills/` tree.
 
 Cross-runtime supplement:
 `https://github.com/michael-denyer/pstack-claude`
 
-It only fills skill names absent from official pstack.
+This repository includes a native Claude Code plugin at
+`plugins/pstack/.claude-plugin/plugin.json` and a shared skill tree for Codex,
+Gemini, and other runtimes. Install the Claude plugin through Claude Code when
+Claude should use the native workflow:
+
+```text
+/plugin marketplace add michael-denyer/pstack-claude
+/plugin install pstack@pstack-claude
+```
+
+`setup.sh` clones this repository to pin and stage shared skills, but no longer
+copies its skills into this repository's `.claude/skills/`. The native Claude
+plugin is a separate upstream dependency. The supplement only fills skill
+names absent from official pstack when staging shared skills.
 
 ## Matt Pocock skills
 
@@ -50,7 +65,8 @@ Do not install overlapping Matt workflow skills such as TDD as the primary workf
 
 Canonical project-specific copies live under `.agents/skills/`.
 `setup.sh --compat` can copy them, together with plugin skills from `skills/`,
-into runtime-specific discovery directories.
+into runtime-specific discovery directories for legacy clients only. Native
+plugin clients load the root `skills/` directory directly.
 
 ## Updating dependencies
 

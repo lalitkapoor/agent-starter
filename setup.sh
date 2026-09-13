@@ -24,6 +24,7 @@ while (($#)); do
     --skip-matt) INSTALL_MATT=0 ;;
     -h|--help)
       printf "%s\n" "Usage: ./setup.sh [--local-only] [--compat] [--skip-pstack] [--skip-cross-runtime-pstack] [--skip-matt]"
+      printf "%s\n" "  --compat  Generate explicit legacy .cursor/skills and .claude/skills copies."
       exit 0 ;;
     *) printf "Unknown option: %s\n" "$1" >&2; exit 2 ;;
   esac
@@ -46,11 +47,13 @@ install_repository_skill() {
   copy_dir "$src" "$ROOT/.agents/skills/$name"
 }
 
-install_compatibility() {
+# Native plugin loading is preferred. This function exists only for older or
+# non-plugin clients and writes ignored, generated compatibility output.
+install_legacy_compatibility() {
   local output_root marker dir name
   for output_root in "$ROOT/.cursor/skills" "$ROOT/.claude/skills"; do
     mkdir -p "$output_root"
-    marker="$output_root/.agent-engineering-system-compat"
+    marker="$output_root/.agent-engineering-system-legacy-compat"
     : > "$marker"
 
     for dir in "$ROOT/skills"/*; do
@@ -77,7 +80,7 @@ node "$ROOT/.agents/bootstrap.mjs"
 
 if (( LOCAL_ONLY )); then
   if (( COMPAT )); then
-    install_compatibility
+    install_legacy_compatibility
   fi
   "$ROOT/scripts/verify-plugin.sh"
   exit 0
@@ -118,6 +121,8 @@ if (( INSTALL_PSTACK )); then
 fi
 
 if (( INSTALL_CROSS_PSTACK )); then
+  # pstack-claude ships a native Claude plugin. Stage only its shared skills;
+  # Claude users install the upstream plugin through Claude's plugin flow.
   CROSS_REPO="$VENDOR/pstack-claude"
   clone_ref "https://github.com/michael-denyer/pstack-claude.git" "$CROSS_REPO" "$PSTACK_CROSS_REF"
   CROSS_SKILLS="$CROSS_REPO/plugins/pstack/skills"
@@ -126,8 +131,6 @@ if (( INSTALL_CROSS_PSTACK )); then
       [[ -d "$dir" && -s "$dir/SKILL.md" ]] || continue
       name="$(basename "$dir")"
       [[ -e "$ROOT/skills/$name" ]] || install_repository_skill "$dir" "$name"
-      [[ -d "$ROOT/.claude/skills" ]] || mkdir -p "$ROOT/.claude/skills"
-      copy_dir "$dir" "$ROOT/.claude/skills/$name"
     done
   fi
   printf "pstack_cross_runtime_commit=%s\n" "$(git -C "$CROSS_REPO" rev-parse HEAD)" >> "$LOCK.tmp"
@@ -150,7 +153,7 @@ fi
 mv "$LOCK.tmp" "$LOCK"
 
 if (( COMPAT )); then
-  install_compatibility
+  install_legacy_compatibility
 fi
 
 "$ROOT/scripts/verify-plugin.sh"

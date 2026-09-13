@@ -36,15 +36,15 @@ function writeFile(rel, content) {
 writeFile("AGENTS.md", generated([
   "# Project Agent Instructions",
   "",
-  "This repository is the `agent-engineering-system` Agent Plugins 1.0 package.",
+  "This repository is the `agent-engineering-system` multi-harness engineering system.",
   "",
   "## Operating contract",
   "",
   "- Optimize for evidence, deep modules, local changes, explicit ownership, and simple behavior.",
   "- Primary reward: a small, understandable change that demonstrably solves the requested problem and leaves the system easier to change.",
   "- Instruction precedence is: user/task requirements, this contract, descendant `AGENTS.md` files, repository architecture, project documentation, then external guidance.",
-  "- For non-trivial work, use installed pstack when available and read the complete plugin-provided `skills/code-quality/SKILL.md` before implementation.",
-  "- For architecture-sensitive work, also read `skills/semantic-architecture/SKILL.md` and inspect the relevant path under `.agents/architecture/`.",
+  "- For non-trivial work, use installed pstack when available and read the complete reusable `code-quality` skill supplied by this system before implementation.",
+  "- For architecture-sensitive work, also read the reusable `semantic-architecture` skill supplied by this system and inspect the relevant path under `.agents/architecture/`.",
   "- Use `.agents/skills/` for repository-specific skills; do not treat compatibility copies as canonical.",
   "- Define the observable outcome, plan verification, implement, verify, self-review, and report evidence accurately.",
   "- Do not stop at a plan, compilation, or newly written tests, and do not claim unverified behavior.",
@@ -53,7 +53,8 @@ writeFile("AGENTS.md", generated([
   "",
   "## Canonical layout",
   "",
-  "- `plugin.json` and `skills/` are the portable Agent Plugins 1.0 package.",
+  "- `skills/` is the only canonical copy of reusable engineering skills.",
+  "- `plugin.json`, `.codex-plugin/plugin.json`, and `.claude-plugin/plugin.json` are portable and harness-specific metadata for that same `skills/` tree.",
   "- `.agents/architecture/` is repository-local semantic architecture state, not a portable plugin capability.",
   "- `.agents/skills/` contains repository-specific skills.",
   "- `compat/` describes generated client compatibility outputs.",
@@ -62,11 +63,11 @@ writeFile("AGENTS.md", generated([
   "## Project-specific section",
   "",
   "- Runtime: Node.js bootstrap plus POSIX shell setup and verification scripts.",
-  "- Package format: Agent Plugins 1.0 with root `plugin.json` and portable `skills/`.",
+  "- Package formats: root Agent Plugins 1.0 `plugin.json`, Codex `.codex-plugin/plugin.json`, and Claude `.claude-plugin/plugin.json`; all use root `skills/`.",
   "- Persistent architecture: `.agents/architecture/`.",
   "- Repository-specific skills: `.agents/skills/`.",
   "- Canonical verification: `./scripts/verify-plugin.sh`.",
-  "- Compatibility generation: `./setup.sh --local-only --compat`.",
+  "- Legacy compatibility generation: `./setup.sh --local-only --compat` only when a client cannot load the native package.",
   "- Consuming repositories supply their own `AGENTS.md`, architecture model, and project-specific skills."
 ]));
 
@@ -75,9 +76,9 @@ writeFile("CLAUDE.md", generated([
   "",
   "Read and follow `AGENTS.md`.",
   "",
-  "Use the installed Agent Plugins 1.0 engineering plugin for reusable skills.",
+  "Use the `agent-engineering-system` Claude plugin for reusable `code-quality` and `semantic-architecture` skills.",
   "Use project-local skills under `.agents/skills/` when their triggers apply.",
-  "If `.claude/skills/` exists, treat it as generated compatibility output.",
+  "Do not treat `.claude/skills/` as the normal source for reusable skills; it is legacy compatibility output only.",
   "For architectural work, also use the plugin semantic-architecture skill and progressively inspect `.agents/architecture/`."
 ]));
 
@@ -86,7 +87,7 @@ writeFile("GEMINI.md", generated([
   "",
   "Read and follow `AGENTS.md`.",
   "",
-  "Use the installed Agent Plugins 1.0 engineering plugin for reusable skills.",
+  "Use the reusable `code-quality` and `semantic-architecture` skills supplied by the agent-engineering-system package when available.",
   "Use project-local skills under `.agents/skills/` when their triggers apply.",
   "For architectural work, also use the plugin semantic-architecture skill and progressively inspect `.agents/architecture/`."
 ]));
@@ -100,7 +101,7 @@ writeFile(".cursor/rules/00-project-agents.mdc", generated([
   "Read and follow `AGENTS.md`.",
   "",
   "Use installed pstack as the primary non-trivial engineering workflow.",
-  "Use the installed Agent Plugins 1.0 engineering plugin for detailed engineering quality constraints.",
+  "Use the `agent-engineering-system` plugin's canonical reusable skills for detailed engineering quality constraints.",
   "For architectural work, also use its semantic-architecture skill and progressively inspect the relevant path under `.agents/architecture/`."
 ]));
 

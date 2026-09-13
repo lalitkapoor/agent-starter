@@ -8,5 +8,5 @@ alwaysApply: true
 Read and follow `AGENTS.md`.
 
 Use installed pstack as the primary non-trivial engineering workflow.
-Use the installed Agent Plugins 1.0 engineering plugin for detailed engineering quality constraints.
+Use the `agent-engineering-system` plugin's canonical reusable skills for detailed engineering quality constraints.
 For architectural work, also use its semantic-architecture skill and progressively inspect the relevant path under `.agents/architecture/`.

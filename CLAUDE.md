@@ -4,7 +4,7 @@
 
 Read and follow `AGENTS.md`.
 
-Use the installed Agent Plugins 1.0 engineering plugin for reusable skills.
+Use the `agent-engineering-system` Claude plugin for reusable `code-quality` and `semantic-architecture` skills.
 Use project-local skills under `.agents/skills/` when their triggers apply.
-If `.claude/skills/` exists, treat it as generated compatibility output.
+Do not treat `.claude/skills/` as the normal source for reusable skills; it is legacy compatibility output only.
 For architectural work, also use the plugin semantic-architecture skill and progressively inspect `.agents/architecture/`.
