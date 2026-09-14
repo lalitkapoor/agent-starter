@@ -8,4 +8,4 @@ This checkout is the `agent-starter` curated catalog. Its maintained plugin sour
 Use the catalog's maintained `agent-engineering-system` plugin for reusable `code-quality` and `semantic-architecture` skills.
 For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read the complete `technical-communication` skill before drafting.
 Use project-local skills under `.agents/skills/` when their triggers apply.
-For architectural work, also use the plugin semantic-architecture skill and progressively inspect `.agents/architecture/`.
+For architectural work, also use the plugin semantic-architecture skill and read the nearest `ARCHITECTURE.md` for the affected subsystem.

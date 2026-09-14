@@ -103,13 +103,11 @@ function copyLegacySkill(source, destination) {
 }
 
 function ensureProjectState() {
-  for (const relative of [path.join(".agents", "architecture"), path.join(".agents", "skills")]) {
-    const directory = path.join(project, relative);
-    if (dryRun) {
-      console.log(`DRY RUN: mkdir -p ${directory}`);
-    } else {
-      fs.mkdirSync(directory, { recursive: true });
-    }
+  const directory = path.join(project, ".agents", "skills");
+  if (dryRun) {
+    console.log(`DRY RUN: mkdir -p ${directory}`);
+  } else {
+    fs.mkdirSync(directory, { recursive: true });
   }
 }
 
@@ -141,7 +139,8 @@ function configureInstructions() {
     "- Use the `agent-engineering-system` plugin supplied by the `agent-starter` catalog for `code-quality`, `semantic-architecture`, and `technical-communication`; enable it in the runtime when it is only registered.",
     "- For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read the complete `technical-communication` skill before drafting.",
     "- Use pstack as the primary workflow for non-trivial engineering work when it is installed.",
-    "- Keep this project's architecture state under `.agents/architecture/` and project-specific skills under `.agents/skills/`.",
+    "- For architecture-sensitive work, read the nearest `ARCHITECTURE.md` for each affected subsystem; create or update one beside the subsystem only when it has meaningful independent semantics.",
+    "- Keep architecture documents beside the subsystem code they describe and project-specific skills under `.agents/skills/`.",
   ].join("\n");
 
   replaceManagedBlock(

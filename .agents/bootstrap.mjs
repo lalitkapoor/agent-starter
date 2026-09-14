@@ -104,7 +104,7 @@ writeFile("AGENTS.md", generated([
   "- Primary reward: a small, understandable change that demonstrably solves the requested problem and leaves the system easier to change.",
   "- Instruction precedence is: user/task requirements, this contract, descendant `AGENTS.md` files, repository architecture, project documentation, then external guidance.",
   "- For non-trivial work, use installed pstack when available and read `plugins/agent-engineering-system/skills/code-quality/SKILL.md` completely before implementation.",
-  "- For architecture-sensitive work, also read `plugins/agent-engineering-system/skills/semantic-architecture/SKILL.md` completely and inspect the relevant path under `.agents/architecture/`.",
+  "- For architecture-sensitive work, also read `plugins/agent-engineering-system/skills/semantic-architecture/SKILL.md` completely and inspect the nearest `ARCHITECTURE.md` for the affected subsystem; this catalog's cross-cutting model is the root `ARCHITECTURE.md`.",
   "- For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read `plugins/agent-engineering-system/skills/technical-communication/SKILL.md` completely before drafting.",
   "- Use `.agents/skills/` for skills specific to maintaining this catalog; do not treat installed upstream skills as maintained plugin content.",
   "- Define the observable outcome, plan verification, implement, verify, self-review, and report evidence accurately.",
@@ -118,7 +118,7 @@ writeFile("AGENTS.md", generated([
   "- `plugins/` contains plugin packages maintained by this repository; `plugins/agent-engineering-system/` is the maintained engineering plugin.",
   "- Each maintained plugin has one canonical `skills/` tree. Harness manifests are metadata around those same files.",
   "- `.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json` are generated catalog views, not canonical plugin content.",
-  "- `.agents/architecture/` is semantic architecture state for this catalog and installer, not plugin-owned state for consuming projects.",
+  "- `ARCHITECTURE.md` is semantic architecture state for this catalog and installer; consuming projects keep architecture documents beside their subsystems.",
   "- `.agents/skills/` contains skills specific to this repository; it must not contain copies of maintained plugin skills.",
   "- `setup.sh` installs the curated offerings into a consuming project through native harness routes where available.",
   "- `scripts/verify-catalog.sh` is the canonical local verification entry point. `scripts/verify-plugin.sh` remains a compatibility alias.",
@@ -128,13 +128,13 @@ writeFile("AGENTS.md", generated([
   "- Runtime: Node.js catalog generation plus POSIX shell setup and verification scripts.",
   "- Catalog: `catalog.json`; generated native views: `.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json`.",
   "- Maintained plugin: `plugins/agent-engineering-system/` with `code-quality`, `semantic-architecture`, and `technical-communication`.",
-  "- Persistent architecture: `.agents/architecture/`.",
+  "- Persistent architecture: root `ARCHITECTURE.md`.",
   "- Repository-specific skills: `.agents/skills/`.",
   "- Regenerate adapters: `node .agents/bootstrap.mjs`.",
   "- Verify: `./scripts/verify-catalog.sh`.",
   "- Install into a product: `./setup.sh --project /absolute/path/to/project --harness claude,codex,cursor`.",
   "- Legacy skill-only compatibility: use `./setup.sh --project ... --compat` only for a client that cannot load a native plugin.",
-  "- Consuming repositories supply their own `AGENTS.md`, architecture model, and project-specific skills.",
+  "- Consuming repositories supply their own `AGENTS.md`, colocated `ARCHITECTURE.md` files, and project-specific skills.",
 ]));
 
 writeFile("CLAUDE.md", generated([
@@ -146,7 +146,7 @@ writeFile("CLAUDE.md", generated([
   "Use the catalog's maintained `agent-engineering-system` plugin for reusable `code-quality` and `semantic-architecture` skills.",
   "For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read the complete `technical-communication` skill before drafting.",
   "Use project-local skills under `.agents/skills/` when their triggers apply.",
-  "For architectural work, also use the plugin semantic-architecture skill and progressively inspect `.agents/architecture/`.",
+  "For architectural work, also use the plugin semantic-architecture skill and read the nearest `ARCHITECTURE.md` for the affected subsystem.",
 ]));
 
 writeFile("GEMINI.md", generated([
@@ -157,7 +157,7 @@ writeFile("GEMINI.md", generated([
   "This checkout is the `agent-starter` curated catalog. Use the maintained `agent-engineering-system` plugin for reusable `code-quality` and `semantic-architecture` skills when the runtime supports it.",
   "For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read the complete `technical-communication` skill before drafting.",
   "Use project-local skills under `.agents/skills/` when their triggers apply.",
-  "For architectural work, also use the plugin semantic-architecture skill and progressively inspect `.agents/architecture/`.",
+  "For architectural work, also use the plugin semantic-architecture skill and read the nearest `ARCHITECTURE.md` for the affected subsystem.",
 ]));
 
 writeFile(".cursor/rules/00-project-agents.mdc", generated([
@@ -171,7 +171,7 @@ writeFile(".cursor/rules/00-project-agents.mdc", generated([
   "This repository is an `agent-starter` catalog. Use the installed `agent-engineering-system` plugin's canonical skills when Cursor has loaded it.",
   "Use installed pstack as the primary non-trivial engineering workflow when available.",
   "For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read the complete `technical-communication` skill before drafting.",
-  "For architectural work, also use the plugin semantic-architecture skill and progressively inspect the relevant path under `.agents/architecture/`.",
+  "For architectural work, also use the plugin semantic-architecture skill and read the nearest `ARCHITECTURE.md` for the affected subsystem.",
 ]));
 
 if (checkOnly && hasStaleOutput) process.exit(1);

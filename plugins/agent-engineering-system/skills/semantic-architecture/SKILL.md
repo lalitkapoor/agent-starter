@@ -25,17 +25,45 @@ implementation
 
 The filesystem is storage. Relationships may cross files and subsystem boundaries.
 
+Architecture records are colocated with the code they describe:
+
+- `ARCHITECTURE.md` in each meaningful subsystem or module directory;
+- an optional repository-root `ARCHITECTURE.md` only for genuinely system-wide
+  relationships and guarantees.
+
+Do not create one architecture document for every source file. A document
+should represent a semantic boundary with its own responsibilities, ownership,
+relationships, or invariants.
+
 ## Inspect before asking
 
 Before implementation:
-- inspect the root model,
-- follow the relevant child architecture path,
+- identify the files and subsystem boundaries that may be affected;
+- locate and read the nearest `ARCHITECTURE.md` for each affected path;
+- follow parent or child architecture documents only when the change crosses a
+  boundary or changes a relationship summarized there;
 - inspect implementation,
 - inspect tests/schemas/traces/design records,
 - determine what is already knowable,
 - identify only unresolved choices that materially affect architecture.
 
 Do not ask questions whose answers are confidently derivable.
+
+## Locate the relevant architecture document
+
+For each file or directory involved in the change:
+
+1. Look for `ARCHITECTURE.md` in that directory.
+2. If it is absent, walk upward until the nearest parent `ARCHITECTURE.md` or
+   repository root.
+3. If the change crosses subsystem boundaries, read the nearest document for
+   each affected subsystem.
+4. If no relevant document exists and the subsystem has meaningful independent
+   semantics, create `ARCHITECTURE.md` beside that subsystem using the
+   repository's template or this skill's structure.
+
+The repository's `AGENTS.md` may define a more specific architecture location
+for the repository itself. Follow that explicit local rule when one exists.
 
 ## Ask design questions before substantial implementation
 
@@ -48,28 +76,27 @@ Prioritize behavior, ownership, boundaries, source of truth, lifecycle, consiste
 
 ## Create hierarchy only where semantics justify it
 
-Root:
-`.agents/architecture/system.md`
-
 Example:
 ```text
-.agents/architecture/
-├── system.md
-├── editor/
-│   ├── system.md
-│   └── rendering/
-│       └── system.md
-├── sync/
-│   ├── system.md
-│   └── replication/
-│       └── system.md
-└── navigation/
-    └── system.md
+repo/
+├── ARCHITECTURE.md                 # optional cross-system summary
+└── src/
+    ├── editor/
+    │   ├── ARCHITECTURE.md
+    │   └── rendering/
+    │       └── ARCHITECTURE.md
+    ├── sync/
+    │   ├── ARCHITECTURE.md
+    │   └── replication/
+    │       └── ARCHITECTURE.md
+    └── navigation/
+        └── ARCHITECTURE.md
 ```
 
 Create a deeper model when there is distinct ownership, local invariants, important internal relationships, local lifecycle/source-of-truth rules, repeated rediscovery cost, or an overloaded parent model.
 
-Do not recreate the source tree.
+Place each document beside the subsystem it describes. Do not recreate the
+source tree with documents for trivial implementation details.
 
 ## Place facts at the lowest meaningful level
 
@@ -330,7 +357,8 @@ For every discovery:
 1. implementation-only? do not add to architecture.
 2. local architecture? record in nearest model.
 3. constrains siblings? summarize at parent.
-4. changes system-wide guarantee? propagate to root.
+4. changes a system-wide guarantee? update or create the repository-root
+   `ARCHITECTURE.md`.
 
 Example:
 ```text
@@ -362,7 +390,7 @@ Git is history. The architecture tree describes the current system.
 
 ## Avoid two failure modes
 
-Too coarse: one giant `system.md`.
+Too coarse: one giant root `ARCHITECTURE.md` containing every subsystem detail.
 
 Too granular: source-tree-shaped documentation.
 
