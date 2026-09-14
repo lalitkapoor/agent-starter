@@ -135,6 +135,13 @@ STATEMENT:
   The catalog records upstream repositories and declared refs such as `main`,
   but does not lock offerings to commit SHAs or vendor their source.
 
+INVARIANT: PUBLIC_DOCUMENT_NUMBERING_IS_LOCAL
+
+STATEMENT:
+  The core operating contract and the code-quality skill each number their
+  own sections contiguously from 1. The split map keeps original source IDs as
+  audit metadata rather than using them as public document numbers.
+
 INVARIANT: PROJECT_STATE_IS_HOST_OWNED
 
 STATEMENT:
@@ -184,7 +191,9 @@ TYPE:
   integrity
 
 TARGET:
-  All 82 original numbered sections remain accounted for by `docs/OPERATING_SYSTEM_SPLIT.json`.
+  All 82 original source sections remain accounted for by
+  `docs/OPERATING_SYSTEM_SPLIT.json`; public documents number their own
+  sections locally.
 
 REQUIREMENT: INSTALLER_MUST_BE_SAFE_TO_REAPPLY
 

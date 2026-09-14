@@ -3,336 +3,422 @@
   "source_numbered_sections": 82,
   "core_sections": [
     {
-      "number": 1,
-      "title": "Source of Truth and Instruction Precedence"
+      "title": "Source of Truth and Instruction Precedence",
+      "source_number": 1,
+      "local_number": 1
     },
     {
-      "number": 2,
-      "title": "Start by Understanding the Existing System"
+      "title": "Start by Understanding the Existing System",
+      "source_number": 2,
+      "local_number": 2
     },
     {
-      "number": 3,
-      "title": "Define the Observable Outcome First"
+      "title": "Define the Observable Outcome First",
+      "source_number": 3,
+      "local_number": 3
     },
     {
-      "number": 4,
-      "title": "Plan for Verification Before Coding"
+      "title": "Plan for Verification Before Coding",
+      "source_number": 4,
+      "local_number": 4
     },
     {
-      "number": 30,
-      "title": "Separate Facts, Hypotheses, Experiments, and Conclusions"
+      "title": "Separate Facts, Hypotheses, Experiments, and Conclusions",
+      "source_number": 30,
+      "local_number": 5
     },
     {
-      "number": 39,
-      "title": "Plans Are for Execution"
+      "title": "Plans Are for Execution",
+      "source_number": 39,
+      "local_number": 6
     },
     {
-      "number": 40,
-      "title": "Keep Scope Tight"
+      "title": "Keep Scope Tight",
+      "source_number": 40,
+      "local_number": 7
     },
     {
-      "number": 42,
-      "title": "Architecture Changes Must Be Deliberate"
+      "title": "Architecture Changes Must Be Deliberate",
+      "source_number": 42,
+      "local_number": 8
     },
     {
-      "number": 51,
-      "title": "Use the Repository\u2019s Canonical Verification Entry Point"
+      "title": "Use the Repository’s Canonical Verification Entry Point",
+      "source_number": 51,
+      "local_number": 9
     },
     {
-      "number": 52,
-      "title": "Focused Verification First, Broad Verification Before Completion"
+      "title": "Focused Verification First, Broad Verification Before Completion",
+      "source_number": 52,
+      "local_number": 10
     },
     {
-      "number": 53,
-      "title": "Real Integration Paths Need Real Evidence"
+      "title": "Real Integration Paths Need Real Evidence",
+      "source_number": 53,
+      "local_number": 11
     },
     {
-      "number": 54,
-      "title": "Preserve Verification Evidence When It Matters"
+      "title": "Preserve Verification Evidence When It Matters",
+      "source_number": 54,
+      "local_number": 12
     },
     {
-      "number": 55,
-      "title": "Commit at Meaningful Verified Boundaries"
+      "title": "Commit at Meaningful Verified Boundaries",
+      "source_number": 55,
+      "local_number": 13
     },
     {
-      "number": 56,
-      "title": "Push Along the Way When Appropriate"
+      "title": "Push Along the Way When Appropriate",
+      "source_number": 56,
+      "local_number": 14
     },
     {
-      "number": 57,
-      "title": "Keep the Worktree Healthy"
+      "title": "Keep the Worktree Healthy",
+      "source_number": 57,
+      "local_number": 15
     },
     {
-      "number": 58,
-      "title": "Definition of Done"
+      "title": "Definition of Done",
+      "source_number": 58,
+      "local_number": 16
     },
     {
-      "number": 59,
-      "title": "Do Not Claim More Than the Evidence Supports"
+      "title": "Do Not Claim More Than the Evidence Supports",
+      "source_number": 59,
+      "local_number": 17
     },
     {
-      "number": 60,
-      "title": "Do Not Hide Failures"
+      "title": "Do Not Hide Failures",
+      "source_number": 60,
+      "local_number": 18
     },
     {
-      "number": 64,
-      "title": "Self-Review Before Completion"
+      "title": "Self-Review Before Completion",
+      "source_number": 64,
+      "local_number": 19
     },
     {
-      "number": 65,
-      "title": "When Blocked, Keep Making Progress"
+      "title": "When Blocked, Keep Making Progress",
+      "source_number": 65,
+      "local_number": 20
     },
     {
-      "number": 66,
-      "title": "Do Not Stop at the Plan"
+      "title": "Do Not Stop at the Plan",
+      "source_number": 66,
+      "local_number": 21
     },
     {
-      "number": 67,
-      "title": "Do Not Stop at Compilation"
+      "title": "Do Not Stop at Compilation",
+      "source_number": 67,
+      "local_number": 22
     },
     {
-      "number": 68,
-      "title": "Do Not Stop at Tests You Just Wrote"
+      "title": "Do Not Stop at Tests You Just Wrote",
+      "source_number": 68,
+      "local_number": 23
     },
     {
-      "number": 69,
-      "title": "Preserve Existing Behavior Intentionally"
+      "title": "Preserve Existing Behavior Intentionally",
+      "source_number": 69,
+      "local_number": 24
     },
     {
-      "number": 70,
-      "title": "Generated Code and Artifacts"
+      "title": "Generated Code and Artifacts",
+      "source_number": 70,
+      "local_number": 25
     },
     {
-      "number": 79,
-      "title": "External Research Must Be Source-Grounded"
+      "title": "External Research Must Be Source-Grounded",
+      "source_number": 79,
+      "local_number": 26
     },
     {
-      "number": 80,
-      "title": "Optimize for Handoffs"
+      "title": "Optimize for Handoffs",
+      "source_number": 80,
+      "local_number": 27
     },
     {
-      "number": 81,
-      "title": "Default Working Loop"
+      "title": "Default Working Loop",
+      "source_number": 81,
+      "local_number": 28
     },
     {
-      "number": 82,
-      "title": "Project-Specific Section"
+      "title": "Project-Specific Section",
+      "source_number": 82,
+      "local_number": 29
     }
   ],
   "code_quality_sections": [
     {
-      "number": 5,
-      "title": "Model the Domain Before the Framework"
+      "title": "Model the Domain Before the Framework",
+      "source_number": 5,
+      "local_number": 1
     },
     {
-      "number": 6,
-      "title": "Build Deep Modules"
+      "title": "Build Deep Modules",
+      "source_number": 6,
+      "local_number": 2
     },
     {
-      "number": 7,
-      "title": "Use Interfaces at Real Seams"
+      "title": "Use Interfaces at Real Seams",
+      "source_number": 7,
+      "local_number": 3
     },
     {
-      "number": 8,
-      "title": "Keep Dependency Direction Clear"
+      "title": "Keep Dependency Direction Clear",
+      "source_number": 8,
+      "local_number": 4
     },
     {
-      "number": 9,
-      "title": "Provider Types Stop at Adapters"
+      "title": "Provider Types Stop at Adapters",
+      "source_number": 9,
+      "local_number": 5
     },
     {
-      "number": 10,
-      "title": "TypeScript Is Not Runtime Validation"
+      "title": "TypeScript Is Not Runtime Validation",
+      "source_number": 10,
+      "local_number": 6
     },
     {
-      "number": 11,
-      "title": "Avoid `any`"
+      "title": "Avoid `any`",
+      "source_number": 11,
+      "local_number": 7
     },
     {
-      "number": 12,
-      "title": "Make Invalid States Hard to Represent"
+      "title": "Make Invalid States Hard to Represent",
+      "source_number": 12,
+      "local_number": 8
     },
     {
-      "number": 13,
-      "title": "Mutable State Must Have an Owner"
+      "title": "Mutable State Must Have an Owner",
+      "source_number": 13,
+      "local_number": 9
     },
     {
-      "number": 14,
-      "title": "Async Work Must Have a Lifetime"
+      "title": "Async Work Must Have a Lifetime",
+      "source_number": 14,
+      "local_number": 10
     },
     {
-      "number": 15,
-      "title": "Concurrency Must Be Intentional"
+      "title": "Concurrency Must Be Intentional",
+      "source_number": 15,
+      "local_number": 11
     },
     {
-      "number": 16,
-      "title": "Side Effects Belong at Clear Edges"
+      "title": "Side Effects Belong at Clear Edges",
+      "source_number": 16,
+      "local_number": 12
     },
     {
-      "number": 17,
-      "title": "Keep Orchestration Thin"
+      "title": "Keep Orchestration Thin",
+      "source_number": 17,
+      "local_number": 13
     },
     {
-      "number": 18,
-      "title": "Validate at Boundaries and Trust Internally"
+      "title": "Validate at Boundaries and Trust Internally",
+      "source_number": 18,
+      "local_number": 14
     },
     {
-      "number": 19,
-      "title": "Treat Errors as Part of the Contract"
+      "title": "Treat Errors as Part of the Contract",
+      "source_number": 19,
+      "local_number": 15
     },
     {
-      "number": 20,
-      "title": "Configuration Is an Input Boundary"
+      "title": "Configuration Is an Input Boundary",
+      "source_number": 20,
+      "local_number": 16
     },
     {
-      "number": 21,
-      "title": "Secrets Must Stay Secret"
+      "title": "Secrets Must Stay Secret",
+      "source_number": 21,
+      "local_number": 17
     },
     {
-      "number": 22,
-      "title": "Logging Is an Interface"
+      "title": "Logging Is an Interface",
+      "source_number": 22,
+      "local_number": 18
     },
     {
-      "number": 23,
-      "title": "Use the Cheapest Test That Proves the Behavior"
+      "title": "Use the Cheapest Test That Proves the Behavior",
+      "source_number": 23,
+      "local_number": 19
     },
     {
-      "number": 24,
-      "title": "Every Module Needs a Verification Story"
+      "title": "Every Module Needs a Verification Story",
+      "source_number": 24,
+      "local_number": 20
     },
     {
-      "number": 25,
-      "title": "Test Contracts, Not Decomposition"
+      "title": "Test Contracts, Not Decomposition",
+      "source_number": 25,
+      "local_number": 21
     },
     {
-      "number": 26,
-      "title": "Use Fakes at Genuine Effect Boundaries"
+      "title": "Use Fakes at Genuine Effect Boundaries",
+      "source_number": 26,
+      "local_number": 22
     },
     {
-      "number": 27,
-      "title": "Inject Time When Time Affects Behavior"
+      "title": "Inject Time When Time Affects Behavior",
+      "source_number": 27,
+      "local_number": 23
     },
     {
-      "number": 28,
-      "title": "Do Not Synchronize Tests With Arbitrary Sleeps"
+      "title": "Do Not Synchronize Tests With Arbitrary Sleeps",
+      "source_number": 28,
+      "local_number": 24
     },
     {
-      "number": 29,
-      "title": "Reproduce Bugs Before Fixing Them"
+      "title": "Reproduce Bugs Before Fixing Them",
+      "source_number": 29,
+      "local_number": 25
     },
     {
-      "number": 31,
-      "title": "Performance Work Requires Measurement"
+      "title": "Performance Work Requires Measurement",
+      "source_number": 31,
+      "local_number": 26
     },
     {
-      "number": 32,
-      "title": "Infrastructure Must Earn Its Complexity"
+      "title": "Infrastructure Must Earn Its Complexity",
+      "source_number": 32,
+      "local_number": 27
     },
     {
-      "number": 33,
-      "title": "Prefer Boring, Established Technology"
+      "title": "Prefer Boring, Established Technology",
+      "source_number": 33,
+      "local_number": 28
     },
     {
-      "number": 34,
-      "title": "UI Code Should Express Product Behavior, Not Own Everything"
+      "title": "UI Code Should Express Product Behavior, Not Own Everything",
+      "source_number": 34,
+      "local_number": 29
     },
     {
-      "number": 35,
-      "title": "Keep HTTP Boundaries Thin"
+      "title": "Keep HTTP Boundaries Thin",
+      "source_number": 35,
+      "local_number": 30
     },
     {
-      "number": 36,
-      "title": "Persistence Is an Adapter Boundary"
+      "title": "Persistence Is an Adapter Boundary",
+      "source_number": 36,
+      "local_number": 31
     },
     {
-      "number": 37,
-      "title": "Public Contracts Require Compatibility Thinking"
+      "title": "Public Contracts Require Compatibility Thinking",
+      "source_number": 37,
+      "local_number": 32
     },
     {
-      "number": 38,
-      "title": "Work in Vertical, Verifiable Slices"
+      "title": "Work in Vertical, Verifiable Slices",
+      "source_number": 38,
+      "local_number": 33
     },
     {
-      "number": 41,
-      "title": "Refactor With Behavioral Safety"
+      "title": "Refactor With Behavioral Safety",
+      "source_number": 41,
+      "local_number": 34
     },
     {
-      "number": 43,
-      "title": "Comments Explain Why"
+      "title": "Comments Explain Why",
+      "source_number": 43,
+      "local_number": 35
     },
     {
-      "number": 44,
-      "title": "Name Things From the Domain"
+      "title": "Name Things From the Domain",
+      "source_number": 44,
+      "local_number": 36
     },
     {
-      "number": 45,
-      "title": "File Size Is Not an Architecture Metric"
+      "title": "File Size Is Not an Architecture Metric",
+      "source_number": 45,
+      "local_number": 37
     },
     {
-      "number": 46,
-      "title": "Dependency Injection Should Stay Simple"
+      "title": "Dependency Injection Should Stay Simple",
+      "source_number": 46,
+      "local_number": 38
     },
     {
-      "number": 47,
-      "title": "Avoid Mutable Global State"
+      "title": "Avoid Mutable Global State",
+      "source_number": 47,
+      "local_number": 39
     },
     {
-      "number": 48,
-      "title": "Security Is Behavior"
+      "title": "Security Is Behavior",
+      "source_number": 48,
+      "local_number": 40
     },
     {
-      "number": 49,
-      "title": "Privacy and Data Minimization"
+      "title": "Privacy and Data Minimization",
+      "source_number": 49,
+      "local_number": 41
     },
     {
-      "number": 50,
-      "title": "Accessibility Is Correctness"
+      "title": "Accessibility Is Correctness",
+      "source_number": 50,
+      "local_number": 42
     },
     {
-      "number": 61,
-      "title": "Do Not Add Future Architecture Without Present Need"
+      "title": "Do Not Add Future Architecture Without Present Need",
+      "source_number": 61,
+      "local_number": 43
     },
     {
-      "number": 62,
-      "title": "Prefer Reversible Decisions Early"
+      "title": "Prefer Reversible Decisions Early",
+      "source_number": 62,
+      "local_number": 44
     },
     {
-      "number": 63,
-      "title": "Know What Must Stay Local"
+      "title": "Know What Must Stay Local",
+      "source_number": 63,
+      "local_number": 45
     },
     {
-      "number": 71,
-      "title": "Dependency Changes Need Justification"
+      "title": "Dependency Changes Need Justification",
+      "source_number": 71,
+      "local_number": 46
     },
     {
-      "number": 72,
-      "title": "Migrations Must Be Forward-Safe"
+      "title": "Migrations Must Be Forward-Safe",
+      "source_number": 72,
+      "local_number": 47
     },
     {
-      "number": 73,
-      "title": "Idempotency for Repeatable Effects"
+      "title": "Idempotency for Repeatable Effects",
+      "source_number": 73,
+      "local_number": 48
     },
     {
-      "number": 74,
-      "title": "Retry Only Known-Transient Failures"
+      "title": "Retry Only Known-Transient Failures",
+      "source_number": 74,
+      "local_number": 49
     },
     {
-      "number": 75,
-      "title": "Cache Only With Explicit Semantics"
+      "title": "Cache Only With Explicit Semantics",
+      "source_number": 75,
+      "local_number": 50
     },
     {
-      "number": 76,
-      "title": "Events Need Contracts and Ownership"
+      "title": "Events Need Contracts and Ownership",
+      "source_number": 76,
+      "local_number": 51
     },
     {
-      "number": 77,
-      "title": "Background Jobs Need Observable State"
+      "title": "Background Jobs Need Observable State",
+      "source_number": 77,
+      "local_number": 52
     },
     {
-      "number": 78,
-      "title": "Feature Flags Are Temporary Architecture"
+      "title": "Feature Flags Are Temporary Architecture",
+      "source_number": 78,
+      "local_number": 53
     }
   ],
   "final_principle_location": ".agents/core/AGENT_RULES.md",
-  "preamble_location": ".agents/core/AGENT_RULES.md"
+  "preamble_location": ".agents/core/AGENT_RULES.md",
+  "numbering": {
+    "public_documents": "Each document uses contiguous local_number values starting at 1.",
+    "audit_map": "source_number preserves the original generalized AGENTS.md section identifier."
+  }
 }

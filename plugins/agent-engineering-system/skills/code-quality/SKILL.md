@@ -19,10 +19,12 @@ When pstack is available:
 - this skill owns the detailed engineering/design quality bar;
 - semantic-architecture owns persistent capture of architectural intent.
 
-The section numbers below retain their original numbers from the prior generalized AGENTS.md so nothing is
-silently renumbered or lost.
+The section headings below use local numbering from 1 through 53. The original
+82-section source identifiers are retained separately in
+`docs/OPERATING_SYSTEM_SPLIT.json` as audit metadata; they are not document
+numbers and should not be used to infer missing sections.
 
-# 5. Model the Domain Before the Framework
+# 1. Model the Domain Before the Framework
 
 Identify the concepts involved before writing framework glue.
 
@@ -69,7 +71,7 @@ Do not create domain types that merely rename primitives without adding meaning,
 
 ---
 
-# 6. Build Deep Modules
+# 2. Build Deep Modules
 
 Prefer modules with:
 
@@ -113,7 +115,7 @@ Every abstraction should reduce complexity somewhere else.
 
 ---
 
-# 7. Use Interfaces at Real Seams
+# 3. Use Interfaces at Real Seams
 
 Introduce interfaces or protocols when they separate genuine replacement or effect boundaries.
 
@@ -147,7 +149,7 @@ If an implementation is deterministic and local, test it directly.
 
 ---
 
-# 8. Keep Dependency Direction Clear
+# 4. Keep Dependency Direction Clear
 
 A healthy dependency shape is usually:
 
@@ -183,7 +185,7 @@ Translate at boundaries.
 
 ---
 
-# 9. Provider Types Stop at Adapters
+# 5. Provider Types Stop at Adapters
 
 Third-party SDK types should not become your application’s domain language.
 
@@ -228,7 +230,7 @@ This containment makes provider changes, SDK upgrades, testing, and refactoring 
 
 ---
 
-# 10. TypeScript Is Not Runtime Validation
+# 6. TypeScript Is Not Runtime Validation
 
 TypeScript protects compiled code from many developer mistakes.
 
@@ -277,7 +279,7 @@ as a substitute for runtime validation.
 
 ---
 
-# 11. Avoid `any`
+# 7. Avoid `any`
 
 `any` turns off the compiler.
 
@@ -299,7 +301,7 @@ Do not weaken types merely to get the build passing.
 
 ---
 
-# 12. Make Invalid States Hard to Represent
+# 8. Make Invalid States Hard to Represent
 
 Prefer discriminated unions and explicit state machines over loosely related flags.
 
@@ -335,7 +337,7 @@ Encode that answer into the model.
 
 ---
 
-# 13. Mutable State Must Have an Owner
+# 9. Mutable State Must Have an Owner
 
 Every important mutable resource needs one identifiable owner.
 
@@ -370,7 +372,7 @@ Shared mutation creates hidden coupling.
 
 ---
 
-# 14. Async Work Must Have a Lifetime
+# 10. Async Work Must Have a Lifetime
 
 For every long-running operation, know:
 
@@ -406,7 +408,7 @@ Lifecycle behavior is part of correctness.
 
 ---
 
-# 15. Concurrency Must Be Intentional
+# 11. Concurrency Must Be Intentional
 
 Do not accidentally create unlimited concurrency.
 
@@ -435,7 +437,7 @@ Use bounded concurrency where appropriate.
 
 ---
 
-# 16. Side Effects Belong at Clear Edges
+# 12. Side Effects Belong at Clear Edges
 
 Separate decision-making from execution where doing so improves clarity.
 
@@ -476,7 +478,7 @@ The module that decides **what should happen** does not always need to own **how
 
 ---
 
-# 17. Keep Orchestration Thin
+# 13. Keep Orchestration Thin
 
 Coordinators should connect modules rather than absorb their algorithms.
 
@@ -510,7 +512,7 @@ When orchestration becomes algorithmic, move cohesive behavior into the module t
 
 ---
 
-# 18. Validate at Boundaries and Trust Internally
+# 14. Validate at Boundaries and Trust Internally
 
 Validate invariants where data enters the trusted system.
 
@@ -530,7 +532,7 @@ Validation should belong somewhere specific.
 
 ---
 
-# 19. Treat Errors as Part of the Contract
+# 15. Treat Errors as Part of the Contract
 
 Do not rely on arbitrary strings or raw provider exceptions as application behavior.
 
@@ -556,7 +558,7 @@ Preserve useful causal information for diagnostics without leaking implementatio
 
 ---
 
-# 20. Configuration Is an Input Boundary
+# 16. Configuration Is an Input Boundary
 
 Do not scatter direct environment access through the system.
 
@@ -590,7 +592,7 @@ Pass modules only the configuration they require.
 
 ---
 
-# 21. Secrets Must Stay Secret
+# 17. Secrets Must Stay Secret
 
 Never commit or production-log:
 
@@ -617,7 +619,7 @@ When reviewing a diff, explicitly check for accidental secret exposure.
 
 ---
 
-# 22. Logging Is an Interface
+# 18. Logging Is an Interface
 
 Logs exist for humans and machines trying to understand what happened.
 
@@ -652,7 +654,7 @@ Do not debug by permanently adding excessive logging.
 
 ---
 
-# 23. Use the Cheapest Test That Proves the Behavior
+# 19. Use the Cheapest Test That Proves the Behavior
 
 Default testing hierarchy:
 
@@ -677,7 +679,7 @@ Choose the layer based on what must actually be proven.
 
 ---
 
-# 24. Every Module Needs a Verification Story
+# 20. Every Module Needs a Verification Story
 
 For every meaningful module, be able to answer:
 
@@ -715,7 +717,7 @@ If a module is extremely difficult to verify independently, inspect whether its 
 
 ---
 
-# 25. Test Contracts, Not Decomposition
+# 21. Test Contracts, Not Decomposition
 
 Prefer tests of observable behavior.
 
@@ -734,7 +736,7 @@ Tests are part of the module contract.
 
 ---
 
-# 26. Use Fakes at Genuine Effect Boundaries
+# 22. Use Fakes at Genuine Effect Boundaries
 
 Useful fakeable dependencies include:
 
@@ -762,7 +764,7 @@ rather than:
 
 ---
 
-# 27. Inject Time When Time Affects Behavior
+# 23. Inject Time When Time Affects Behavior
 
 When logic depends on time, avoid scattering:
 
@@ -795,7 +797,7 @@ This is especially useful for:
 
 ---
 
-# 28. Do Not Synchronize Tests With Arbitrary Sleeps
+# 24. Do Not Synchronize Tests With Arbitrary Sleeps
 
 Avoid:
 
@@ -823,7 +825,7 @@ If a test needs an arbitrary sleep to avoid a race, investigate the missing sync
 
 ---
 
-# 29. Reproduce Bugs Before Fixing Them
+# 25. Reproduce Bugs Before Fixing Them
 
 For meaningful bugs:
 
@@ -841,7 +843,7 @@ Do not patch symptoms based on a guess.
 
 ---
 
-# 31. Performance Work Requires Measurement
+# 26. Performance Work Requires Measurement
 
 Do not add performance complexity because something “might be slow.”
 
@@ -861,7 +863,7 @@ Performance abstractions without measurements are speculation.
 
 ---
 
-# 32. Infrastructure Must Earn Its Complexity
+# 27. Infrastructure Must Earn Its Complexity
 
 Do not casually introduce:
 
@@ -889,7 +891,7 @@ Future flexibility alone is usually insufficient justification.
 
 ---
 
-# 33. Prefer Boring, Established Technology
+# 28. Prefer Boring, Established Technology
 
 Use current repository conventions and mature libraries where they meet the requirement.
 
@@ -911,7 +913,7 @@ Do not replace working technology solely because another tool is newer or fashio
 
 ---
 
-# 34. UI Code Should Express Product Behavior, Not Own Everything
+# 29. UI Code Should Express Product Behavior, Not Own Everything
 
 For React or similar UI systems, components should primarily:
 
@@ -942,7 +944,7 @@ Do not invent a private UI framework unless the repository has a demonstrated ne
 
 ---
 
-# 35. Keep HTTP Boundaries Thin
+# 30. Keep HTTP Boundaries Thin
 
 Preferred HTTP flow:
 
@@ -969,7 +971,7 @@ Route/controller layers should be understandable without knowing the full busine
 
 ---
 
-# 36. Persistence Is an Adapter Boundary
+# 31. Persistence Is an Adapter Boundary
 
 Keep database-specific representations close to persistence modules.
 
@@ -998,7 +1000,7 @@ Schema changes require migration verification.
 
 ---
 
-# 37. Public Contracts Require Compatibility Thinking
+# 32. Public Contracts Require Compatibility Thinking
 
 When modifying a consumed API, event schema, package interface, or persisted format:
 
@@ -1015,7 +1017,7 @@ Do not silently break externally relied-upon contracts.
 
 ---
 
-# 38. Work in Vertical, Verifiable Slices
+# 33. Work in Vertical, Verifiable Slices
 
 Prefer:
 
@@ -1051,7 +1053,7 @@ Each slice should leave the repository coherent.
 
 ---
 
-# 41. Refactor With Behavioral Safety
+# 34. Refactor With Behavioral Safety
 
 Refactoring means intentionally preserving externally observable behavior.
 
@@ -1069,7 +1071,7 @@ Prefer improving a specific module boundary over repository-wide abstraction cam
 
 ---
 
-# 43. Comments Explain Why
+# 35. Comments Explain Why
 
 Useful comments explain:
 
@@ -1103,7 +1105,7 @@ Use comments for “why.”
 
 ---
 
-# 44. Name Things From the Domain
+# 36. Name Things From the Domain
 
 Prefer:
 
@@ -1136,7 +1138,7 @@ A module should usually be nameable by what it owns.
 
 ---
 
-# 45. File Size Is Not an Architecture Metric
+# 37. File Size Is Not an Architecture Metric
 
 Do not split files merely because they cross an arbitrary line count.
 
@@ -1152,7 +1154,7 @@ Optimize for cohesion and locality, not file-count aesthetics.
 
 ---
 
-# 46. Dependency Injection Should Stay Simple
+# 38. Dependency Injection Should Stay Simple
 
 Inject real effect boundaries where it improves:
 
@@ -1177,7 +1179,7 @@ Prefer visible dependencies over global service locators.
 
 ---
 
-# 47. Avoid Mutable Global State
+# 39. Avoid Mutable Global State
 
 Mutable globals obscure:
 
@@ -1199,7 +1201,7 @@ Do not use singleton state as a shortcut around dependency design.
 
 ---
 
-# 48. Security Is Behavior
+# 40. Security Is Behavior
 
 Security should be verifiable, not aspirational.
 
@@ -1226,7 +1228,7 @@ Never weaken a security boundary merely to simplify a test or make CI green.
 
 ---
 
-# 49. Privacy and Data Minimization
+# 41. Privacy and Data Minimization
 
 If the product handles user-sensitive or business-sensitive information:
 
@@ -1245,7 +1247,7 @@ Treat privacy as an architectural property.
 
 ---
 
-# 50. Accessibility Is Correctness
+# 42. Accessibility Is Correctness
 
 For user-facing interfaces, accessibility is not optional polish.
 
@@ -1266,7 +1268,7 @@ When changing UI behavior, include accessibility in verification.
 
 ---
 
-# 61. Do Not Add Future Architecture Without Present Need
+# 43. Do Not Add Future Architecture Without Present Need
 
 Avoid speculative layers such as:
 
@@ -1285,7 +1287,7 @@ Do not build hypothetical systems.
 
 ---
 
-# 62. Prefer Reversible Decisions Early
+# 44. Prefer Reversible Decisions Early
 
 When requirements are evolving:
 
@@ -1303,7 +1305,7 @@ Spend architectural complexity where reversal would otherwise be expensive.
 
 ---
 
-# 63. Know What Must Stay Local
+# 45. Know What Must Stay Local
 
 When modifying a subsystem, identify what should remain locally understandable.
 
@@ -1323,7 +1325,7 @@ Locality of change is a signal of architectural health.
 
 ---
 
-# 71. Dependency Changes Need Justification
+# 46. Dependency Changes Need Justification
 
 When adding a dependency, ask:
 
@@ -1343,7 +1345,7 @@ Record significant dependency choices when the rationale will matter later.
 
 ---
 
-# 72. Migrations Must Be Forward-Safe
+# 47. Migrations Must Be Forward-Safe
 
 For schema/data migrations:
 
@@ -1370,7 +1372,7 @@ rather than an atomic breaking migration.
 
 ---
 
-# 73. Idempotency for Repeatable Effects
+# 48. Idempotency for Repeatable Effects
 
 Operations that may be retried or delivered more than once should define idempotency behavior.
 
@@ -1391,7 +1393,7 @@ Test duplicate delivery when relevant.
 
 ---
 
-# 74. Retry Only Known-Transient Failures
+# 49. Retry Only Known-Transient Failures
 
 Retries are not generic error handling.
 
@@ -1411,7 +1413,7 @@ Retry policy belongs at a clear ownership boundary.
 
 ---
 
-# 75. Cache Only With Explicit Semantics
+# 50. Cache Only With Explicit Semantics
 
 If adding or changing caching, define:
 
@@ -1433,7 +1435,7 @@ Prefer no cache until requirements justify one.
 
 ---
 
-# 76. Events Need Contracts and Ownership
+# 51. Events Need Contracts and Ownership
 
 When using event-driven architecture, define:
 
@@ -1453,7 +1455,7 @@ Events are useful when temporal decoupling is actually required.
 
 ---
 
-# 77. Background Jobs Need Observable State
+# 52. Background Jobs Need Observable State
 
 Long-running/background work should expose enough state to understand:
 
@@ -1472,7 +1474,7 @@ Make operational failure diagnosable.
 
 ---
 
-# 78. Feature Flags Are Temporary Architecture
+# 53. Feature Flags Are Temporary Architecture
 
 If using a feature flag, define:
 

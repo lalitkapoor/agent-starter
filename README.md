@@ -121,6 +121,13 @@ The skill is installed with the maintained plugin. The generated `AGENTS.md`
 also explicitly tells agents to read it before producing any of those
 engineering artifacts.
 
+### Rule numbering
+
+The core operating contract and the `code-quality` skill each use their own
+contiguous section numbers starting at 1. Together they contain the same 82
+rules as the original operating system. The split map keeps the original IDs
+as audit metadata without using those IDs as public document headings.
+
 ## Catalog and installation model
 
 `catalog.json` is the single maintained list. It records whether an offering is
@@ -426,7 +433,7 @@ The verifier checks:
 - generated Claude and Codex marketplace views;
 - generated adapters and the technical communication trigger in `AGENTS.md`;
 - absence of committed duplicate maintained skills;
-- the 82 original operating-system sections exactly once.
+- the 82 original operating-system source sections exactly once, while each public document uses local contiguous numbering.
 
 The checks are local-only. They do not claim that a live Claude, Codex, Cursor,
 GitHub, or upstream installation succeeded. Exercise those runtime boundaries
