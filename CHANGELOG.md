@@ -11,6 +11,7 @@ engineering plugin are recorded here.
 - Generate Claude and Codex marketplace views from the catalog.
 - Install pstack and selected Matt Pocock skills as separate upstream offerings.
 - Curate HumanLayer's upstream `show-me` skill with a native Claude route and skill-only Codex/Cursor routes.
+- Format architecture invariants with stable `INV-0000` IDs and clearly separated fields.
 - Follow declared upstream refs without commit-pinning pstack, HumanLayer, or Matt Pocock content.
 - Renumber core policy and code-quality headings locally so each document reads coherently.
 - Make skill-only compatibility an explicit fallback rather than the normal installation path.

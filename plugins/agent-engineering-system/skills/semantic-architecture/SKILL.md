@@ -158,24 +158,19 @@ Useful verbs:
 
 ## Invariants
 
+Represent each invariant with a stable four-digit `INV-0000` identifier in its
+heading and bulleted fields so adjacent invariants are visually distinct. Use
+the next unused identifier; do not reuse an identifier for a different
+invariant.
+
 Example:
-```text
-INVARIANT: PAGE_CACHE_NOT_SOURCE_OF_TRUTH
 
-STATEMENT:
-  PageCache must never become canonical Page state.
+### INV-0001 — Page cache is not the source of truth
 
-APPLIES_TO:
-  - PageCache
-  - PageLoader
-  - PageMutation
-
-RATIONALE:
-  Cached state may be stale and replaceable by canonical state.
-
-VALIDATED_BY:
-  - page-cache-invalidation.test.ts
-```
+- **Statement:** PageCache must never become canonical Page state.
+- **Applies to:** `PageCache`, `PageLoader`, `PageMutation`
+- **Rationale:** Cached state may be stale and replaceable by canonical state.
+- **Validated by:** `page-cache-invalidation.test.ts`
 
 Local invariants are first-class too.
 

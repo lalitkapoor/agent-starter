@@ -110,45 +110,40 @@ SOURCE_OF_TRUTH:
 
 ## System-wide invariants
 
-INVARIANT: MAINTAINED_PLUGIN_SKILLS_HAVE_ONE_CANONICAL_COPY
+### INV-0001 — Maintained plugin skills have one canonical copy
 
-STATEMENT:
-  Reusable skills maintained by this repository exist only under their plugin's
-  canonical `skills/` tree. Harness metadata and compatibility output never
-  become a second source.
+- **Statement:** Reusable skills maintained by this repository exist only under
+  their plugin's canonical `skills/` tree. Harness metadata and compatibility
+  output never become a second source.
 
-INVARIANT: CATALOG_VIEWS_ARE_DERIVED
+### INV-0002 — Catalog views are derived
 
-STATEMENT:
-  Native marketplace files are generated from `catalog.json` and must not be
-  hand-maintained independently.
+- **Statement:** Native marketplace files are generated from `catalog.json` and
+  must not be hand-maintained independently.
 
-INVARIANT: UPSTREAM_CONTENT_REMAINS_EXTERNAL
+### INV-0003 — Upstream content remains external
 
-STATEMENT:
-  Upstream plugin and skill offerings remain external dependencies. This
-  repository records how to install them but does not copy them into its
-  maintained plugin.
+- **Statement:** Upstream plugin and skill offerings remain external
+  dependencies. This repository records how to install them but does not copy
+  them into its maintained plugin.
 
-INVARIANT: UPSTREAM_DEPENDENCIES_ARE_NOT_COMMIT_PINNED
+### INV-0004 — Upstream dependencies are not commit-pinned
 
-STATEMENT:
-  The catalog records upstream repositories and declared refs such as `main`,
-  but does not lock offerings to commit SHAs or vendor their source.
+- **Statement:** The catalog records upstream repositories and declared refs
+  such as `main`, but does not lock offerings to commit SHAs or vendor their
+  source.
 
-INVARIANT: PROJECT_STATE_IS_HOST_OWNED
+### INV-0005 — Project state is host-owned
 
-STATEMENT:
-  A consuming project's `AGENTS.md`, `.agents/architecture/`, and
-  `.agents/skills/` remain owned by that project. The installer may add a
+- **Statement:** A consuming project's `AGENTS.md`, `.agents/architecture/`,
+  and `.agents/skills/` remain owned by that project. The installer may add a
   marked integration block but must not overwrite surrounding content.
 
-INVARIANT: LEGACY_COMPATIBILITY_IS_EXPLICIT
+### INV-0006 — Legacy compatibility is explicit
 
-STATEMENT:
-  Skill-only copies under `.agents/skills/`, `.claude/skills/`, or
-  `.cursor/skills/` are fallback outputs from an explicit compatibility path;
-  they are never canonical plugin content.
+- **Statement:** Skill-only copies under `.agents/skills/`, `.claude/skills/`,
+  or `.cursor/skills/` are fallback outputs from an explicit compatibility
+  path; they are never canonical plugin content.
 
 ## System boundaries
 
