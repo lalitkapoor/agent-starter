@@ -218,7 +218,7 @@ function installCursor() {
   }
 }
 
-function installMattSkillFallback(harness) {
+function installSkillOnlyFallback(harness) {
   for (const entry of catalog.plugins) {
     if (!shouldInstall(entry)) continue;
     const definition = entry.runtimes[harness];
@@ -270,7 +270,7 @@ for (const harness of harnesses) {
   if (harness === "codex") installCodex();
   if (harness === "cursor") installCursor();
   if (compat) installLegacyCompatibility(harness);
-  if (harness !== "claude") installMattSkillFallback(harness);
+  if (harness !== "claude") installSkillOnlyFallback(harness);
 }
 
 console.log(`${dryRun ? "Planned" : "Installed"} agent-starter catalog for ${project}.`);

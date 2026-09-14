@@ -71,8 +71,8 @@ MODEL:
 
 ## System-level relationships
 
-`catalog.json` SELECTS `agent-engineering-system`, pstack, and selected Matt
-Pocock skills as separate offerings.
+`catalog.json` SELECTS `agent-engineering-system`, pstack, HumanLayer's
+`show-me`, and selected Matt Pocock skills as separate offerings.
 `plugins/agent-engineering-system/` OWNS the three maintained engineering skills.
 The generated Claude and Codex marketplace files ADVERTISE catalog entries;
 they do not copy or own skill content.
@@ -126,8 +126,9 @@ STATEMENT:
 INVARIANT: UPSTREAM_CONTENT_REMAINS_EXTERNAL
 
 STATEMENT:
-  pstack and Matt Pocock skills remain upstream dependencies. This repository
-  records how to install them but does not copy them into its maintained plugin.
+  Upstream plugin and skill offerings remain external dependencies. This
+  repository records how to install them but does not copy them into its
+  maintained plugin.
 
 INVARIANT: UPSTREAM_DEPENDENCIES_ARE_NOT_COMMIT_PINNED
 
@@ -276,7 +277,8 @@ WHY:
 CONSEQUENCES:
   - Native plugin installation is the normal path.
   - `--compat` is deliberately visible and optional.
-  - Upstream pstack and Matt sources remain separate from maintained content.
+  - Upstream pstack, HumanLayer, and Matt sources remain separate from
+    maintained content.
 
 SOURCE:
   user-discussed and external-documentation
