@@ -8,9 +8,6 @@ verification/completion discipline, repository hygiene, handoff rules, and skill
 Detailed engineering/design rules live in the reusable plugin skill `plugins/agent-engineering-system/skills/code-quality/SKILL.md`.
 Persistent architecture workflow lives in the reusable plugin skill `plugins/agent-engineering-system/skills/semantic-architecture/SKILL.md`.
 
-The numbered sections below use local numbering from 1 through 29 so this
-operating contract reads as a complete document.
-
 ---
 
 This file defines how autonomous coding agents should work in this repository.

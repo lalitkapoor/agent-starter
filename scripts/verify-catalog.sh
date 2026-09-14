@@ -255,7 +255,6 @@ for relative in (
 
 print(f"Catalog, maintained plugin, native marketplace views, and {len(expected_skills)} required skills are valid.")
 print(f"Catalog includes {len(catalog['plugins'])} offerings; {len(expected_claude)} Claude and {len(expected_codex)} Codex plugin routes are generated.")
-print("Core policy and code-quality headings are locally numbered from 1.")
 PY
 
 node "$ROOT/.agents/bootstrap.mjs" --check

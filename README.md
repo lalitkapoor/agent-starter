@@ -121,13 +121,6 @@ The skill is installed with the maintained plugin. The generated `AGENTS.md`
 also explicitly tells agents to read it before producing any of those
 engineering artifacts.
 
-### Rule numbering
-
-The core operating contract and the `code-quality` skill each use their own
-contiguous section numbers starting at 1. They are separate documents, so
-their headings do not imply that one continues the other. The rule content was
-preserved while the documents were reorganized.
-
 ## Catalog and installation model
 
 `catalog.json` is the single maintained list. It records whether an offering is
