@@ -1,9 +1,13 @@
-# Compatibility adapters
+# Legacy compatibility adapters
 
-The plugin root is the canonical source for portable skills. Some clients do
-not yet load Agent Plugins 1.0 packages directly, so `setup.sh --compat` can
-materialize generated skill copies under `.cursor/skills/` and `.claude/skills/`.
+The plugin root is the canonical source for reusable skills. Native Codex,
+Claude Code, and Cursor plugin loading should use the repository's native
+manifest and root `skills/` directory directly.
 
-These directories are runtime outputs. Do not edit or commit them; rerun the
-compatibility setup after changing a canonical plugin skill or a repository-local
-skill under `.agents/skills/`.
+For older or non-plugin clients, `setup.sh --compat` can still materialize
+generated copies under `.cursor/skills/` and `.claude/skills/`. This is an
+explicit legacy fallback, not the normal installation path.
+
+These directories are ignored runtime outputs. Do not edit or commit them;
+rerun the legacy compatibility setup after changing a canonical plugin skill
+or a repository-local skill under `.agents/skills/`.

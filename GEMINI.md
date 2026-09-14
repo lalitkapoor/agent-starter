@@ -4,6 +4,6 @@
 
 Read and follow `AGENTS.md`.
 
-Use the installed Agent Plugins 1.0 engineering plugin for reusable skills.
+Use the reusable `code-quality` and `semantic-architecture` skills supplied by the agent-engineering-system package when available.
 Use project-local skills under `.agents/skills/` when their triggers apply.
 For architectural work, also use the plugin semantic-architecture skill and progressively inspect `.agents/architecture/`.

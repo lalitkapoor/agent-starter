@@ -1,163 +1,297 @@
 # Agent Engineering System
 
-This repository is a reusable Agent Plugins 1.0 package for serious agent-driven software engineering. It publishes portable engineering skills while keeping repository policy, semantic architecture, and project-specific constraints in host-repository state.
+This repository is a reusable, multi-harness engineering system for coding
+agents. It keeps one canonical set of engineering skills and wraps that
+content with the smallest native packaging metadata needed by each supported
+runtime.
 
-## What is portable
+## Architecture
 
-The plugin root is the canonical distribution unit:
+```text
+                         agent-starter
+                              │
+                       canonical content
+                              │
+          ┌───────────────────┼───────────────────┐
+          │                   │                   │
+     code-quality     semantic-architecture     policy
+          │                   │                   │
+          └───────────────┬───┘                   │
+                          │                       │
+                    canonical skills/       .agents/core/
+                          │
+               ┌──────────┼──────────┐
+               ▼          ▼          ▼
+             Codex      Claude     Cursor/other
+```
+
+The reusable engineering behavior is stored once:
+
+```text
+skills/
+├── code-quality/SKILL.md
+└── semantic-architecture/SKILL.md
+```
+
+The manifests identify that same package for different runtimes. They do not
+contain or copy the skill files.
+
+## Package boundaries
+
+### Portable Agent Plugins package
 
 ```text
 plugin.json
 skills/
-├── code-quality/
-│   └── SKILL.md
-└── semantic-architecture/
-    └── SKILL.md
 ```
 
-`plugin.json` declares the Agent Plugins 1.0 schema. Compatible clients discover skills from the fixed root `skills/` directory; skill paths are intentionally not listed in the manifest.
+The root `plugin.json` is the vendor-neutral Agent Plugins 1.0 representation.
+Portable clients discover reusable skills from the fixed root `skills/`
+directory. See the [Agent Plugins documentation](https://docs.github.com/en/copilot/concepts/agents/about-plugins).
 
-Agent Plugins 1.0 standardizes portable skills and MCP server configuration. Client-specific agents, hooks, commands, and rules belong in a reverse-domain namespace such as `com.github.copilot/`. This package currently has no client-specific components or MCP server, so those directories are intentionally absent.
-
-See [About GitHub Copilot plugins](https://docs.github.com/en/copilot/concepts/agents/about-plugins) and [Agent plugins in VS Code](https://code.visualstudio.com/docs/agent-customization/agent-plugins) for the current client contract.
-
-## What remains host-repository state
+### Codex
 
 ```text
-.agents/
-├── core/
-│   └── AGENT_RULES.md       # detailed repository operating policy
-├── architecture/            # this repository's persistent semantic model
-├── skills/                  # repository-specific skills only
-└── bootstrap.mjs             # generated adapter source
-docs/
-├── OPERATING_SYSTEM_SPLIT.md
-├── OPERATING_SYSTEM_SPLIT.json
-└── UPSTREAM_SKILLS.md
-compat/                       # compatibility behavior and policy
-scripts/verify-plugin.sh      # canonical verification
+.codex-plugin/plugin.json
 ```
 
-`AGENTS.md` is a short, generated, always-loaded repository contract. It tells an agent to use the installed plugin, pstack when available, repository-local skills, and the relevant architecture path. The complete repository operating policy remains in `.agents/core/AGENT_RULES.md`.
+This Codex-specific manifest points to `./skills/` and contains no second copy
+of the skills. Current OpenAI documentation supports this overlay while also
+documenting the root portable manifest as the portable package entrypoint. See
+[OpenAI's plugin packaging guide](https://developers.openai.com/plugins/build/plugins).
 
-The distinction is intentional:
+A Codex `marketplace.json` is an installation and registry catalog, not the
+plugin package. This repository intentionally does not include
+`.agents/plugins/marketplace.json`; create or configure a separate marketplace
+only when a particular Codex installation requires one.
 
-- `skills/semantic-architecture/` describes how to construct and maintain architectural understanding.
-- `.agents/architecture/` records what this particular repository means.
-- `skills/code-quality/` contains the detailed reusable engineering quality bar.
-- `.agents/skills/` contains only constraints specific to this repository.
+### Claude Code
 
-Do not package `.agents/architecture/` into a plugin skill or store it in `${PLUGIN_DATA}`. Architectural intent belongs in source control with the host repository.
+```text
+.claude-plugin/plugin.json
+skills/
+```
 
-## Installation and setup
+Claude Code discovers `skills/` at the plugin root. Only the manifest belongs
+inside `.claude-plugin/`; reusable skills remain at the repository root. See
+[Claude Code's plugin documentation](https://code.claude.com/docs/en/plugins).
 
-Make the scripts executable once if needed:
+### Cursor
+
+Cursor supports the portable root `plugin.json` format. The committed
+`.cursor/rules/00-project-agents.mdc` is only a thin repository-instruction
+adapter. This package has no Cursor-specific agents, commands, hooks, or MCP
+servers, so it does not add a `.cursor-plugin/` manifest.
+
+See [Cursor's plugin documentation](https://cursor.com/docs/plugins) for its
+portable and Cursor-specific plugin formats.
+
+## Repository-local state
+
+The plugin package and the repository's own control plane are separate:
+
+```text
+AGENTS.md                         # always-loaded contract for this repository
+.agents/
+├── core/AGENT_RULES.md           # detailed operating policy
+├── architecture/                 # semantic model of this repository
+├── skills/                       # repository-specific skills only
+└── bootstrap.mjs                 # source for generated harness adapters
+```
+
+`skills/semantic-architecture/` explains how to maintain an architecture
+model. `.agents/architecture/` records what this repository means. A product
+repository consuming this system must supply its own `AGENTS.md`, architecture
+model, and project-specific skills; it must not copy this repository's model
+as if it described the product.
+
+The root `AGENTS.md` in this repository describes how to maintain the
+engineering system itself. It is not a universal replacement for a consuming
+project's repository contract.
+
+## Using this with a product repository
+
+Install or register this repository as a plugin in the agent runtime, then
+keep product-specific state in the product repository:
+
+```text
+my-product/
+├── AGENTS.md
+├── .agents/
+│   ├── architecture/
+│   │   └── system.md
+│   └── skills/
+│       └── product-specific-skill/
+└── src/
+```
+
+The product's contract should tell agents to use the installed
+`agent-engineering-system` skills, inspect the relevant product architecture
+path, and load product-specific skills when their triggers apply. During work,
+the agent combines:
+
+```text
+product AGENTS.md
+    + this plugin's code-quality and semantic-architecture skills
+    + product .agents/architecture/
+    + product .agents/skills/
+    + pstack, when separately installed
+```
+
+When a change alters product responsibilities, ownership, boundaries, or
+invariants, update the product's `.agents/architecture/` model—not this
+plugin's architecture state.
+
+## Native installation and testing
+
+The installation command is runtime-specific. Use native plugin loading rather
+than copying skills into `.claude/skills/` or `.cursor/skills/`.
+
+### Claude Code
+
+Test a local checkout directly:
 
 ```bash
-chmod +x setup.sh scripts/*.sh
+claude --plugin-dir /path/to/agent-starter
 ```
 
-For a local setup with no network access:
+The skills are then namespaced by the plugin, for example
+`/agent-engineering-system:code-quality`. For team or community distribution,
+publish or add the plugin through a Claude Code marketplace. See [Claude Code's
+plugin sharing guidance](https://code.claude.com/docs/en/plugins#share-your-plugins).
+
+### Codex
+
+Use the Codex plugin directory or marketplace flow appropriate to the Codex
+surface you use. For local/repository distribution, the marketplace is a
+separate catalog that points at this plugin repository; it is not added here
+automatically. See [OpenAI's local plugin installation
+guidance](https://developers.openai.com/plugins/build/plugins#install-a-local-plugin-manually).
+
+### Cursor
+
+Install the repository through Cursor's Plugins/Customize surface. Cursor can
+load the portable root Agent Plugins package directly; no `.cursor/skills/`
+copy is needed for current Cursor versions.
+
+## Setup script
+
+`setup.sh` is repository initialization and dependency orchestration. It does
+not replace native plugin installation in a consuming project.
+
+Run without network access to regenerate adapters and verify the package:
 
 ```bash
 ./setup.sh --local-only
 ```
 
-This regenerates `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `.cursor/rules/00-project-agents.mdc`, then verifies the plugin.
-
-Native Agent Plugins clients should load this repository directly as a plugin. For a client that cannot load Agent Plugins 1.0 yet, explicitly generate compatibility copies:
-
-```bash
-./setup.sh --local-only --compat
-```
-
-The compatibility command derives `.cursor/skills/` and `.claude/skills/` from the canonical plugin and host skill trees. These directories are ignored runtime outputs; do not edit or commit them.
-
-A full setup additionally installs separate upstream workflow dependencies:
+Run full setup to install separate upstream workflow dependencies:
 
 ```bash
 ./setup.sh
 ```
 
-Optional flags:
+The optional `--compat` flag is retained only for older or non-plugin clients.
+It creates ignored, generated copies under `.cursor/skills/` and
+`.claude/skills/`; those are legacy outputs, never canonical sources:
 
-- `--compat` — generate transitional Cursor/Claude skill copies.
-- `--local-only` — skip all network-backed dependency installation.
-- `--skip-pstack` — do not install official pstack.
-- `--skip-cross-runtime-pstack` — do not install the cross-runtime pstack supplement.
-- `--skip-matt` — do not install selected Matt Pocock skills.
+```bash
+./setup.sh --local-only --compat
+```
 
-The `PSTACK_REF`, `PSTACK_CROSS_REF`, and `MATT_REF` environment variables select upstream refs. Setup records resolved commits in `.agent-deps.lock`; vendored checkouts live under the ignored `.agent-vendor/` directory.
+Never edit compatibility copies. Rerun setup after changing canonical skills.
 
-## Upstream workflow separation
+Useful flags:
 
-pstack remains the primary process/orchestration layer when installed. It is not silently folded into this plugin:
+- `--compat` — generate explicit legacy compatibility copies.
+- `--local-only` — skip network-backed dependency installation.
+- `--skip-pstack` — skip the official pstack installation.
+- `--skip-cross-runtime-pstack` — skip the cross-runtime pstack supplement.
+- `--skip-matt` — skip selected Matt Pocock skills.
+
+`PSTACK_REF`, `PSTACK_CROSS_REF`, and `MATT_REF` pin upstream refs. Full setup
+records resolved commits in `.agent-deps.lock` and keeps source checkouts under
+the ignored `.agent-vendor/` directory.
+
+## Upstream workflow dependencies
+
+pstack is not bundled into this plugin. It is the preferred process and
+orchestration layer when installed:
 
 ```text
 pstack
-  → process, orchestration, TDD, verification, review, proof
+  → workflow, TDD, verification, adversarial review, and proof
 
-this plugin
-  ├── code-quality
-  └── semantic-architecture
+agent-engineering-system
+  → code-quality and semantic-architecture
 
-host repository
-  ├── AGENTS.md and .agents/core/
-  ├── .agents/architecture/
-  └── .agents/skills/
+host project
+  → policy, architecture state, and product constraints
 ```
 
-Selected Matt Pocock skills remain upstream dependencies. Their exact source and selected names are documented in [`docs/UPSTREAM_SKILLS.md`](docs/UPSTREAM_SKILLS.md); setup records the resolved commit rather than turning their content into plugin-owned source.
+The official Cursor pstack plugin is installed separately by `setup.sh` when
+enabled. Selected pstack skills are staged into host discovery paths without
+becoming canonical root skills.
 
-## Editing workflow
+The cross-runtime [pstack-claude repository](https://github.com/michael-denyer/pstack-claude)
+ships a native Claude Code plugin at `plugins/pstack/`. Install that separately
+in Claude Code when needed:
 
-Change the canonical source for the kind of behavior you are changing:
+```text
+/plugin marketplace add michael-denyer/pstack-claude
+/plugin install pstack@pstack-claude
+```
 
-1. Reusable engineering guidance: edit `skills/<skill-name>/SKILL.md`. Keep skill frontmatter `name` equal to the directory name.
-2. Repository-wide agent policy: edit `.agents/core/AGENT_RULES.md` and update the generated contract source in `.agents/bootstrap.mjs` when its short entrypoint needs to change.
-3. Repository-specific skill: add or edit `.agents/skills/<skill-name>/SKILL.md`.
-4. Repository architectural intent: update the relevant path under `.agents/architecture/`.
-5. Compatibility or verification behavior: edit `setup.sh`, `compat/`, or `scripts/verify-plugin.sh`.
+Its shared skills may still be staged for runtimes that use shared Agent Skills
+directories, but this repository's setup no longer copies them into
+`.claude/skills/`.
 
-Regenerate the adapters after changing policy or generator behavior:
+Selected [Matt Pocock skills](https://github.com/mattpocock/skills) remain
+upstream specialist dependencies. Setup stages the selected, pinned skills
+under `.agents/skills/`; it does not copy them into canonical root `skills/` or
+claim ownership of their content. Their provenance and selected names are in
+[`docs/UPSTREAM_SKILLS.md`](docs/UPSTREAM_SKILLS.md).
+
+## Editing rules
+
+Edit the source that owns the behavior:
+
+1. Reusable engineering behavior: `skills/<skill-name>/SKILL.md`.
+2. Repository operating policy: `.agents/core/AGENT_RULES.md` and
+   `.agents/bootstrap.mjs` when generated wording changes.
+3. Repository-specific behavior: `.agents/skills/<skill-name>/SKILL.md`.
+4. This repository's architecture: `.agents/architecture/`.
+5. Packaging, setup, or checks: the manifests, `setup.sh`, `compat/`, or
+   `scripts/verify-plugin.sh`.
+
+Do not maintain harness-specific copies of reusable skills. Update the
+generator, then regenerate generated adapters:
 
 ```bash
 node .agents/bootstrap.mjs
 ```
 
-Never hand-edit generated root adapters or compatibility skill copies.
-
 ## Verification
 
-Run the canonical check:
+The canonical local check is:
 
 ```bash
 ./scripts/verify-plugin.sh
 ```
 
-It verifies:
+It checks:
 
-- `plugin.json` uses the Agent Plugins 1.0 schema and supported manifest fields;
-- portable skills have `SKILL.md` frontmatter whose names match their directories;
-- reusable and host skill names do not collide;
-- generated adapters are current;
-- the host architecture root exists;
-- marked compatibility outputs match canonical sources;
-- the lossless operating-system mapping still accounts for all 82 numbered sections.
+- portable Agent Plugins metadata;
+- Codex and Claude manifest identity and root skill discovery;
+- canonical skill frontmatter and directory names;
+- absence of tracked duplicate reusable skills;
+- separation of plugin and project-specific skill names;
+- current generated adapters;
+- repository-local architecture state;
+- legacy compatibility outputs when explicitly marked;
+- exact coverage of all 82 numbered operating-system sections.
 
-`scripts/verify-agent-setup.sh` remains a compatibility alias for the canonical verifier.
-
-The verifier performs local structural validation of the published schema contract. A network connection is not required for normal verification.
-
-## Versioning
-
-The plugin follows semantic versioning in `plugin.json` and release notes in [`CHANGELOG.md`](CHANGELOG.md):
-
-- PATCH for clarifications and non-semantic fixes;
-- MINOR for new compatible skills or capabilities;
-- MAJOR for incompatible skill expectations or package-layout changes.
-
-Do not place plugin release history in `.agents/architecture/`; that model describes the current host system, not plugin versions.
+Verification is deterministic and does not require network access.
 
 ## Lossless operating-system split
 
@@ -165,10 +299,14 @@ The original 82 numbered operating-system sections remain losslessly mapped:
 
 - repository operating behavior: `.agents/core/AGENT_RULES.md`;
 - reusable engineering/design quality: `skills/code-quality/SKILL.md`;
-- audit mapping: [`docs/OPERATING_SYSTEM_SPLIT.md`](docs/OPERATING_SYSTEM_SPLIT.md) and [`docs/OPERATING_SYSTEM_SPLIT.json`](docs/OPERATING_SYSTEM_SPLIT.json).
+- audit mapping: [`docs/OPERATING_SYSTEM_SPLIT.md`](docs/OPERATING_SYSTEM_SPLIT.md)
+  and [`docs/OPERATING_SYSTEM_SPLIT.json`](docs/OPERATING_SYSTEM_SPLIT.json).
 
-Do not silently compress or duplicate those rules when evolving the package.
+Do not compress, summarize, reorganize, or duplicate those rules as part of a
+packaging change.
 
-## License
+## Versioning and license
 
-MIT. See [`LICENSE`](LICENSE).
+The portable plugin version is maintained in `plugin.json` using semantic
+versioning. Release notes are in [`CHANGELOG.md`](CHANGELOG.md). The project is
+MIT licensed; see [`LICENSE`](LICENSE).

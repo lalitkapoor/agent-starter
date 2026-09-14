@@ -820,31 +820,31 @@ Repeat until the requested behavior is actually complete.
 
 # 82. Project-Specific Section
 
-This repository is the reusable Agent Plugins 1.0 engineering package.
+This repository is the reusable multi-harness engineering system.
 
 ## Project Architecture
 
 - Runtime: Node.js bootstrap plus POSIX shell setup and verification scripts.
-- Package format: Agent Plugins 1.0 with root `plugin.json` and portable `skills/`.
+- Package formats: root Agent Plugins 1.0 `plugin.json`, Codex `.codex-plugin/plugin.json`, and Claude `.claude-plugin/plugin.json`, all exposing root `skills/`.
 - Persistent architecture: `.agents/architecture/`.
 - Repository-specific skills: `.agents/skills/`.
 
 ## Canonical Commands
 
 - Setup without network: `./setup.sh --local-only`.
-- Compatibility generation: `./setup.sh --local-only --compat`.
+- Legacy compatibility generation: `./setup.sh --local-only --compat` only when a client cannot load the native package.
 - Verification: `./scripts/verify-plugin.sh`.
 
 ## Architectural Invariants
 
 - Root `skills/` is the only canonical copy of reusable plugin skills.
-- Compatibility directories are generated only when `--compat` is requested.
+- Compatibility directories are generated only when explicit legacy `--compat` is requested.
 - pstack and selected upstream skills remain separate setup dependencies.
 - Architecture state stays in the host repository and is not stored in plugin data.
 
 ## Known External Constraints
 
-- Agent Plugins 1.0 discovers portable skills from fixed locations; client-specific components require a namespace such as `com.github.copilot/`.
+- Portable Agent Plugins discovers skills from root `skills/`; Codex and Claude Code also have harness-specific plugin manifests that wrap the same root.
 - Consuming repositories must supply their own `AGENTS.md`, architecture model, and project-specific skills.
 
 ---
