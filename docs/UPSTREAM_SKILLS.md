@@ -1,6 +1,6 @@
 # Curated Upstream Dependencies
 
-This repository is a catalog and installer. It owns the selection and pinned
+This repository is a catalog and installer. It owns the selection and declared
 installation routes below; it does not own the upstream plugin or skill source
 code.
 
@@ -39,7 +39,7 @@ Cross-runtime supplement:
 
 The upstream repository includes a native Claude Code plugin at
 `plugins/pstack/.claude-plugin/plugin.json` and a Codex plugin overlay. The
-catalog pins the upstream revision and installs the plugin through its native
+catalog follows its `main` ref and installs the plugin through its native
 marketplace entry:
 
 ```text
@@ -47,8 +47,8 @@ marketplace entry:
 /plugin install pstack@pstack-claude
 ```
 
-For Cursor, the installer fetches the pinned `pstack` plugin from
-`cursor/plugins` into Cursor's local plugin directory. No pstack files are
+For Cursor, the installer fetches the `pstack` plugin from the declared `main`
+ref in `cursor/plugins` into Cursor's local plugin directory. No pstack files are
 copied into the maintained engineering plugin.
 
 ## Matt Pocock skills
@@ -85,10 +85,15 @@ canonical ownership.
 ## Updating dependencies
 
 1. inspect upstream changes,
-2. update the pinned source and SHA in `catalog.json`,
+2. update the upstream repository/ref, source route, or selected skills in `catalog.json`,
 3. regenerate with `node .agents/bootstrap.mjs`,
 4. ensure upstream instructions do not conflict with the consuming project's `AGENTS.md`,
 5. run `scripts/verify-catalog.sh`.
+
+Upstream dependencies intentionally use declared refs such as `main` rather
+than commit SHA pins. A later installation may therefore receive newer
+upstream changes. This catalog curates which upstream offerings are installed;
+it is not a lockfile and does not vendor their source.
 
 
 ## code-quality

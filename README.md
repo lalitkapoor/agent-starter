@@ -124,8 +124,13 @@ engineering artifacts.
 ## Catalog and installation model
 
 `catalog.json` is the single maintained list. It records whether an offering is
-maintained here or upstream, its pinned source revision, and the installation
+maintained here or upstream, its declared source/ref, and the installation
 route for each supported runtime.
+
+Upstream offerings intentionally follow declared refs such as `main`; they are
+not commit-pinned and are not vendored into this repository. Installing later
+may therefore receive newer upstream changes. The catalog is a curated
+selection, not a lockfile.
 
 ```text
                          catalog.json
@@ -179,8 +184,9 @@ The catalog routes it as follows:
 - Claude Code and Codex use the pstack plugin from `michael-denyer/pstack-claude`.
 - Cursor uses the official pstack plugin from `cursor/plugins`.
 
-The catalog pins the upstream commits. `setup.sh` installs or fetches those
-plugins; it never copies them into `plugins/agent-engineering-system/`.
+The catalog follows the declared upstream refs when installing. `setup.sh`
+installs or fetches those plugins; it never copies them into
+`plugins/agent-engineering-system/`.
 
 ### Upstream: Matt Pocock's skills
 
@@ -316,7 +322,7 @@ Repeat the command for the other selected names, or let `setup.sh` do it.
 
 Cursor's local plugin route uses the plugin directory under the user's Cursor
 configuration. `setup.sh` copies the maintained plugin there from the checkout
-and fetches the pinned official pstack plugin. For Matt Pocock's skill-only
+and fetches the official pstack plugin from its declared ref. For Matt Pocock's skill-only
 entries it uses `npx skills` with `--agent cursor`.
 
 If you are testing only the maintained plugin locally:
@@ -391,7 +397,7 @@ When adding or changing a maintained plugin:
 When updating an upstream dependency:
 
 1. inspect the upstream repository and its current native packaging;
-2. update its source and pinned SHA in `catalog.json`;
+2. update its repository/ref and installation route in `catalog.json`;
 3. regenerate the derived views;
 4. update [`docs/UPSTREAM_SKILLS.md`](docs/UPSTREAM_SKILLS.md) if the route or selected set changes;
 5. verify that no upstream files were copied into the maintained plugin.

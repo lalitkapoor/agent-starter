@@ -26,7 +26,7 @@ SUBSYSTEM: Curated catalog
 
 RESPONSIBILITIES:
   - List maintained plugins and selected upstream dependencies.
-  - Record ownership, provenance, pinned revisions, and runtime installation routes.
+  - Record ownership, provenance, upstream refs, and runtime installation routes.
   - Provide one input from which native catalog views can be generated.
 
 MODEL:
@@ -128,6 +128,12 @@ INVARIANT: UPSTREAM_CONTENT_REMAINS_EXTERNAL
 STATEMENT:
   pstack and Matt Pocock skills remain upstream dependencies. This repository
   records how to install them but does not copy them into its maintained plugin.
+
+INVARIANT: UPSTREAM_DEPENDENCIES_ARE_NOT_COMMIT_PINNED
+
+STATEMENT:
+  The catalog records upstream repositories and declared refs such as `main`,
+  but does not lock offerings to commit SHAs or vendor their source.
 
 INVARIANT: PROJECT_STATE_IS_HOST_OWNED
 
@@ -237,6 +243,28 @@ CONSEQUENCES:
 
 SOURCE:
   user-discussed and external-documentation
+
+DECISION: UPSTREAM_DEPENDENCIES_USE_DECLARED_REFS
+
+STATUS:
+  accepted
+
+DECISION:
+  Follow the repository/ref declared for each upstream offering rather than
+  storing a commit SHA in the catalog.
+
+WHY:
+  The catalog is a curated selection and installation policy, not a lockfile.
+  Upstream projects remain responsible for their own releases, and the user
+  wants installations to follow those upstream refs.
+
+CONSEQUENCES:
+  - A later installation can receive newer upstream changes.
+  - Verification rejects accidental SHA pins.
+  - Reproducibility would require a separate, explicit lockfile policy later.
+
+SOURCE:
+  user-request
 
 DECISION: NATIVE_INSTALLATION_WITH_SKILL_FALLBACK
 

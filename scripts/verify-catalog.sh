@@ -169,6 +169,12 @@ for tracked_file in tracked_files:
 for entry in catalog["plugins"]:
     if entry["ownership"] not in {"maintained", "upstream"}:
         raise SystemExit(f"invalid ownership for catalog entry: {entry['name']}")
+    if entry["ownership"] == "upstream":
+        provenance = entry.get("provenance")
+        if not isinstance(provenance, dict) or not provenance.get("repository") or not provenance.get("ref"):
+            raise SystemExit(f"upstream dependency {entry['name']} must declare a repository and ref")
+        if "sha" in provenance:
+            raise SystemExit(f"upstream dependency {entry['name']} must not be commit-pinned")
     for runtime in ("claude", "codex", "cursor"):
         definition = entry.get("runtimes", {}).get(runtime)
         if not definition:
@@ -176,8 +182,12 @@ for entry in catalog["plugins"]:
         if definition.get("kind") == "plugin":
             source = definition.get("source")
             if entry["ownership"] == "upstream":
-                if not isinstance(source, dict) or not source.get("sha"):
-                    raise SystemExit(f"upstream plugin {entry['name']} must have a pinned SHA for {runtime}")
+                if not isinstance(source, dict) or not source.get("source"):
+                    raise SystemExit(f"upstream plugin {entry['name']} must declare an external source for {runtime}")
+                if "sha" in source:
+                    raise SystemExit(f"upstream dependency {entry['name']} must not be commit-pinned for {runtime}")
+                if source.get("source") in {"github", "git-subdir"} and not source.get("ref"):
+                    raise SystemExit(f"upstream plugin {entry['name']} must declare a ref for {runtime}")
         elif definition.get("kind") == "skills":
             if not definition.get("source") or not definition.get("agent") or not definition.get("skills"):
                 raise SystemExit(f"skill-only route for {entry['name']} is incomplete for {runtime}")

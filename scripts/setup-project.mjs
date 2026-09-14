@@ -185,15 +185,17 @@ function installCodex() {
 }
 
 function installGitSubdir(source, destination) {
+  if (!source.ref) throw new Error(`git-subdir source for ${destination} must declare a ref`);
+
   if (dryRun) {
-    console.log(`DRY RUN: clone ${source.url} at ${source.sha ?? source.ref} and copy ${source.path} -> ${destination}`);
+    console.log(`DRY RUN: clone ${source.url} at ${source.ref} and copy ${source.path} -> ${destination}`);
     return;
   }
 
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), "agent-starter-plugin-"));
   try {
     run("git", ["clone", "--quiet", source.url, temporary], root);
-    run("git", ["-C", temporary, "checkout", "--quiet", source.sha ?? source.ref], root);
+    run("git", ["-C", temporary, "checkout", "--quiet", source.ref], root);
     copyDirectory(path.join(temporary, source.path), destination);
   } finally {
     fs.rmSync(temporary, { recursive: true, force: true });

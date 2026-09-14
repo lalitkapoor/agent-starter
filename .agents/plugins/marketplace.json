@@ -24,8 +24,7 @@
         "source": "git-subdir",
         "url": "https://github.com/michael-denyer/pstack-claude.git",
         "path": "plugins/pstack",
-        "ref": "main",
-        "sha": "45f768349a6d7d7e71509fee3f5bccfad54b3bad"
+        "ref": "main"
       },
       "description": "A structured engineering workflow for planning, TDD, verification, review, and proof",
       "category": "Workflow",

@@ -39,8 +39,7 @@
       "category": "Workflow",
       "provenance": {
         "repository": "https://github.com/michael-denyer/pstack-claude",
-        "ref": "main",
-        "sha": "45f768349a6d7d7e71509fee3f5bccfad54b3bad"
+        "ref": "main"
       },
       "runtimes": {
         "claude": {
@@ -49,8 +48,7 @@
             "source": "git-subdir",
             "url": "https://github.com/michael-denyer/pstack-claude.git",
             "path": "plugins/pstack",
-            "ref": "main",
-            "sha": "45f768349a6d7d7e71509fee3f5bccfad54b3bad"
+            "ref": "main"
           }
         },
         "codex": {
@@ -59,8 +57,7 @@
             "source": "git-subdir",
             "url": "https://github.com/michael-denyer/pstack-claude.git",
             "path": "plugins/pstack",
-            "ref": "main",
-            "sha": "45f768349a6d7d7e71509fee3f5bccfad54b3bad"
+            "ref": "main"
           }
         },
         "cursor": {
@@ -69,8 +66,7 @@
             "source": "git-subdir",
             "url": "https://github.com/cursor/plugins.git",
             "path": "pstack",
-            "ref": "main",
-            "sha": "5bf2b1544db739998121a306340631963c2ff3de"
+            "ref": "main"
           }
         }
       }
@@ -82,8 +78,7 @@
       "category": "Specialist skills",
       "provenance": {
         "repository": "https://github.com/mattpocock/skills",
-        "ref": "main",
-        "sha": "3cca18b368ae95cdbdebbff572ccafa662551015"
+        "ref": "main"
       },
       "runtimes": {
         "claude": {
@@ -91,8 +86,7 @@
           "source": {
             "source": "github",
             "repo": "mattpocock/skills",
-            "ref": "main",
-            "sha": "3cca18b368ae95cdbdebbff572ccafa662551015"
+            "ref": "main"
           }
         },
         "codex": {
