@@ -1,0 +1,10 @@
+{
+  "name": "agent-engineering-system",
+  "version": "0.2.0",
+  "description": "Engineering quality, semantic architecture, technical communication, and workflow guidance for autonomous coding agents",
+  "author": {
+    "name": "Lalit Kapoor",
+    "email": "lalitkapoor@gmail.com"
+  },
+  "skills": "./skills/"
+}

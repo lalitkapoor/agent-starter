@@ -36,7 +36,7 @@ Original numbered sections: 82
 - 81. Default Working Loop
 - 82. Project-Specific Section
 
-## `skills/code-quality/SKILL.md`
+## `plugins/agent-engineering-system/skills/code-quality/SKILL.md`
 
 - 5. Model the Domain Before the Framework
 - 6. Build Deep Modules
@@ -95,3 +95,8 @@ Original numbered sections: 82
 The original preamble/reward model and final principle live in `.agents/core/AGENT_RULES.md`.
 
 The original numbering is preserved inside the moved section text so the split can be audited.
+
+`plugins/agent-engineering-system/skills/technical-communication/SKILL.md` is
+new additive guidance for engineering writing. It is not a relocation of one
+of the 82 original numbered sections and therefore is intentionally absent
+from this lossless split.

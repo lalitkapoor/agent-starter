@@ -1,12 +1,16 @@
 # Changelog
 
-All notable changes to the reusable engineering plugin are recorded here.
+All notable changes to the curated catalog, installer, and maintained
+engineering plugin are recorded here.
 
 ## [Unreleased]
 
-- Add Codex and Claude Code native manifest overlays around the canonical root `skills/` tree.
-- Make `.claude/skills/` generation explicitly legacy-only and stop copying the native Claude pstack dependency there.
-- Document native multi-harness installation and keep Codex marketplace metadata as a separate concern.
+- Make the repository root a curated catalog and installer with `catalog.json`.
+- Move the maintained plugin and its canonical skill tree under `plugins/agent-engineering-system/`.
+- Add the `technical-communication` skill for comments, commits, pull requests, documentation, RFCs, diagrams, and specifications.
+- Generate Claude and Codex marketplace views from the catalog.
+- Install pstack and selected Matt Pocock skills as separate upstream offerings.
+- Make skill-only compatibility an explicit fallback rather than the normal installation path.
 
 ## [0.1.0] - 2026-09-12
 

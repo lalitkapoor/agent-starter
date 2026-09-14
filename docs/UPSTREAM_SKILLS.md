@@ -1,18 +1,27 @@
-# Upstream Agent Workflow Dependencies
+# Curated Upstream Dependencies
 
-Project-owned policy and architecture state live in `.agents/`.
-Project-owned skills live under `.agents/skills/`.
-Reusable engineering skills are published from the plugin root under `skills/`.
+This repository is a catalog and installer. It owns the selection and pinned
+installation routes below; it does not own the upstream plugin or skill source
+code.
 
-Upstream skills supplement the repository; they do not become the source of truth for product behavior or architectural intent.
+The maintained engineering plugin is under
+`plugins/agent-engineering-system/`. Its canonical skills are
+`code-quality`, `semantic-architecture`, and `technical-communication`.
+
+Project-owned policy and architecture state live in the consuming project.
+Project-specific skills live under that project's `.agents/skills/`.
+
+Upstream offerings supplement the maintained plugin; they do not become the
+source of truth for product behavior or architectural intent.
 
 ## Precedence
 
 1. **pstack** — primary workflow/orchestration for non-trivial engineering work.
 2. **code-quality** — repository-owned detailed engineering quality bar.
-3. **Project-owned skills** — project/platform/product-specific behavior.
-4. **semantic-architecture** — persistent hierarchical system modeling.
-5. **Selected Matt Pocock skills** — specialist design, diagnosis, research, review, and agent-writing references.
+3. **technical-communication** — repository-owned standard for clear engineering writing.
+4. **Project-owned skills** — project/platform/product-specific behavior.
+5. **semantic-architecture** — persistent hierarchical system modeling.
+6. **Selected Matt Pocock skills** — specialist design, diagnosis, research, review, and agent-writing references.
 
 When skills overlap, do not mechanically execute both workflows. pstack owns process choices such as architecture workflow, TDD, verification, adversarial review, and proof.
 
@@ -21,27 +30,26 @@ When skills overlap, do not mechanically execute both workflows. pstack owns pro
 Official source:
 `https://github.com/cursor/plugins/tree/main/pstack`
 
-The setup installs the complete official pstack Cursor plugin for Cursor and
-exposes official pstack skill directories to project-local discovery when
-possible. It does not fold pstack into this repository's root `skills/` tree.
+`catalog.json` selects the official pstack plugin for each supported runtime.
+`setup.sh` installs it through the native route where one exists. It does not
+fold pstack into `plugins/agent-engineering-system/`.
 
 Cross-runtime supplement:
 `https://github.com/michael-denyer/pstack-claude`
 
-This repository includes a native Claude Code plugin at
-`plugins/pstack/.claude-plugin/plugin.json` and a shared skill tree for Codex,
-Gemini, and other runtimes. Install the Claude plugin through Claude Code when
-Claude should use the native workflow:
+The upstream repository includes a native Claude Code plugin at
+`plugins/pstack/.claude-plugin/plugin.json` and a Codex plugin overlay. The
+catalog pins the upstream revision and installs the plugin through its native
+marketplace entry:
 
 ```text
 /plugin marketplace add michael-denyer/pstack-claude
 /plugin install pstack@pstack-claude
 ```
 
-`setup.sh` clones this repository to pin and stage shared skills, but no longer
-copies its skills into this repository's `.claude/skills/`. The native Claude
-plugin is a separate upstream dependency. The supplement only fills skill
-names absent from official pstack when staging shared skills.
+For Cursor, the installer fetches the pinned `pstack` plugin from
+`cursor/plugins` into Cursor's local plugin directory. No pstack files are
+copied into the maintained engineering plugin.
 
 ## Matt Pocock skills
 
@@ -61,20 +69,26 @@ Selected:
 
 Do not install overlapping Matt workflow skills such as TDD as the primary workflow because pstack owns that role.
 
-## Project-owned skills
+Claude Code can install the upstream `mattpocock-skills` plugin through the
+catalog's Claude marketplace entry. Codex and Cursor use the skill-only
+`npx skills` route for the selected names. In neither case are those skills
+copied into `plugins/agent-engineering-system/`.
 
-Canonical project-specific copies live under `.agents/skills/`.
-`setup.sh --compat` can copy them, together with plugin skills from `skills/`,
-into runtime-specific discovery directories for legacy clients only. Native
-plugin clients load the root `skills/` directory directly.
+## Skill-only compatibility
+
+`npx skills` installs skill files, not full plugin components. The installer
+uses it for the selected Matt Pocock skills on runtimes without a native
+plugin route. Pass `--compat` only when a runtime cannot load the maintained
+plugin natively; this creates generated runtime skill copies and never changes
+canonical ownership.
 
 ## Updating dependencies
 
 1. inspect upstream changes,
-2. rerun setup,
-3. review `.agent-deps.lock`,
-4. ensure upstream instructions do not conflict with `AGENTS.md`,
-5. run `scripts/verify-plugin.sh`.
+2. update the pinned source and SHA in `catalog.json`,
+3. regenerate with `node .agents/bootstrap.mjs`,
+4. ensure upstream instructions do not conflict with the consuming project's `AGENTS.md`,
+5. run `scripts/verify-catalog.sh`.
 
 
 ## code-quality
@@ -82,9 +96,21 @@ plugin clients load the root `skills/` directory directly.
 Canonical source:
 
 ```text
-skills/code-quality/SKILL.md
+plugins/agent-engineering-system/skills/code-quality/SKILL.md
 ```
 
 This is the reusable engineering operating system for non-trivial implementation and review work. It intentionally contains the detailed rules that would be too large and noisy for the always-loaded `AGENTS.md`.
 
 It should be used together with pstack, not instead of pstack.
+
+## technical-communication
+
+Canonical source:
+
+```text
+plugins/agent-engineering-system/skills/technical-communication/SKILL.md
+```
+
+Use it for comments, commit messages, pull requests, technical documentation,
+RFCs, architecture diagrams, technical specifications, and handoffs. It is
+maintained by this repository and is installed with the engineering plugin.

@@ -5,8 +5,8 @@ This file is the canonical always-loaded operating contract for autonomous codin
 It contains repository-wide agent behavior, instruction precedence, anti-reward-hacking rules,
 verification/completion discipline, repository hygiene, handoff rules, and skill triggers.
 
-Detailed engineering/design rules live in the reusable plugin skill `skills/code-quality/SKILL.md`.
-Persistent architecture workflow lives in the reusable plugin skill `skills/semantic-architecture/SKILL.md`.
+Detailed engineering/design rules live in the reusable plugin skill `plugins/agent-engineering-system/skills/code-quality/SKILL.md`.
+Persistent architecture workflow lives in the reusable plugin skill `plugins/agent-engineering-system/skills/semantic-architecture/SKILL.md`.
 
 ---
 
@@ -51,16 +51,18 @@ When tradeoffs exist, prefer:
 
 For every non-trivial engineering task:
 
-1. Read the reusable plugin's `skills/code-quality/SKILL.md` completely before substantial implementation.
+1. Read the reusable plugin's `plugins/agent-engineering-system/skills/code-quality/SKILL.md` completely before substantial implementation.
 2. Do not rely on memory, a previous session, or a partial excerpt of that skill.
 3. Apply the subset of quality rules relevant to the task.
-4. If architectural intent or system semantics may change, also read the reusable plugin's `skills/semantic-architecture/SKILL.md`.
+4. If architectural intent or system semantics may change, also read the reusable plugin's `plugins/agent-engineering-system/skills/semantic-architecture/SKILL.md`.
 5. If pstack is available, use it as the primary engineering workflow/orchestration layer.
 6. Load any project-specific skill whose trigger applies.
+7. For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read `plugins/agent-engineering-system/skills/technical-communication/SKILL.md` completely before drafting.
 
 `AGENT_RULES.md` governs agent behavior.
 `code-quality` governs engineering/design quality.
 `semantic-architecture` governs persistent semantic system modeling.
+`technical-communication` governs engineering writing and explanatory artifacts.
 
 ---
 
@@ -820,31 +822,36 @@ Repeat until the requested behavior is actually complete.
 
 # 82. Project-Specific Section
 
-This repository is the reusable multi-harness engineering system.
+This repository is the curated multi-harness plugin catalog and installer.
 
 ## Project Architecture
 
-- Runtime: Node.js bootstrap plus POSIX shell setup and verification scripts.
-- Package formats: root Agent Plugins 1.0 `plugin.json`, Codex `.codex-plugin/plugin.json`, and Claude `.claude-plugin/plugin.json`, all exposing root `skills/`.
+- Runtime: Node.js catalog/bootstrap helpers plus POSIX shell setup and verification scripts.
+- Catalog: `catalog.json`, with generated Claude `.claude-plugin/marketplace.json` and Codex `.agents/plugins/marketplace.json` views.
+- Maintained plugin: `plugins/agent-engineering-system/`, containing the canonical `code-quality`, `semantic-architecture`, and `technical-communication` skills.
 - Persistent architecture: `.agents/architecture/`.
 - Repository-specific skills: `.agents/skills/`.
 
 ## Canonical Commands
 
-- Setup without network: `./setup.sh --local-only`.
-- Legacy compatibility generation: `./setup.sh --local-only --compat` only when a client cannot load the native package.
-- Verification: `./scripts/verify-plugin.sh`.
+- Regenerate catalog views and adapters: `node .agents/bootstrap.mjs`.
+- Verify: `./scripts/verify-catalog.sh` (the old `./scripts/verify-plugin.sh` name remains an alias).
+- Install into a consuming project: `./setup.sh --project /absolute/path/to/project --harness claude,codex,cursor`.
+- Legacy skill-only compatibility: add `--compat` only when a client cannot load a native plugin.
 
 ## Architectural Invariants
 
-- Root `skills/` is the only canonical copy of reusable plugin skills.
-- Compatibility directories are generated only when explicit legacy `--compat` is requested.
-- pstack and selected upstream skills remain separate setup dependencies.
-- Architecture state stays in the host repository and is not stored in plugin data.
+- `catalog.json` is the canonical curated list; generated marketplace files are derived views.
+- Maintained reusable skills have one canonical copy under `plugins/agent-engineering-system/skills/`.
+- `.agents/skills/` is for skills specific to maintaining this catalog, not copies of maintained or upstream skills.
+- pstack and selected upstream skills remain separate catalog dependencies; their source is never copied into the maintained plugin.
+- A consuming project's architecture state stays in that host repository and is not stored in plugin data.
+- `technical-communication` is required for comments, commit messages, PRs, technical documentation, RFCs, architecture diagrams, and technical specifications.
 
 ## Known External Constraints
 
-- Portable Agent Plugins discovers skills from root `skills/`; Codex and Claude Code also have harness-specific plugin manifests that wrap the same root.
+- Portable, Codex-native, and Claude-native plugin metadata differs by harness; all views for the maintained plugin point to the same nested package and skill files.
+- `npx skills` installs skill files, not full plugin components; it is a fallback for upstream skill-only offerings or explicit legacy compatibility.
 - Consuming repositories must supply their own `AGENTS.md`, architecture model, and project-specific skills.
 
 ---
