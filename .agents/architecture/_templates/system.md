@@ -11,6 +11,9 @@ Scope:
 ## Relationships
 ## Sources of truth
 ## Invariants
+
+<!-- Use a numbered heading and bulleted fields for each invariant. -->
+
 ## Boundaries and ownership
 ## Requirements and budgets
 ## Decisions

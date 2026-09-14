@@ -841,12 +841,22 @@ This repository is the curated multi-harness plugin catalog and installer.
 
 ## Architectural Invariants
 
-- `catalog.json` is the canonical curated list; generated marketplace files are derived views.
-- Maintained reusable skills have one canonical copy under `plugins/agent-engineering-system/skills/`.
-- `.agents/skills/` is for skills specific to maintaining this catalog, not copies of maintained or upstream skills.
-- pstack and selected upstream skills remain separate catalog dependencies; their source is never copied into the maintained plugin.
-- A consuming project's architecture state stays in that host repository and is not stored in plugin data.
-- `technical-communication` is required for comments, commit messages, PRs, technical documentation, RFCs, architecture diagrams, and technical specifications.
+1. **Catalog source of truth** — `catalog.json` is the canonical curated list;
+   generated marketplace files are derived views.
+2. **One canonical maintained skill tree** — maintained reusable skills have one
+   canonical copy under `plugins/agent-engineering-system/skills/`.
+3. **Project-specific skills stay local** — `.agents/skills/` is for skills
+   specific to maintaining this catalog, not copies of maintained or upstream
+   skills.
+4. **Upstream content stays external** — pstack and selected upstream skills
+   remain separate catalog dependencies; their source is never copied into the
+   maintained plugin.
+5. **Project architecture stays with the project** — a consuming project's
+   architecture state stays in that host repository and is not stored in plugin
+   data.
+6. **Technical communication is required** — `technical-communication` applies
+   to comments, commit messages, PRs, technical documentation, RFCs,
+   architecture diagrams, and technical specifications.
 
 ## Known External Constraints
 
