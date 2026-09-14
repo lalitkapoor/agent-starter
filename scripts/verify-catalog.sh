@@ -253,6 +253,18 @@ for relative in (
     if heading_numbers != list(range(1, len(heading_numbers) + 1)):
         raise SystemExit(f"{relative} headings must be contiguous from 1")
 
+architecture = require_relative(".agents/architecture/system.md").read_text()
+try:
+    invariant_section = architecture.split("## System-wide invariants\n", 1)[1].split("\n## System boundaries", 1)[0]
+except IndexError:
+    raise SystemExit("architecture model is missing the system-wide invariants section")
+invariant_ids = re.findall(r"^### (INV-\d{4}) — ", invariant_section, flags=re.MULTILINE)
+expected_invariant_ids = [f"INV-{index:04d}" for index in range(1, len(invariant_ids) + 1)]
+if invariant_ids != expected_invariant_ids:
+    raise SystemExit("architecture invariant IDs must use contiguous INV-0000 numbering")
+if len(re.findall(r"^- \*\*Statement:\*\* ", invariant_section, flags=re.MULTILINE)) != len(invariant_ids):
+    raise SystemExit("each architecture invariant must have a bulleted Statement field")
+
 print(f"Catalog, maintained plugin, native marketplace views, and {len(expected_skills)} required skills are valid.")
 print(f"Catalog includes {len(catalog['plugins'])} offerings; {len(expected_claude)} Claude and {len(expected_codex)} Codex plugin routes are generated.")
 PY

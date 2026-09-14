@@ -158,14 +158,15 @@ Useful verbs:
 
 ## Invariants
 
-Represent each invariant as a numbered heading with bulleted fields so adjacent
-invariants are visually distinct.
+Represent each invariant with a stable four-digit `INV-0000` identifier in its
+heading and bulleted fields so adjacent invariants are visually distinct. Use
+the next unused identifier; do not reuse an identifier for a different
+invariant.
 
 Example:
 
-### 1. Page cache is not the source of truth
+### INV-0001 — Page cache is not the source of truth
 
-- **Identifier:** `PAGE_CACHE_NOT_SOURCE_OF_TRUTH`
 - **Statement:** PageCache must never become canonical Page state.
 - **Applies to:** `PageCache`, `PageLoader`, `PageMutation`
 - **Rationale:** Cached state may be stale and replaceable by canonical state.

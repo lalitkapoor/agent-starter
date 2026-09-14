@@ -12,7 +12,7 @@ Scope:
 ## Sources of truth
 ## Invariants
 
-<!-- Use a numbered heading and bulleted fields for each invariant. -->
+<!-- Use a unique INV-0000 heading and bulleted fields for each invariant. -->
 
 ## Boundaries and ownership
 ## Requirements and budgets

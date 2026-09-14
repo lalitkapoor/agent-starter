@@ -841,22 +841,28 @@ This repository is the curated multi-harness plugin catalog and installer.
 
 ## Architectural Invariants
 
-1. **Catalog source of truth** — `catalog.json` is the canonical curated list;
-   generated marketplace files are derived views.
-2. **One canonical maintained skill tree** — maintained reusable skills have one
-   canonical copy under `plugins/agent-engineering-system/skills/`.
-3. **Project-specific skills stay local** — `.agents/skills/` is for skills
-   specific to maintaining this catalog, not copies of maintained or upstream
-   skills.
-4. **Upstream content stays external** — pstack and selected upstream skills
-   remain separate catalog dependencies; their source is never copied into the
-   maintained plugin.
-5. **Project architecture stays with the project** — a consuming project's
-   architecture state stays in that host repository and is not stored in plugin
-   data.
-6. **Technical communication is required** — `technical-communication` applies
-   to comments, commit messages, PRs, technical documentation, RFCs,
-   architecture diagrams, and technical specifications.
+- **INV-0001 — Maintained plugin skills have one canonical copy** — Maintained
+  reusable skills have one canonical copy under
+  `plugins/agent-engineering-system/skills/`.
+- **INV-0002 — Catalog views are derived** — `catalog.json` is the canonical
+  curated list; generated marketplace files are derived views.
+- **INV-0003 — Upstream content remains external** — pstack and selected
+  upstream skills remain separate catalog dependencies; their source is never
+  copied into the maintained plugin.
+- **INV-0004 — Upstream dependencies are not commit-pinned** — Upstream
+  offerings follow declared refs rather than commit SHA pins.
+- **INV-0005 — Project state is host-owned** — A consuming project's
+  architecture state stays in that host repository and is not stored in plugin
+  data; its project-specific skills stay under that project's `.agents/skills/`.
+- **INV-0006 — Legacy compatibility is explicit** — Skill-only copies are
+  fallback outputs from an explicit compatibility path and are never canonical
+  plugin content.
+
+## Project Requirements
+
+- `technical-communication` applies to comments, commit messages, PRs,
+  technical documentation, RFCs, architecture diagrams, and technical
+  specifications.
 
 ## Known External Constraints
 

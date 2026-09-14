@@ -110,43 +110,37 @@ SOURCE_OF_TRUTH:
 
 ## System-wide invariants
 
-### 1. Maintained plugin skills have one canonical copy
+### INV-0001 — Maintained plugin skills have one canonical copy
 
-- **Identifier:** `MAINTAINED_PLUGIN_SKILLS_HAVE_ONE_CANONICAL_COPY`
 - **Statement:** Reusable skills maintained by this repository exist only under
   their plugin's canonical `skills/` tree. Harness metadata and compatibility
   output never become a second source.
 
-### 2. Catalog views are derived
+### INV-0002 — Catalog views are derived
 
-- **Identifier:** `CATALOG_VIEWS_ARE_DERIVED`
 - **Statement:** Native marketplace files are generated from `catalog.json` and
   must not be hand-maintained independently.
 
-### 3. Upstream content remains external
+### INV-0003 — Upstream content remains external
 
-- **Identifier:** `UPSTREAM_CONTENT_REMAINS_EXTERNAL`
 - **Statement:** Upstream plugin and skill offerings remain external
   dependencies. This repository records how to install them but does not copy
   them into its maintained plugin.
 
-### 4. Upstream dependencies are not commit-pinned
+### INV-0004 — Upstream dependencies are not commit-pinned
 
-- **Identifier:** `UPSTREAM_DEPENDENCIES_ARE_NOT_COMMIT_PINNED`
 - **Statement:** The catalog records upstream repositories and declared refs
   such as `main`, but does not lock offerings to commit SHAs or vendor their
   source.
 
-### 5. Project state is host-owned
+### INV-0005 — Project state is host-owned
 
-- **Identifier:** `PROJECT_STATE_IS_HOST_OWNED`
 - **Statement:** A consuming project's `AGENTS.md`, `.agents/architecture/`,
   and `.agents/skills/` remain owned by that project. The installer may add a
   marked integration block but must not overwrite surrounding content.
 
-### 6. Legacy compatibility is explicit
+### INV-0006 — Legacy compatibility is explicit
 
-- **Identifier:** `LEGACY_COMPATIBILITY_IS_EXPLICIT`
 - **Statement:** Skill-only copies under `.agents/skills/`, `.claude/skills/`,
   or `.cursor/skills/` are fallback outputs from an explicit compatibility
   path; they are never canonical plugin content.
