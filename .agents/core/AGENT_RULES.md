@@ -159,7 +159,7 @@ Do not defer verification design until the end.
 
 ---
 
-# 30. Separate Facts, Hypotheses, Experiments, and Conclusions
+# 5. Separate Facts, Hypotheses, Experiments, and Conclusions
 
 During debugging or uncertain work, maintain intellectual discipline.
 
@@ -187,7 +187,7 @@ Do not allow plausible explanations to become assumed facts without evidence.
 
 ---
 
-# 39. Plans Are for Execution
+# 6. Plans Are for Execution
 
 For non-trivial tasks, create a short plan.
 
@@ -208,7 +208,7 @@ Unless the task explicitly asks only for planning, begin implementation after pl
 
 ---
 
-# 40. Keep Scope Tight
+# 7. Keep Scope Tight
 
 Do not opportunistically “clean up” every nearby issue.
 
@@ -228,7 +228,7 @@ Locality of change is a design virtue.
 
 ---
 
-# 42. Architecture Changes Must Be Deliberate
+# 8. Architecture Changes Must Be Deliberate
 
 Architecture changes include changes to:
 
@@ -262,7 +262,7 @@ Architecture decisions should be recoverable from the repository, not from chat 
 
 ---
 
-# 51. Use the Repository’s Canonical Verification Entry Point
+# 9. Use the Repository’s Canonical Verification Entry Point
 
 The repository should expose one obvious verification command.
 
@@ -297,7 +297,7 @@ If the repository lacks a canonical verification entry point and creating one is
 
 ---
 
-# 52. Focused Verification First, Broad Verification Before Completion
+# 10. Focused Verification First, Broad Verification Before Completion
 
 During iteration:
 
@@ -313,7 +313,7 @@ Do not finish after only focused tests if the change can affect broader integrat
 
 ---
 
-# 53. Real Integration Paths Need Real Evidence
+# 11. Real Integration Paths Need Real Evidence
 
 A mocked integration does not prove the actual integration works.
 
@@ -343,7 +343,7 @@ Do not imply one when you have only another.
 
 ---
 
-# 54. Preserve Verification Evidence When It Matters
+# 12. Preserve Verification Evidence When It Matters
 
 For high-risk or difficult-to-reproduce behavior, preserve durable evidence.
 
@@ -371,7 +371,7 @@ Durable evidence is especially valuable for:
 
 ---
 
-# 55. Commit at Meaningful Verified Boundaries
+# 13. Commit at Meaningful Verified Boundaries
 
 Prefer commits that correspond to coherent, working changes.
 
@@ -399,7 +399,7 @@ Do not accumulate the whole project into one giant commit if meaningful safe che
 
 ---
 
-# 56. Push Along the Way When Appropriate
+# 14. Push Along the Way When Appropriate
 
 When a remote is available and the task spans significant work, push after meaningful verified commits.
 
@@ -422,7 +422,7 @@ Never rewrite remote history unless explicitly authorized.
 
 ---
 
-# 57. Keep the Worktree Healthy
+# 15. Keep the Worktree Healthy
 
 Do not leave accidental:
 
@@ -450,7 +450,7 @@ A clean worktree is preferred after completed committed work.
 
 ---
 
-# 58. Definition of Done
+# 16. Definition of Done
 
 A task is not done because:
 
@@ -486,7 +486,7 @@ Do not convert “not verified” into “probably works.”
 
 ---
 
-# 59. Do Not Claim More Than the Evidence Supports
+# 17. Do Not Claim More Than the Evidence Supports
 
 Use precise completion language.
 
@@ -513,7 +513,7 @@ Evidence quality is part of engineering quality.
 
 ---
 
-# 60. Do Not Hide Failures
+# 18. Do Not Hide Failures
 
 Do not:
 
@@ -537,7 +537,7 @@ Fix the underlying issue or report the remaining constraint accurately.
 
 ---
 
-# 64. Self-Review Before Completion
+# 19. Self-Review Before Completion
 
 Before presenting or committing substantial work, review your own diff as if reviewing another engineer.
 
@@ -596,7 +596,7 @@ Fix issues discovered during self-review before calling the work done.
 
 ---
 
-# 65. When Blocked, Keep Making Progress
+# 20. When Blocked, Keep Making Progress
 
 Do not stop at the first obstacle.
 
@@ -634,7 +634,7 @@ When asking for intervention, make the request minimal and exact.
 
 ---
 
-# 66. Do Not Stop at the Plan
+# 21. Do Not Stop at the Plan
 
 Unless the user explicitly requested only analysis or planning:
 
@@ -663,7 +663,7 @@ Do not reward-hack by replacing implementation with increasingly detailed planni
 
 ---
 
-# 67. Do Not Stop at Compilation
+# 22. Do Not Stop at Compilation
 
 Compilation/type-checking proves:
 
@@ -685,7 +685,7 @@ Use compilation as one layer of evidence, not the final result.
 
 ---
 
-# 68. Do Not Stop at Tests You Just Wrote
+# 23. Do Not Stop at Tests You Just Wrote
 
 New tests can share the same mistaken assumptions as new implementation.
 
@@ -702,7 +702,7 @@ A test suite is evidence, not infallibility.
 
 ---
 
-# 69. Preserve Existing Behavior Intentionally
+# 24. Preserve Existing Behavior Intentionally
 
 Before changing existing code, identify which behavior must not regress.
 
@@ -720,7 +720,7 @@ Do not simplify a local problem by silently breaking another supported path.
 
 ---
 
-# 70. Generated Code and Artifacts
+# 25. Generated Code and Artifacts
 
 Know which files are authoritative source and which are generated.
 
@@ -738,7 +738,7 @@ Avoid committing build outputs unless repository policy requires them.
 
 ---
 
-# 79. External Research Must Be Source-Grounded
+# 26. External Research Must Be Source-Grounded
 
 When behavior depends on a changing external platform, framework, API, or provider:
 
@@ -755,7 +755,7 @@ When uncertain, verify.
 
 ---
 
-# 80. Optimize for Handoffs
+# 27. Optimize for Handoffs
 
 Assume another agent or engineer may continue the work without access to your conversation history.
 
@@ -775,7 +775,7 @@ Do not rely on chat-only explanations for durable architectural knowledge.
 
 ---
 
-# 81. Default Working Loop
+# 28. Default Working Loop
 
 Unless a task requires otherwise, follow this loop:
 
@@ -820,7 +820,7 @@ Repeat until the requested behavior is actually complete.
 
 ---
 
-# 82. Project-Specific Section
+# 29. Project-Specific Section
 
 This repository is the curated multi-harness plugin catalog and installer.
 

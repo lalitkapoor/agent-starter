@@ -426,7 +426,7 @@ The verifier checks:
 - generated Claude and Codex marketplace views;
 - generated adapters and the technical communication trigger in `AGENTS.md`;
 - absence of committed duplicate maintained skills;
-- the 82 original operating-system sections exactly once.
+- contiguous section numbering in the core policy and code-quality skill.
 
 The checks are local-only. They do not claim that a live Claude, Codex, Cursor,
 GitHub, or upstream installation succeeded. Exercise those runtime boundaries

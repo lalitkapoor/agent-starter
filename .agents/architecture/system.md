@@ -178,14 +178,6 @@ DOES_NOT_OWN:
 
 ## System-level requirements and budgets
 
-REQUIREMENT: OPERATING_SYSTEM_MAPPING
-
-TYPE:
-  integrity
-
-TARGET:
-  All 82 original numbered sections remain accounted for by `docs/OPERATING_SYSTEM_SPLIT.json`.
-
 REQUIREMENT: INSTALLER_MUST_BE_SAFE_TO_REAPPLY
 
 TYPE:

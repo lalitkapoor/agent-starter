@@ -17,8 +17,6 @@ required=(
   ".agents/architecture/system.md"
   ".agents/architecture/_templates/system.md"
   ".agents/skills/project-research/SKILL.md"
-  "docs/OPERATING_SYSTEM_SPLIT.md"
-  "docs/OPERATING_SYSTEM_SPLIT.json"
   "docs/UPSTREAM_SKILLS.md"
 )
 
@@ -246,17 +244,17 @@ for required_text in (
     if required_text not in agents_text:
         raise SystemExit(f"AGENTS.md is missing technical communication guidance: {required_text}")
 
-mapping = load_json("docs/OPERATING_SYSTEM_SPLIT.json")
-if mapping.get("source_numbered_sections") != 82:
-    raise SystemExit("operating-system split must continue to cover 82 original sections")
-numbers = [item["number"] for item in mapping["core_sections"] + mapping["code_quality_sections"]]
-expected_numbers = list(range(1, mapping["source_numbered_sections"] + 1))
-if sorted(numbers) != expected_numbers or len(numbers) != len(set(numbers)):
-    raise SystemExit("operating-system split is incomplete or duplicated")
+for relative in (
+    ".agents/core/AGENT_RULES.md",
+    "plugins/agent-engineering-system/skills/code-quality/SKILL.md",
+):
+    document = require_relative(relative).read_text()
+    heading_numbers = [int(number) for number in re.findall(r"^# (\d+)\. ", document, flags=re.MULTILINE)]
+    if heading_numbers != list(range(1, len(heading_numbers) + 1)):
+        raise SystemExit(f"{relative} headings must be contiguous from 1")
 
 print(f"Catalog, maintained plugin, native marketplace views, and {len(expected_skills)} required skills are valid.")
 print(f"Catalog includes {len(catalog['plugins'])} offerings; {len(expected_claude)} Claude and {len(expected_codex)} Codex plugin routes are generated.")
-print(f"Operating-system split covers all {len(expected_numbers)} numbered sections.")
 PY
 
 node "$ROOT/.agents/bootstrap.mjs" --check
