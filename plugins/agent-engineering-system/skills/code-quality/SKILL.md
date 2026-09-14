@@ -19,10 +19,8 @@ When pstack is available:
 - this skill owns the detailed engineering/design quality bar;
 - semantic-architecture owns persistent capture of architectural intent.
 
-The section headings below use local numbering from 1 through 53. The original
-82-section source identifiers are retained separately in
-`docs/OPERATING_SYSTEM_SPLIT.json` as audit metadata; they are not document
-numbers and should not be used to infer missing sections.
+The section headings below use local numbering from 1 through 53 so this skill
+reads as a complete document.
 
 # 1. Model the Domain Before the Framework
 

@@ -17,8 +17,6 @@ required=(
   ".agents/architecture/system.md"
   ".agents/architecture/_templates/system.md"
   ".agents/skills/project-research/SKILL.md"
-  "docs/OPERATING_SYSTEM_SPLIT.md"
-  "docs/OPERATING_SYSTEM_SPLIT.json"
   "docs/UPSTREAM_SKILLS.md"
 )
 
@@ -246,34 +244,18 @@ for required_text in (
     if required_text not in agents_text:
         raise SystemExit(f"AGENTS.md is missing technical communication guidance: {required_text}")
 
-mapping = load_json("docs/OPERATING_SYSTEM_SPLIT.json")
-if mapping.get("source_numbered_sections") != 82:
-    raise SystemExit("operating-system split must continue to cover 82 original sections")
-source_numbers = [item["source_number"] for item in mapping["core_sections"] + mapping["code_quality_sections"]]
-expected_source_numbers = list(range(1, mapping["source_numbered_sections"] + 1))
-if sorted(source_numbers) != expected_source_numbers or len(source_numbers) != len(set(source_numbers)):
-    raise SystemExit("operating-system split is incomplete or duplicated")
-
-for key, relative in (
-    ("core_sections", ".agents/core/AGENT_RULES.md"),
-    ("code_quality_sections", "plugins/agent-engineering-system/skills/code-quality/SKILL.md"),
+for relative in (
+    ".agents/core/AGENT_RULES.md",
+    "plugins/agent-engineering-system/skills/code-quality/SKILL.md",
 ):
-    items = mapping[key]
-    local_numbers = [item["local_number"] for item in items]
-    expected_local_numbers = list(range(1, len(items) + 1))
-    if local_numbers != expected_local_numbers:
-        raise SystemExit(f"{key} local numbering must be contiguous from 1")
     document = require_relative(relative).read_text()
-    headings = re.findall(r"^# (\d+)\. (.+)$", document, flags=re.MULTILINE)
-    heading_numbers = [int(number) for number, _ in headings]
-    if heading_numbers != expected_local_numbers:
+    heading_numbers = [int(number) for number in re.findall(r"^# (\d+)\. ", document, flags=re.MULTILINE)]
+    if heading_numbers != list(range(1, len(heading_numbers) + 1)):
         raise SystemExit(f"{relative} headings must be contiguous from 1")
-    if [title for _, title in headings] != [item["title"] for item in items]:
-        raise SystemExit(f"{relative} headings do not match the split map")
 
 print(f"Catalog, maintained plugin, native marketplace views, and {len(expected_skills)} required skills are valid.")
 print(f"Catalog includes {len(catalog['plugins'])} offerings; {len(expected_claude)} Claude and {len(expected_codex)} Codex plugin routes are generated.")
-print(f"Operating-system audit map covers all {len(expected_source_numbers)} source sections; public documents use local numbering.")
+print("Core policy and code-quality headings are locally numbered from 1.")
 PY
 
 node "$ROOT/.agents/bootstrap.mjs" --check

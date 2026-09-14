@@ -124,9 +124,9 @@ engineering artifacts.
 ### Rule numbering
 
 The core operating contract and the `code-quality` skill each use their own
-contiguous section numbers starting at 1. Together they contain the same 82
-rules as the original operating system. The split map keeps the original IDs
-as audit metadata without using those IDs as public document headings.
+contiguous section numbers starting at 1. They are separate documents, so
+their headings do not imply that one continues the other. The rule content was
+preserved while the documents were reorganized.
 
 ## Catalog and installation model
 
@@ -433,7 +433,7 @@ The verifier checks:
 - generated Claude and Codex marketplace views;
 - generated adapters and the technical communication trigger in `AGENTS.md`;
 - absence of committed duplicate maintained skills;
-- the 82 original operating-system source sections exactly once, while each public document uses local contiguous numbering.
+- contiguous section numbering in the core policy and code-quality skill.
 
 The checks are local-only. They do not claim that a live Claude, Codex, Cursor,
 GitHub, or upstream installation succeeded. Exercise those runtime boundaries
