@@ -1,312 +1,437 @@
-# Agent Engineering System
+# agent-starter
 
-This repository is a reusable, multi-harness engineering system for coding
-agents. It keeps one canonical set of engineering skills and wraps that
-content with the smallest native packaging metadata needed by each supported
-runtime.
+`agent-starter` is a curated catalog and installer for coding-agent plugins.
+It combines one engineering system maintained here with selected upstream
+plugins and skills, then installs the right representation for Claude Code,
+Codex, Cursor, or another skill-capable runtime.
 
-## Architecture
+The important rule is:
+
+> Maintain content once; use catalog and harness metadata to install it where it belongs.
+
+## Start here
+
+From a checkout of this repository, install the curated set into a product
+repository with:
+
+```bash
+./setup.sh \
+  --project /absolute/path/to/my-product \
+  --harness claude,codex,cursor
+```
+
+This does four things:
+
+1. registers the `agent-starter` marketplace with the selected runtimes;
+2. installs the maintained `agent-engineering-system` plugin where the runtime has a CLI install route, or makes it available for selection in Codex;
+3. installs offerings through the routes listed in `catalog.json` (Codex gets the catalog registered for selection in its plugin directory);
+4. adds a marked integration block to the product's `AGENTS.md` and, when selected, its `CLAUDE.md` or Cursor rule.
+
+The installer does not copy this repository's architecture model into the
+product. The product keeps its own architecture state and project-specific
+skills.
+
+To see exactly what would happen without changing the product:
+
+```bash
+./setup.sh \
+  --project /absolute/path/to/my-product \
+  --harness claude,codex,cursor \
+  --dry-run
+```
+
+To install only the maintained plugin from the current checkout:
+
+```bash
+./setup.sh \
+  --project /absolute/path/to/my-product \
+  --harness claude,codex,cursor \
+  --local-only \
+  --marketplace "$PWD"
+```
+
+`--local-only` skips upstream dependencies and uses this checkout as the local
+marketplace. It still invokes the selected runtime CLIs when they are included
+in `--harness`.
+
+## What this repository contains
+
+The root is intentionally a catalog, not one giant plugin:
 
 ```text
-                         agent-starter
+agent-starter/
+├── catalog.json                              # curated offerings and provenance
+├── plugins/
+│   └── agent-engineering-system/              # plugin maintained here
+│       ├── plugin.json                        # portable plugin manifest
+│       ├── .codex-plugin/plugin.json          # Codex metadata
+│       ├── .claude-plugin/plugin.json         # Claude metadata
+│       └── skills/
+│           ├── code-quality/
+│           ├── semantic-architecture/
+│           └── technical-communication/
+├── .claude-plugin/marketplace.json            # generated Claude catalog view
+├── .agents/plugins/marketplace.json           # generated Codex catalog view
+├── .agents/core/                              # catalog repository policy
+├── .agents/architecture/                      # catalog architecture state
+├── .agents/skills/                            # catalog-specific skills only
+└── setup.sh                                   # consuming-project installer
+```
+
+There is no root `plugin.json`, root `skills/`, or root `.codex-plugin/` in the
+catalog. Those belong to an individual maintained plugin. The portable
+manifest for the maintained plugin is:
+
+```text
+plugins/agent-engineering-system/plugin.json
+```
+
+This distinction prevents the catalog from confusing its own content with the
+upstream dependencies it recommends.
+
+## The three maintained skills
+
+The `agent-engineering-system` plugin is the part of this repository that we
+maintain:
+
+| Skill | Use it for |
+| --- | --- |
+| `code-quality` | Engineering and design rules for non-trivial implementation, debugging, integration, migration, performance, and review work. |
+| `semantic-architecture` | Building and maintaining a hierarchical model of a product's responsibilities, ownership, invariants, and relationships. |
+| `technical-communication` | Writing comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and handoffs. |
+
+The technical communication skill optimizes for understanding rather than
+technical-sounding language. It asks the writer to describe actual behavior,
+define terms on first use, make failure modes and ownership explicit, and use
+diagrams to show real boundaries and flow.
+
+For example, it prefers:
+
+```text
+If the permission check cannot run, reject the request.
+```
+
+over:
+
+```text
+Fail closed if the permission check is unavailable.
+```
+
+The skill is installed with the maintained plugin. The generated `AGENTS.md`
+also explicitly tells agents to read it before producing any of those
+engineering artifacts.
+
+## Catalog and installation model
+
+`catalog.json` is the single maintained list. It records whether an offering is
+maintained here or upstream, its pinned source revision, and the installation
+route for each supported runtime.
+
+```text
+                         catalog.json
                               │
-                       canonical content
-                              │
-          ┌───────────────────┼───────────────────┐
-          │                   │                   │
-     code-quality     semantic-architecture     policy
-          │                   │                   │
-          └───────────────┬───┘                   │
-                          │                       │
-                    canonical skills/       .agents/core/
-                          │
-               ┌──────────┼──────────┐
-               ▼          ▼          ▼
-             Codex      Claude     Cursor/other
+             ┌────────────────┼────────────────┐
+             ▼                ▼                ▼
+       Claude view       Codex view       Cursor/setup route
+  .claude-plugin/     .agents/plugins/     native local plugin
+  marketplace.json    marketplace.json    or npx skills fallback
+             │                │                │
+             └────────────────┼────────────────┘
+                              ▼
+                 consuming project + AGENTS.md
 ```
 
-The reusable engineering behavior is stored once:
+The generated marketplace files are discovery and installation indexes. They
+are not a second source of plugin content and should not be edited by hand.
+Run `node .agents/bootstrap.mjs` after changing `catalog.json` or generated
+instructions.
+
+`.agents/plugins/marketplace.json` exists because Codex uses that location for
+a repository-scoped marketplace. It is a registry for the catalog, not the
+canonical home of any plugin.
+
+## Curated offerings
+
+### Maintained: `agent-engineering-system`
+
+This plugin is owned by this repository. Its three skills live only under:
 
 ```text
-skills/
-├── code-quality/SKILL.md
-└── semantic-architecture/SKILL.md
+plugins/agent-engineering-system/skills/
 ```
 
-The manifests identify that same package for different runtimes. They do not
-contain or copy the skill files.
-
-## Package boundaries
-
-### Portable Agent Plugins package
+Its native manifests are thin metadata around that same physical tree:
 
 ```text
-plugin.json
-skills/
+plugins/agent-engineering-system/plugin.json
+plugins/agent-engineering-system/.codex-plugin/plugin.json
+plugins/agent-engineering-system/.claude-plugin/plugin.json
 ```
 
-The root `plugin.json` is the vendor-neutral Agent Plugins 1.0 representation.
-Portable clients discover reusable skills from the fixed root `skills/`
-directory. See the [Agent Plugins documentation](https://docs.github.com/en/copilot/concepts/agents/about-plugins).
+### Upstream: pstack
 
-### Codex
+pstack is a workflow and orchestration dependency, not part of our engineering
+plugin. Where installed, agents should use it for the process of doing
+non-trivial work: planning, TDD, verification, adversarial review, and proof.
+
+The catalog routes it as follows:
+
+- Claude Code and Codex use the pstack plugin from `michael-denyer/pstack-claude`.
+- Cursor uses the official pstack plugin from `cursor/plugins`.
+
+The catalog pins the upstream commits. `setup.sh` installs or fetches those
+plugins; it never copies them into `plugins/agent-engineering-system/`.
+
+### Upstream: Matt Pocock's skills
+
+The catalog selects these upstream specialist skills:
 
 ```text
-.codex-plugin/plugin.json
+codebase-design
+domain-modeling
+diagnosing-bugs
+research
+improve-codebase-architecture
+code-review
+prototype
+writing-for-agents
+handoff
 ```
 
-This Codex-specific manifest points to `./skills/` and contains no second copy
-of the skills. Current OpenAI documentation supports this overlay while also
-documenting the root portable manifest as the portable package entrypoint. See
-[OpenAI's plugin packaging guide](https://developers.openai.com/plugins/build/plugins).
+Claude Code installs the upstream `mattpocock-skills` plugin. Codex and Cursor
+use the skill-only `npx skills` route for the selected names. That distinction
+matters: `npx skills` installs skill files; it does not install a plugin's
+other components or lifecycle behavior.
 
-A Codex `marketplace.json` is an installation and registry catalog, not the
-plugin package. This repository intentionally does not include
-`.agents/plugins/marketplace.json`; create or configure a separate marketplace
-only when a particular Codex installation requires one.
+Upstream provenance and the selected names are recorded in
+[`docs/UPSTREAM_SKILLS.md`](docs/UPSTREAM_SKILLS.md).
 
-### Claude Code
+## Using it with an actual product repository
 
-```text
-.claude-plugin/plugin.json
-skills/
-```
-
-Claude Code discovers `skills/` at the plugin root. Only the manifest belongs
-inside `.claude-plugin/`; reusable skills remain at the repository root. See
-[Claude Code's plugin documentation](https://code.claude.com/docs/en/plugins).
-
-### Cursor
-
-Cursor supports the portable root `plugin.json` format. The committed
-`.cursor/rules/00-project-agents.mdc` is only a thin repository-instruction
-adapter. This package has no Cursor-specific agents, commands, hooks, or MCP
-servers, so it does not add a `.cursor-plugin/` manifest.
-
-See [Cursor's plugin documentation](https://cursor.com/docs/plugins) for its
-portable and Cursor-specific plugin formats.
-
-## Repository-local state
-
-The plugin package and the repository's own control plane are separate:
-
-```text
-AGENTS.md                         # always-loaded contract for this repository
-.agents/
-├── core/AGENT_RULES.md           # detailed operating policy
-├── architecture/                 # semantic model of this repository
-├── skills/                       # repository-specific skills only
-└── bootstrap.mjs                 # source for generated harness adapters
-```
-
-`skills/semantic-architecture/` explains how to maintain an architecture
-model. `.agents/architecture/` records what this repository means. A product
-repository consuming this system must supply its own `AGENTS.md`, architecture
-model, and project-specific skills; it must not copy this repository's model
-as if it described the product.
-
-The root `AGENTS.md` in this repository describes how to maintain the
-engineering system itself. It is not a universal replacement for a consuming
-project's repository contract.
-
-## Using this with a product repository
-
-Install or register this repository as a plugin in the agent runtime, then
-keep product-specific state in the product repository:
+The product repository is where product policy and semantic understanding live.
+After setup, its shape should be conceptually similar to:
 
 ```text
 my-product/
-├── AGENTS.md
+├── AGENTS.md                          # product contract + Agent Starter block
+├── CLAUDE.md                          # thin Claude adapter, if selected
+├── .cursor/rules/00-agent-starter.mdc # thin Cursor adapter, if selected
 ├── .agents/
 │   ├── architecture/
-│   │   └── system.md
+│   │   └── system.md                  # what this product means
 │   └── skills/
 │       └── product-specific-skill/
 └── src/
 ```
 
-The product's contract should tell agents to use the installed
-`agent-engineering-system` skills, inspect the relevant product architecture
-path, and load product-specific skills when their triggers apply. During work,
-the agent combines:
+The generated Agent Starter block is bounded by markers:
+
+```md
+<!-- BEGIN AGENT-STARTER -->
+## Agent Starter
+
+- Use the `agent-engineering-system` plugin supplied by the `agent-starter` catalog for `code-quality`, `semantic-architecture`, and `technical-communication`; enable it in the runtime when it is only registered.
+- For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read the complete `technical-communication` skill before drafting.
+- Use pstack as the primary workflow for non-trivial engineering work when it is installed.
+<!-- END AGENT-STARTER -->
+```
+
+Setup updates only this marked block. It preserves the surrounding product
+instructions. The product should add its own architecture model under
+`.agents/architecture/` rather than copying this catalog's
+`.agents/architecture/`.
+
+During a non-trivial change, an agent combines:
 
 ```text
 product AGENTS.md
-    + this plugin's code-quality and semantic-architecture skills
-    + product .agents/architecture/
-    + product .agents/skills/
-    + pstack, when separately installed
+  + installed agent-engineering-system plugin
+  + product .agents/architecture/
+  + product .agents/skills/
+  + pstack, when installed
+  + selected upstream specialist skills
 ```
 
-When a change alters product responsibilities, ownership, boundaries, or
-invariants, update the product's `.agents/architecture/` model—not this
-plugin's architecture state.
+The maintained `semantic-architecture` skill explains how to update the model;
+the product's `.agents/architecture/` files record the model itself. The
+maintained `technical-communication` skill explains how to communicate the
+result in code comments, commits, PRs, RFCs, diagrams, and specifications.
 
-## Native installation and testing
+## Native runtime routes
 
-The installation command is runtime-specific. Use native plugin loading rather
-than copying skills into `.claude/skills/` or `.cursor/skills/`.
+`setup.sh` is the convenient curated installer. These are the equivalent native
+routes when you want to manage a runtime directly.
 
 ### Claude Code
 
-Test a local checkout directly:
+Add the marketplace and install the offerings you want:
 
 ```bash
-claude --plugin-dir /path/to/agent-starter
+claude plugin marketplace add lalitkapoor/agent-starter --scope project
+claude plugin install agent-engineering-system@agent-starter --scope project
+claude plugin install pstack@agent-starter --scope project
+claude plugin install mattpocock-skills@agent-starter --scope project
 ```
 
-The skills are then namespaced by the plugin, for example
-`/agent-engineering-system:code-quality`. For team or community distribution,
-publish or add the plugin through a Claude Code marketplace. See [Claude Code's
-plugin sharing guidance](https://code.claude.com/docs/en/plugins#share-your-plugins).
+Or use the corresponding `/plugin marketplace add` and `/plugin install`
+commands inside Claude Code. Claude discovers each plugin's `skills/` directory
+relative to that plugin root and namespaces its skills.
 
 ### Codex
 
-Use the Codex plugin directory or marketplace flow appropriate to the Codex
-surface you use. For local/repository distribution, the marketplace is a
-separate catalog that points at this plugin repository; it is not added here
-automatically. See [OpenAI's local plugin installation
-guidance](https://developers.openai.com/plugins/build/plugins#install-a-local-plugin-manually).
+Register the repository-scoped marketplace:
+
+```bash
+codex plugin marketplace add lalitkapoor/agent-starter
+```
+
+Then enable `agent-engineering-system` and, if wanted, `pstack` from the Codex
+plugin directory. In Codex surfaces that support repository configuration, the
+corresponding entries use the `plugin-name@agent-starter` keys, for example:
+
+```toml
+[plugins."agent-engineering-system@agent-starter"]
+enabled = true
+
+[plugins."pstack@agent-starter"]
+enabled = true
+```
+
+The current Codex CLI documents marketplace registration and plugin-directory
+selection separately; `setup.sh` follows that boundary rather than inventing a
+second install command.
+
+Matt Pocock's selected entries are skills rather than a Codex plugin route:
+
+```bash
+npx skills@latest add mattpocock/skills \
+  --skill codebase-design \
+  --agent codex \
+  -y
+```
+
+Repeat the command for the other selected names, or let `setup.sh` do it.
 
 ### Cursor
 
-Install the repository through Cursor's Plugins/Customize surface. Cursor can
-load the portable root Agent Plugins package directly; no `.cursor/skills/`
-copy is needed for current Cursor versions.
+Cursor's local plugin route uses the plugin directory under the user's Cursor
+configuration. `setup.sh` copies the maintained plugin there from the checkout
+and fetches the pinned official pstack plugin. For Matt Pocock's skill-only
+entries it uses `npx skills` with `--agent cursor`.
 
-## Setup script
-
-`setup.sh` is repository initialization and dependency orchestration. It does
-not replace native plugin installation in a consuming project.
-
-Run without network access to regenerate adapters and verify the package:
+If you are testing only the maintained plugin locally:
 
 ```bash
-./setup.sh --local-only
+mkdir -p ~/.cursor/plugins/local
+cp -R plugins/agent-engineering-system ~/.cursor/plugins/local/agent-engineering-system
 ```
 
-Run full setup to install separate upstream workflow dependencies:
+Restart or reload Cursor after changing a local plugin.
 
-```bash
-./setup.sh
-```
+### Other runtimes
 
-The optional `--compat` flag is retained only for older or non-plugin clients.
-It creates ignored, generated copies under `.cursor/skills/` and
-`.claude/skills/`; those are legacy outputs, never canonical sources:
-
-```bash
-./setup.sh --local-only --compat
-```
-
-Never edit compatibility copies. Rerun setup after changing canonical skills.
-
-Useful flags:
-
-- `--compat` — generate explicit legacy compatibility copies.
-- `--local-only` — skip network-backed dependency installation.
-- `--skip-pstack` — skip the official pstack installation.
-- `--skip-cross-runtime-pstack` — skip the cross-runtime pstack supplement.
-- `--skip-matt` — skip selected Matt Pocock skills.
-
-`PSTACK_REF`, `PSTACK_CROSS_REF`, and `MATT_REF` pin upstream refs. Full setup
-records resolved commits in `.agent-deps.lock` and keeps source checkouts under
-the ignored `.agent-vendor/` directory.
-
-## Upstream workflow dependencies
-
-pstack is not bundled into this plugin. It is the preferred process and
-orchestration layer when installed:
+The maintained plugin has a portable `plugin.json` and a standard root
+`skills/` directory. A runtime that supports portable Agent Plugins can load:
 
 ```text
-pstack
-  → workflow, TDD, verification, adversarial review, and proof
-
-agent-engineering-system
-  → code-quality and semantic-architecture
-
-host project
-  → policy, architecture state, and product constraints
+plugins/agent-engineering-system/
 ```
 
-The official Cursor pstack plugin is installed separately by `setup.sh` when
-enabled. Selected pstack skills are staged into host discovery paths without
-becoming canonical root skills.
+If a runtime supports only skill directories, use `npx skills` or the runtime's
+documented skill installation mechanism. The result is skill-only compatibility,
+not a replacement for native plugin installation.
 
-The cross-runtime [pstack-claude repository](https://github.com/michael-denyer/pstack-claude)
-ships a native Claude Code plugin at `plugins/pstack/`. Install that separately
-in Claude Code when needed:
+## `AGENTS.md` responsibilities
 
-```text
-/plugin marketplace add michael-denyer/pstack-claude
-/plugin install pstack@pstack-claude
-```
+There are two different `AGENTS.md` roles:
 
-Its shared skills may still be staged for runtimes that use shared Agent Skills
-directories, but this repository's setup no longer copies them into
-`.claude/skills/`.
+1. This repository's root `AGENTS.md` governs maintenance of the catalog,
+   installer, maintained plugin, and generated views.
+2. A consuming product's root `AGENTS.md` governs that product. `setup.sh`
+   adds a small managed block to it; it does not replace the product contract.
 
-Selected [Matt Pocock skills](https://github.com/mattpocock/skills) remain
-upstream specialist dependencies. Setup stages the selected, pinned skills
-under `.agents/skills/`; it does not copy them into canonical root `skills/` or
-claim ownership of their content. Their provenance and selected names are in
-[`docs/UPSTREAM_SKILLS.md`](docs/UPSTREAM_SKILLS.md).
+The Agent Starter block requires agents to:
 
-## Editing rules
+- use `code-quality` for substantial engineering work;
+- use `semantic-architecture` when product architecture or system semantics may change;
+- use `technical-communication` for comments, commit messages, PRs, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing;
+- use pstack as the primary workflow when available;
+- keep product architecture state and project-specific skills in the product repository.
 
-Edit the source that owns the behavior:
+`AGENTS.md` is policy. It is not a replacement for the installed skills, and it
+does not contain the product's architecture model.
 
-1. Reusable engineering behavior: `skills/<skill-name>/SKILL.md`.
-2. Repository operating policy: `.agents/core/AGENT_RULES.md` and
-   `.agents/bootstrap.mjs` when generated wording changes.
-3. Repository-specific behavior: `.agents/skills/<skill-name>/SKILL.md`.
-4. This repository's architecture: `.agents/architecture/`.
-5. Packaging, setup, or checks: the manifests, `setup.sh`, `compat/`, or
-   `scripts/verify-plugin.sh`.
+## Legacy compatibility
 
-Do not maintain harness-specific copies of reusable skills. Update the
-generator, then regenerate generated adapters:
+Native plugin installation is the normal path. If a client cannot load a native
+plugin, pass `--compat` explicitly:
 
 ```bash
-node .agents/bootstrap.mjs
+./setup.sh \
+  --project /absolute/path/to/my-product \
+  --harness claude,codex,cursor \
+  --compat
 ```
+
+This materializes generated skill-only outputs in the consuming project. Do not
+edit those outputs or commit them as canonical content. Upstream skill-only
+entries still use `npx skills` on runtimes that do not have a native plugin
+route.
+
+## Maintaining the catalog
+
+When adding or changing a maintained plugin:
+
+1. add or edit the plugin under `plugins/`;
+2. keep its reusable skills in one plugin-local `skills/` tree;
+3. add its selection and runtime routes to `catalog.json`;
+4. run `node .agents/bootstrap.mjs` to regenerate marketplace views and root adapters;
+5. run `./scripts/verify-catalog.sh` and inspect the diff.
+
+When updating an upstream dependency:
+
+1. inspect the upstream repository and its current native packaging;
+2. update its source and pinned SHA in `catalog.json`;
+3. regenerate the derived views;
+4. update [`docs/UPSTREAM_SKILLS.md`](docs/UPSTREAM_SKILLS.md) if the route or selected set changes;
+5. verify that no upstream files were copied into the maintained plugin.
+
+Do not add upstream skills to `plugins/agent-engineering-system/skills/`.
+Do not create `.agents/plugins/marketplace.json` entries by hand. Do not add a
+new harness-specific copy unless the runtime truly needs an adapter that the
+portable package cannot provide.
 
 ## Verification
 
-The canonical local check is:
+Run the local checks before committing:
 
 ```bash
+node .agents/bootstrap.mjs
+./scripts/verify-catalog.sh
 ./scripts/verify-plugin.sh
+git diff --check
 ```
 
-It checks:
+The verifier checks:
 
-- portable Agent Plugins metadata;
-- Codex and Claude manifest identity and root skill discovery;
-- canonical skill frontmatter and directory names;
-- absence of tracked duplicate reusable skills;
-- separation of plugin and project-specific skill names;
-- current generated adapters;
-- repository-local architecture state;
-- legacy compatibility outputs when explicitly marked;
-- exact coverage of all 82 numbered operating-system sections.
+- catalog identity, ownership, provenance, and runtime routes;
+- the maintained portable, Codex, and Claude manifests;
+- the one canonical maintained skill tree and matching skill frontmatter;
+- generated Claude and Codex marketplace views;
+- generated adapters and the technical communication trigger in `AGENTS.md`;
+- absence of committed duplicate maintained skills;
+- the 82 original operating-system sections exactly once.
 
-Verification is deterministic and does not require network access.
+The checks are local-only. They do not claim that a live Claude, Codex, Cursor,
+GitHub, or upstream installation succeeded. Exercise those runtime boundaries
+separately when changing installation behavior.
 
-## Lossless operating-system split
+## References
 
-The original 82 numbered operating-system sections remain losslessly mapped:
-
-- repository operating behavior: `.agents/core/AGENT_RULES.md`;
-- reusable engineering/design quality: `skills/code-quality/SKILL.md`;
-- audit mapping: [`docs/OPERATING_SYSTEM_SPLIT.md`](docs/OPERATING_SYSTEM_SPLIT.md)
-  and [`docs/OPERATING_SYSTEM_SPLIT.json`](docs/OPERATING_SYSTEM_SPLIT.json).
-
-Do not compress, summarize, reorganize, or duplicate those rules as part of a
-packaging change.
-
-## Versioning and license
-
-The portable plugin version is maintained in `plugin.json` using semantic
-versioning. Release notes are in [`CHANGELOG.md`](CHANGELOG.md). The project is
-MIT licensed; see [`LICENSE`](LICENSE).
+- [OpenAI: Package your plugin](https://developers.openai.com/plugins/build/plugins)
+- [Claude Code: Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces)
+- [Claude Code: Plugins](https://code.claude.com/docs/en/plugins)
+- [Cursor: Plugins](https://cursor.com/docs/plugins)
+- [Vercel Labs: `skills` installer](https://github.com/vercel-labs/skills)
+- [pstack](https://github.com/michael-denyer/pstack-claude)
+- [Matt Pocock's skills](https://github.com/mattpocock/skills)

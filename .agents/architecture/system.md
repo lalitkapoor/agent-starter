@@ -1,74 +1,102 @@
 # Semantic System Model
 
-This repository distributes a reusable multi-harness engineering system while
-retaining repository-local policy and architecture state.
+This repository is a curated catalog and installer for coding-agent plugins. It
+maintains one engineering plugin and selects additional upstream plugins or
+skills for installation into a consuming project.
 
 ## System summary
 
-The root package publishes one canonical skill tree from `skills/`.
-Portable Agent Plugins, Codex, and Claude Code metadata wrap that same tree.
+`catalog.json` is the canonical list of offerings and their provenance. Custom
+plugin packages maintained by this repository live under `plugins/`. The
+maintained `agent-engineering-system` plugin has one canonical skill tree under
+`plugins/agent-engineering-system/skills/`.
+
+The root `.claude-plugin/marketplace.json` and
+`.agents/plugins/marketplace.json` are generated native catalog views. They are
+installation indexes, not alternate homes for plugin content.
+
 Repository policy is generated into `AGENTS.md` from `.agents/` sources.
-Persistent architecture knowledge lives under `.agents/architecture/`.
-Repository-specific skills live under `.agents/skills/`.
-`setup.sh` installs separate upstream workflow dependencies and optional legacy
-client compatibility copies.
+Persistent architecture knowledge for this catalog lives under
+`.agents/architecture/`. A consuming project keeps its own policy, architecture
+state, and project-specific skills.
 
 ## Major subsystems
 
-SUBSYSTEM: Portable engineering plugin
+SUBSYSTEM: Curated catalog
 
 RESPONSIBILITIES:
-  - Publish reusable engineering skills and their metadata.
-  - Provide a stable Agent Plugins 1.0 distribution boundary.
+  - List maintained plugins and selected upstream dependencies.
+  - Record ownership, provenance, pinned revisions, and runtime installation routes.
+  - Provide one input from which native catalog views can be generated.
 
 MODEL:
-  `plugin.json` and `skills/`
+  `catalog.json`
 
-SUBSYSTEM: Native harness packaging
+SUBSYSTEM: Maintained engineering plugin
 
 RESPONSIBILITIES:
-  - Provide harness-specific metadata without duplicating reusable content.
-  - Let each supported runtime discover the canonical root `skills/` tree.
+  - Publish the engineering quality, semantic architecture, and technical communication skills maintained here.
+  - Keep reusable skill content in one physical tree.
 
 MODEL:
-  `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json`
+  `plugins/agent-engineering-system/`
+
+SUBSYSTEM: Native catalog adapters
+
+RESPONSIBILITIES:
+  - Expose catalog entries using the native marketplace format for each supported runtime.
+  - Keep runtime metadata separate from plugin content.
+
+MODEL:
+  `.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json`
 
 SUBSYSTEM: Repository control plane
 
 RESPONSIBILITIES:
-  - Define always-loaded repository policy and generated harness entrypoints.
-  - Preserve repository-local architecture and project-specific constraints.
+  - Define always-loaded policy and generated repository instruction adapters.
+  - Preserve this repository's architecture state and maintenance skills.
 
 MODEL:
   `.agents/core/`, `.agents/architecture/`, `.agents/skills/`, and generated root adapters
 
-SUBSYSTEM: Installation and compatibility
+SUBSYSTEM: Project installer
 
 RESPONSIBILITIES:
-  - Install pstack and selected upstream skills as separate dependencies.
-  - Materialize legacy client skill copies only when explicitly requested.
+  - Configure a consuming project's instruction entrypoints.
+  - Install the maintained plugin and selected upstream offerings through native routes.
+  - Use `npx skills` only where a runtime has a skill-only route or explicit legacy compatibility was requested.
 
 MODEL:
-  `setup.sh`, `compat/`, and `scripts/verify-plugin.sh`
+  `setup.sh` and `scripts/setup-project.mjs`
 
 ## System-level relationships
 
-The three plugin manifests IDENTIFY the same root package and `skills/` tree;
-no manifest owns a second copy of reusable skill content.
-`plugin.json` DISCOVERS `skills/` through the Agent Plugins 1.0 fixed layout.
-`.codex-plugin/plugin.json` REFERENCES `./skills/` for Codex's native overlay.
-`.claude-plugin/plugin.json` USES the Claude Code default root `skills/` path.
-`AGENTS.md` REQUIRES `skills/code-quality/` for non-trivial engineering work.
-`AGENTS.md` REQUIRES `skills/semantic-architecture/` for architecture-sensitive work.
-`skills/semantic-architecture/` READS `.agents/architecture/`.
-`setup.sh` DERIVES legacy compatibility outputs from plugin and host skill sources.
+`catalog.json` SELECTS `agent-engineering-system`, pstack, and selected Matt
+Pocock skills as separate offerings.
+`plugins/agent-engineering-system/` OWNS the three maintained engineering skills.
+The generated Claude and Codex marketplace files ADVERTISE catalog entries;
+they do not copy or own skill content.
+`setup.sh` READS the catalog through `scripts/setup-project.mjs` and routes each
+entry according to its runtime definition.
+`AGENTS.md` REQUIRES the maintained code-quality skill for non-trivial work,
+the semantic-architecture skill for architecture-sensitive work, and the
+technical-communication skill for engineering writing.
+`technical-communication` APPLIES to comments, commits, pull requests,
+documentation, RFCs, architecture diagrams, specifications, and handoffs.
+`semantic-architecture` READS the consuming repository's
+`.agents/architecture/` rather than this catalog's state when installed there.
 
 ## System-wide sources of truth
 
-DATA: Portable engineering guidance
+DATA: Curated offerings and installation routes
 
 SOURCE_OF_TRUTH:
-  `skills/`
+  `catalog.json`
+
+DATA: Maintained engineering guidance
+
+SOURCE_OF_TRUTH:
+  `plugins/agent-engineering-system/skills/`
 
 DATA: Repository policy
 
@@ -82,45 +110,65 @@ SOURCE_OF_TRUTH:
 
 ## System-wide invariants
 
-INVARIANT: PORTABLE_SKILLS_HAVE_ONE_CANONICAL_COPY
+INVARIANT: MAINTAINED_PLUGIN_SKILLS_HAVE_ONE_CANONICAL_COPY
 
 STATEMENT:
-  Reusable plugin skills are canonical only under root `skills/`; compatibility copies are generated outputs.
+  Reusable skills maintained by this repository exist only under their plugin's
+  canonical `skills/` tree. Harness metadata and compatibility output never
+  become a second source.
 
-INVARIANT: HARNESS_METADATA_DOES_NOT_DUPLICATE_CONTENT
-
-STATEMENT:
-  Codex and Claude manifests may differ, but all harnesses discover the same physical root `skills/` files.
-
-INVARIANT: ARCHITECTURE_STATE_IS_HOST_OWNED
+INVARIANT: CATALOG_VIEWS_ARE_DERIVED
 
 STATEMENT:
-  `.agents/architecture/` remains repository-local state and is not bundled as a portable skill or plugin data store.
+  Native marketplace files are generated from `catalog.json` and must not be
+  hand-maintained independently.
 
-INVARIANT: UPSTREAM_WORKFLOW_IS_SEPARATE
+INVARIANT: UPSTREAM_CONTENT_REMAINS_EXTERNAL
 
 STATEMENT:
-  pstack and selected upstream skills remain dependencies installed by setup rather than being silently folded into the engineering plugin.
+  pstack and Matt Pocock skills remain upstream dependencies. This repository
+  records how to install them but does not copy them into its maintained plugin.
+
+INVARIANT: PROJECT_STATE_IS_HOST_OWNED
+
+STATEMENT:
+  A consuming project's `AGENTS.md`, `.agents/architecture/`, and
+  `.agents/skills/` remain owned by that project. The installer may add a
+  marked integration block but must not overwrite surrounding content.
 
 INVARIANT: LEGACY_COMPATIBILITY_IS_EXPLICIT
 
 STATEMENT:
-  `.cursor/skills/` and `.claude/skills/` are generated only as explicit legacy compatibility outputs and are never canonical.
+  Skill-only copies under `.agents/skills/`, `.claude/skills/`, or
+  `.cursor/skills/` are fallback outputs from an explicit compatibility path;
+  they are never canonical plugin content.
 
 ## System boundaries
 
-BOUNDARY: Agent Plugins package
+BOUNDARY: Maintained plugin package
 
 OWNS:
-  - `plugin.json`
-  - `.codex-plugin/plugin.json`
-  - `.claude-plugin/plugin.json`
-  - portable `skills/`
+  - `plugins/agent-engineering-system/plugin.json`
+  - `plugins/agent-engineering-system/.codex-plugin/plugin.json`
+  - `plugins/agent-engineering-system/.claude-plugin/plugin.json`
+  - `plugins/agent-engineering-system/skills/`
 
 DOES_NOT_OWN:
-  - repository-specific architecture state
-  - generated compatibility copies
-  - plugin installation state
+  - `catalog.json` entries for upstream projects
+  - consuming-project architecture state
+  - generated marketplace indexes
+  - installed plugin state
+
+BOUNDARY: Curated catalog
+
+OWNS:
+  - the selected set of offerings
+  - runtime-specific source and installation metadata
+  - generated native marketplace views
+
+DOES_NOT_OWN:
+  - upstream skill or plugin source code
+  - a consuming project's product instructions
 
 ## System-level requirements and budgets
 
@@ -132,98 +180,110 @@ TYPE:
 TARGET:
   All 82 original numbered sections remain accounted for by `docs/OPERATING_SYSTEM_SPLIT.json`.
 
+REQUIREMENT: INSTALLER_MUST_BE_SAFE_TO_REAPPLY
+
+TYPE:
+  behavior
+
+TARGET:
+  Re-running setup updates only the marked instruction block and explicitly
+  managed plugin destinations; it does not overwrite surrounding project policy.
+
 ## Decisions with system-wide impact
 
-DECISION: ROOT_REPOSITORY_IS_PLUGIN_PACKAGE
+DECISION: ROOT_REPOSITORY_IS_CURATED_DISTRIBUTION
 
 STATUS:
   accepted
 
 DECISION:
-  This repository's root is the Agent Plugins 1.0 package root because the repository distributes the reusable engineering system.
+  The repository root is the catalog and installer. Maintained plugin packages
+  are explicit children under `plugins/`; the root is not itself one plugin
+  package.
 
 WHY:
-  A consuming product repository should keep only its own policy, architecture, and project skills while installing this package externally.
+  The repository maintains a curated set containing its own engineering plugin
+  plus separate upstream offerings. Treating the root as one plugin obscures
+  selection, provenance, and installation differences.
 
 ALTERNATIVES:
-  - Keep the plugin under `.agents/plugins/engineering/`.
+  - Treat the entire repository as the agent-engineering-system plugin.
+  - Keep maintained plugin content under `.agents/plugins/`.
 
 CONSEQUENCES:
-  - Portable skills are discovered from root `skills/`.
-  - `.agents/` remains host-repository support state and is outside the plugin component contract.
+  - `catalog.json` is the root distribution contract.
+  - `.agents/plugins/marketplace.json` is a generated Codex catalog view, not a package directory.
+  - Consuming projects can install one maintained plugin or the curated set.
 
 SOURCE:
   user-discussed
 
-DECISION: COMPATIBILITY_IS_EXPLICIT
+DECISION: CATALOG_VIEWS_ARE_GENERATED
 
 STATUS:
   accepted
 
 DECISION:
-  `setup.sh --compat` is required to materialize legacy copies of plugin skills into client-specific skill directories.
+  Generate Claude and Codex marketplace files from `catalog.json` with
+  `.agents/bootstrap.mjs`.
 
 WHY:
-  Native Codex, Claude Code, and Cursor clients should load the package through
-  their native plugin entrypoints, while older or non-plugin clients may still
-  need a generated fallback.
+  Each runtime has a different marketplace shape, but the curated selection
+  and provenance should have one source of truth.
 
 CONSEQUENCES:
-  - Compatibility directories are ignored runtime outputs.
-  - Generated copies are checked against canonical sources when marked by setup.
-
-SOURCE:
-  user-discussed
-
-DECISION: HARNESS_MANIFESTS_ARE_THIN_OVERLAYS
-
-STATUS:
-  accepted
-
-DECISION:
-  Keep portable, Codex-specific, and Claude-specific manifests, but point all
-  supported runtimes at the one root `skills/` tree using each runtime's native
-  discovery convention.
-
-WHY:
-  Agent Plugins 1.0 is portable metadata, while Codex and Claude Code also
-  have harness-specific plugin entrypoints. Duplicating skill files would make
-  maintenance and verification ambiguous.
-
-ALTERNATIVES:
-  - Maintain one copied skill tree per harness.
-  - Use only the portable root manifest.
-
-CONSEQUENCES:
-  - Manifest identity metadata is repeated intentionally.
-  - Reusable skill content is not repeated.
-  - Codex marketplace files remain a separate installation/registry concern.
+  - Add or remove an offering in `catalog.json`, then regenerate.
+  - Review generated marketplace changes as derived metadata.
 
 SOURCE:
   user-discussed and external-documentation
 
-DECISION: UPSTREAM_CLAUDE_PSTACK_IS_NATIVE
+DECISION: NATIVE_INSTALLATION_WITH_SKILL_FALLBACK
 
 STATUS:
   accepted
 
 DECISION:
-  Do not copy the cross-runtime pstack supplement into `.claude/skills/`;
-  use its upstream Claude plugin packaging for Claude and stage shared skills
-  only for runtimes that need that discovery path.
+  `setup.sh` uses native plugin installation for Claude and Codex, copies the
+  maintained plugin and upstream Cursor plugin into Cursor's local plugin
+  directory, and uses `npx skills` for upstream skill-only routes or explicit
+  legacy compatibility.
 
 WHY:
-  The upstream repository ships `plugins/pstack/.claude-plugin/plugin.json`.
-  Copying those skills into the host would create a second Claude installation
-  path and obscure dependency ownership.
+  A skill installer can distribute skill files but cannot replace native plugin
+  registration, plugin metadata, or upstream plugin lifecycle behavior.
 
 CONSEQUENCES:
-  - Claude users install pstack separately through its upstream marketplace.
-  - The setup script still pins the upstream checkout and stages shared skills.
+  - Native plugin installation is the normal path.
+  - `--compat` is deliberately visible and optional.
+  - Upstream pstack and Matt sources remain separate from maintained content.
 
 SOURCE:
-  external-documentation
+  user-discussed and external-documentation
+
+DECISION: TECHNICAL_COMMUNICATION_IS_A_MAINTAINED_SKILL
+
+STATUS:
+  accepted
+
+DECISION:
+  Keep writing guidance as `technical-communication` inside
+  `agent-engineering-system` and require it for engineering artifacts.
+
+WHY:
+  Comments, commits, PRs, technical documents, RFCs, diagrams, and specs are
+  part of the engineering system's quality bar, not a harness-specific adapter.
+
+CONSEQUENCES:
+  - The skill is installed with the maintained plugin.
+  - `AGENTS.md` and project setup explicitly trigger it for writing work.
+
+SOURCE:
+  user-request
 
 ## Open questions
 
-- Which non-Copilot clients should receive first-class compatibility generators as their plugin support matures?
+- Which additional upstream plugins should be curated after their native
+  installation routes and provenance are verified?
+- Should the catalog eventually be published from a dedicated marketplace repo,
+  separate from this installer and its maintained plugin source?

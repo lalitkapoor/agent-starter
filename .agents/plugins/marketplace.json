@@ -1,0 +1,38 @@
+{
+  "name": "agent-starter",
+  "interface": {
+    "displayName": "Agent Starter"
+  },
+  "plugins": [
+    {
+      "name": "agent-engineering-system",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agent-engineering-system"
+      },
+      "description": "Maintained engineering quality, semantic architecture, and technical communication skills",
+      "version": "0.2.0",
+      "category": "Engineering",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      }
+    },
+    {
+      "name": "pstack",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/michael-denyer/pstack-claude.git",
+        "path": "plugins/pstack",
+        "ref": "main",
+        "sha": "45f768349a6d7d7e71509fee3f5bccfad54b3bad"
+      },
+      "description": "A structured engineering workflow for planning, TDD, verification, review, and proof",
+      "category": "Workflow",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      }
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "name": "agent-starter",
+  "owner": {
+    "name": "Lalit Kapoor",
+    "email": "lalitkapoor@gmail.com",
+    "url": "https://github.com/lalitkapoor"
+  },
+  "metadata": {
+    "description": "A curated catalog and installer for a multi-harness engineering system for coding agents"
+  },
+  "plugins": [
+    {
+      "name": "agent-engineering-system",
+      "source": "./plugins/agent-engineering-system",
+      "description": "Maintained engineering quality, semantic architecture, and technical communication skills",
+      "version": "0.2.0",
+      "category": "Engineering"
+    },
+    {
+      "name": "pstack",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/michael-denyer/pstack-claude.git",
+        "path": "plugins/pstack",
+        "ref": "main",
+        "sha": "45f768349a6d7d7e71509fee3f5bccfad54b3bad"
+      },
+      "description": "A structured engineering workflow for planning, TDD, verification, review, and proof",
+      "category": "Workflow"
+    },
+    {
+      "name": "mattpocock-skills",
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills",
+        "ref": "main",
+        "sha": "3cca18b368ae95cdbdebbff572ccafa662551015"
+      },
+      "description": "Upstream specialist skills for research, review, design, debugging, and engineering handoffs",
+      "category": "Specialist skills"
+    }
+  ]
+}

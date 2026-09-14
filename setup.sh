@@ -2,158 +2,131 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VENDOR="$ROOT/.agent-vendor"
-LOCK="$ROOT/.agent-deps.lock"
 
-PSTACK_REF="${PSTACK_REF:-main}"
-PSTACK_CROSS_REF="${PSTACK_CROSS_REF:-main}"
-MATT_REF="${MATT_REF:-main}"
-
+PROJECT=""
+HARNESS="claude,codex,cursor"
+MARKETPLACE="${AGENT_STARTER_MARKETPLACE:-lalitkapoor/agent-starter}"
 LOCAL_ONLY=0
 COMPAT=0
-INSTALL_PSTACK=1
-INSTALL_CROSS_PSTACK=1
-INSTALL_MATT=1
+DRY_RUN=0
+SKIP_PSTACK=0
+SKIP_MATT=0
+
+usage() {
+  cat <<'EOF'
+Usage:
+  ./setup.sh [--project PATH] [--harness LIST] [options]
+
+Without --project, setup regenerates and verifies this catalog only.
+
+Options:
+  --project PATH             Product repository to configure and install into.
+  --harness LIST             Comma-separated: claude,codex,cursor.
+  --marketplace SOURCE       Marketplace source; defaults to lalitkapoor/agent-starter.
+  --local-only               Install only the maintained local plugin; skip upstream entries.
+  --compat                   Also materialize maintained skills for legacy clients.
+  --dry-run                  Print target-project changes and commands without applying them.
+  --skip-pstack              Do not install pstack.
+  --skip-matt                Do not install Matt Pocock's selected skills.
+  --help                     Show this help.
+
+Examples:
+  ./setup.sh --project /path/to/my-product --harness claude,codex,cursor
+  ./setup.sh --project /path/to/my-product --local-only --marketplace "$PWD"
+  ./setup.sh --project /path/to/my-product --harness codex --dry-run
+EOF
+}
 
 while (($#)); do
   case "$1" in
-    --local-only) LOCAL_ONLY=1; INSTALL_PSTACK=0; INSTALL_CROSS_PSTACK=0; INSTALL_MATT=0 ;;
-    --compat) COMPAT=1 ;;
-    --skip-pstack) INSTALL_PSTACK=0 ;;
-    --skip-cross-runtime-pstack) INSTALL_CROSS_PSTACK=0 ;;
-    --skip-matt) INSTALL_MATT=0 ;;
+    --project)
+      [[ $# -ge 2 ]] || { echo "--project requires a path" >&2; exit 2; }
+      PROJECT="$2"
+      shift 2
+      ;;
+    --harness)
+      [[ $# -ge 2 ]] || { echo "--harness requires a list" >&2; exit 2; }
+      HARNESS="$2"
+      shift 2
+      ;;
+    --marketplace)
+      [[ $# -ge 2 ]] || { echo "--marketplace requires a source" >&2; exit 2; }
+      MARKETPLACE="$2"
+      shift 2
+      ;;
+    --local-only)
+      LOCAL_ONLY=1
+      shift
+      ;;
+    --compat)
+      COMPAT=1
+      shift
+      ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    --skip-pstack|--skip-cross-runtime-pstack)
+      SKIP_PSTACK=1
+      shift
+      ;;
+    --skip-matt)
+      SKIP_MATT=1
+      shift
+      ;;
     -h|--help)
-      printf "%s\n" "Usage: ./setup.sh [--local-only] [--compat] [--skip-pstack] [--skip-cross-runtime-pstack] [--skip-matt]"
-      printf "%s\n" "  --compat  Generate explicit legacy .cursor/skills and .claude/skills copies."
-      exit 0 ;;
-    *) printf "Unknown option: %s\n" "$1" >&2; exit 2 ;;
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 2
+      ;;
   esac
-  shift
 done
 
-copy_dir() {
-  local src="$1" dst="$2"
-  rm -rf "$dst"
-  mkdir -p "$(dirname "$dst")"
-  cp -R "$src" "$dst"
-}
+if (( DRY_RUN )); then
+  node "$ROOT/.agents/bootstrap.mjs" --check
+else
+  node "$ROOT/.agents/bootstrap.mjs"
+fi
+"$ROOT/scripts/verify-catalog.sh"
 
-install_repository_skill() {
-  local src="$1" name="$2"
-  if [[ -e "$ROOT/skills/$name" ]]; then
-    printf "Skill name collides with the portable plugin: %s\n" "$name" >&2
-    exit 1
-  fi
-  copy_dir "$src" "$ROOT/.agents/skills/$name"
-}
-
-# Native plugin loading is preferred. This function exists only for older or
-# non-plugin clients and writes ignored, generated compatibility output.
-install_legacy_compatibility() {
-  local output_root marker dir name
-  for output_root in "$ROOT/.cursor/skills" "$ROOT/.claude/skills"; do
-    mkdir -p "$output_root"
-    marker="$output_root/.agent-engineering-system-legacy-compat"
-    : > "$marker"
-
-    for dir in "$ROOT/skills"/*; do
-      [[ -d "$dir" && -s "$dir/SKILL.md" ]] || continue
-      name="$(basename "$dir")"
-      copy_dir "$dir" "$output_root/$name"
-      printf "%s\n" "$name" >> "$marker"
-    done
-
-    for dir in "$ROOT/.agents/skills"/*; do
-      [[ -d "$dir" && -s "$dir/SKILL.md" ]] || continue
-      name="$(basename "$dir")"
-      if [[ -e "$ROOT/skills/$name" ]]; then
-        printf "Skill name collides with the portable plugin: %s\n" "$name" >&2
-        exit 1
-      fi
-      copy_dir "$dir" "$output_root/$name"
-      printf "%s\n" "$name" >> "$marker"
-    done
-  done
-}
-
-node "$ROOT/.agents/bootstrap.mjs"
-
-if (( LOCAL_ONLY )); then
+if [[ -z "$PROJECT" ]]; then
   if (( COMPAT )); then
-    install_legacy_compatibility
+    if (( LOCAL_ONLY )); then
+      node "$ROOT/scripts/setup-project.mjs" \
+        --project "$ROOT" \
+        --harness claude,cursor \
+        --marketplace "$ROOT" \
+        --local-only \
+        --compat \
+        --legacy-only \
+        --skip-instructions
+      exit 0
+    fi
+    echo "--compat without --project requires --local-only; pass --project PATH for a consuming repository." >&2
+    exit 2
   fi
-  "$ROOT/scripts/verify-plugin.sh"
+  echo "Catalog verified. Pass --project PATH to install it into a consuming repository."
   exit 0
 fi
 
-command -v git >/dev/null || { echo "git required" >&2; exit 1; }
-mkdir -p "$VENDOR"
-: > "$LOCK.tmp"
-trap 'rm -f "$LOCK.tmp"' EXIT
-printf "# Generated by setup.sh. Review and commit intentionally.\n" >> "$LOCK.tmp"
-
-clone_ref() {
-  local url="$1" dst="$2" ref="$3"
-  rm -rf "$dst"
-  git clone --quiet "$url" "$dst"
-  git -C "$dst" checkout --quiet "$ref"
-}
-
-if (( INSTALL_PSTACK )); then
-  PSTACK_REPO="$VENDOR/cursor-plugins"
-  clone_ref "https://github.com/cursor/plugins.git" "$PSTACK_REPO" "$PSTACK_REF"
-  [[ -d "$PSTACK_REPO/pstack" ]] || { echo "pstack missing in cursor/plugins" >&2; exit 1; }
-
-  PSTACK_COMMIT="$(git -C "$PSTACK_REPO" rev-parse HEAD)"
-  CURSOR_PSTACK="$HOME/.cursor/plugins/local/pstack"
-  mkdir -p "$(dirname "$CURSOR_PSTACK")"
-  copy_dir "$PSTACK_REPO/pstack" "$CURSOR_PSTACK"
-
-  printf "pstack_official_commit=%s\n" "$PSTACK_COMMIT" >> "$LOCK.tmp"
-
-  if [[ -d "$PSTACK_REPO/pstack/skills" ]]; then
-    for dir in "$PSTACK_REPO/pstack/skills"/*; do
-      [[ -d "$dir" && -s "$dir/SKILL.md" ]] || continue
-      name="$(basename "$dir")"
-      install_repository_skill "$dir" "$name"
-    done
-  fi
+if (( LOCAL_ONLY )); then
+  MARKETPLACE="$ROOT"
 fi
 
-if (( INSTALL_CROSS_PSTACK )); then
-  # pstack-claude ships a native Claude plugin. Stage only its shared skills;
-  # Claude users install the upstream plugin through Claude's plugin flow.
-  CROSS_REPO="$VENDOR/pstack-claude"
-  clone_ref "https://github.com/michael-denyer/pstack-claude.git" "$CROSS_REPO" "$PSTACK_CROSS_REF"
-  CROSS_SKILLS="$CROSS_REPO/plugins/pstack/skills"
-  if [[ -d "$CROSS_SKILLS" ]]; then
-    for dir in "$CROSS_SKILLS"/*; do
-      [[ -d "$dir" && -s "$dir/SKILL.md" ]] || continue
-      name="$(basename "$dir")"
-      [[ -e "$ROOT/skills/$name" ]] || install_repository_skill "$dir" "$name"
-    done
-  fi
-  printf "pstack_cross_runtime_commit=%s\n" "$(git -C "$CROSS_REPO" rev-parse HEAD)" >> "$LOCK.tmp"
-fi
+setup_args=(
+  "$ROOT/scripts/setup-project.mjs"
+  --project "$PROJECT"
+  --harness "$HARNESS"
+  --marketplace "$MARKETPLACE"
+)
+(( LOCAL_ONLY )) && setup_args+=(--local-only)
+(( COMPAT )) && setup_args+=(--compat)
+(( DRY_RUN )) && setup_args+=(--dry-run)
+(( SKIP_PSTACK )) && setup_args+=(--skip-pstack)
+(( SKIP_MATT )) && setup_args+=(--skip-matt)
 
-if (( INSTALL_MATT )); then
-  MATT_REPO="$VENDOR/mattpocock-skills"
-  clone_ref "https://github.com/mattpocock/skills.git" "$MATT_REPO" "$MATT_REF"
-  selected=(codebase-design domain-modeling diagnosing-bugs research improve-codebase-architecture code-review prototype writing-for-agents handoff)
-
-  for name in "${selected[@]}"; do
-    src="$(find "$MATT_REPO" -path "$MATT_REPO/.git" -prune -o -type d -name "$name" -print -quit)"
-    [[ -n "$src" && -s "$src/SKILL.md" ]] || continue
-    install_repository_skill "$src" "$name"
-  done
-
-  printf "matt_skills_commit=%s\n" "$(git -C "$MATT_REPO" rev-parse HEAD)" >> "$LOCK.tmp"
-fi
-
-mv "$LOCK.tmp" "$LOCK"
-
-if (( COMPAT )); then
-  install_legacy_compatibility
-fi
-
-"$ROOT/scripts/verify-plugin.sh"
+node "${setup_args[@]}"
