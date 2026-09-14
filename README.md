@@ -188,6 +188,17 @@ The catalog follows the declared upstream refs when installing. `setup.sh`
 installs or fetches those plugins; it never copies them into
 `plugins/agent-engineering-system/`.
 
+### Upstream: HumanLayer's `show-me`
+
+`show-me` is an optional visual explanation skill. It asks agents to use the
+smallest useful representation for the topic: concise diagrams, code-shape
+sketches, focused Mermaid views, or a focused HTML artifact when a visual model
+is genuinely useful.
+
+The catalog uses HumanLayer's native plugin subdirectory for Claude Code and
+the skill-only `npx skills` route for Codex and Cursor. The source remains at
+`humanlayer/skills`; it is not copied into the maintained engineering plugin.
+
 ### Upstream: Matt Pocock's skills
 
 The catalog selects these upstream specialist skills:
@@ -276,6 +287,7 @@ Add the marketplace and install the offerings you want:
 claude plugin marketplace add lalitkapoor/agent-starter --scope project
 claude plugin install agent-engineering-system@agent-starter --scope project
 claude plugin install pstack@agent-starter --scope project
+claude plugin install show-me@agent-starter --scope project
 claude plugin install mattpocock-skills@agent-starter --scope project
 ```
 
@@ -318,12 +330,21 @@ npx skills@latest add mattpocock/skills \
 
 Repeat the command for the other selected names, or let `setup.sh` do it.
 
+HumanLayer's `show-me` skill uses the same skill-only route in Codex:
+
+```bash
+npx skills@latest add humanlayer/skills \
+  --skill show-me \
+  --agent codex \
+  -y
+```
+
 ### Cursor
 
 Cursor's local plugin route uses the plugin directory under the user's Cursor
 configuration. `setup.sh` copies the maintained plugin there from the checkout
 and fetches the official pstack plugin from its declared ref. For Matt Pocock's skill-only
-entries it uses `npx skills` with `--agent cursor`.
+entries and HumanLayer's `show-me`, it uses `npx skills` with `--agent cursor`.
 
 If you are testing only the maintained plugin locally:
 
@@ -333,6 +354,15 @@ cp -R plugins/agent-engineering-system ~/.cursor/plugins/local/agent-engineering
 ```
 
 Restart or reload Cursor after changing a local plugin.
+
+To install HumanLayer's `show-me` skill directly in Cursor:
+
+```bash
+npx skills@latest add humanlayer/skills \
+  --skill show-me \
+  --agent cursor \
+  -y
+```
 
 ### Other runtimes
 
@@ -441,3 +471,5 @@ separately when changing installation behavior.
 - [Vercel Labs: `skills` installer](https://github.com/vercel-labs/skills)
 - [pstack](https://github.com/michael-denyer/pstack-claude)
 - [Matt Pocock's skills](https://github.com/mattpocock/skills)
+- [HumanLayer's skills](https://github.com/humanlayer/skills)
+- [HumanLayer: `show-me`](https://www.humanlayer.com/blog/show-me-skill)

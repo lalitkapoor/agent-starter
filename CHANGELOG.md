@@ -10,7 +10,8 @@ engineering plugin are recorded here.
 - Add the `technical-communication` skill for comments, commits, pull requests, documentation, RFCs, diagrams, and specifications.
 - Generate Claude and Codex marketplace views from the catalog.
 - Install pstack and selected Matt Pocock skills as separate upstream offerings.
-- Follow declared upstream refs without commit-pinning pstack or Matt Pocock content.
+- Curate HumanLayer's upstream `show-me` skill with a native Claude route and skill-only Codex/Cursor routes.
+- Follow declared upstream refs without commit-pinning pstack, HumanLayer, or Matt Pocock content.
 - Renumber core policy and code-quality headings locally so each document reads coherently.
 - Make skill-only compatibility an explicit fallback rather than the normal installation path.
 

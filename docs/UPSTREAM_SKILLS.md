@@ -21,7 +21,8 @@ source of truth for product behavior or architectural intent.
 3. **technical-communication** — repository-owned standard for clear engineering writing.
 4. **Project-owned skills** — project/platform/product-specific behavior.
 5. **semantic-architecture** — persistent hierarchical system modeling.
-6. **Selected Matt Pocock skills** — specialist design, diagnosis, research, review, and agent-writing references.
+6. **show-me** — optional visual explanations for complex code and system relationships.
+7. **Selected Matt Pocock skills** — specialist design, diagnosis, research, review, and agent-writing references.
 
 When skills overlap, do not mechanically execute both workflows. pstack owns process choices such as architecture workflow, TDD, verification, adversarial review, and proof.
 
@@ -51,6 +52,20 @@ For Cursor, the installer fetches the `pstack` plugin from the declared `main`
 ref in `cursor/plugins` into Cursor's local plugin directory. No pstack files are
 copied into the maintained engineering plugin.
 
+## HumanLayer show-me
+
+Official source:
+`https://github.com/humanlayer/skills/tree/main/plugins/show-me`
+
+`show-me` helps an agent explain a topic with concise diagrams, code-shape
+sketches, and focused HTML artifacts. It is an optional visual explanation aid,
+not a replacement for the engineering workflow or architecture model.
+
+Claude Code uses HumanLayer's native `show-me` plugin at
+`plugins/show-me`. Codex and Cursor use the skill-only `npx skills` route for
+the selected `show-me` skill. The catalog follows the upstream `main` ref and
+does not copy the skill into the maintained engineering plugin.
+
 ## Matt Pocock skills
 
 Official source:
@@ -77,10 +92,11 @@ copied into `plugins/agent-engineering-system/`.
 ## Skill-only compatibility
 
 `npx skills` installs skill files, not full plugin components. The installer
-uses it for the selected Matt Pocock skills on runtimes without a native
-plugin route. Pass `--compat` only when a runtime cannot load the maintained
-plugin natively; this creates generated runtime skill copies and never changes
-canonical ownership.
+uses it for selected upstream skill-only offerings, currently Matt Pocock's
+skills and HumanLayer's `show-me`, on runtimes without a native plugin route.
+Pass `--compat` only when a runtime cannot load the maintained plugin natively;
+this creates generated runtime skill copies and never changes canonical
+ownership.
 
 ## Updating dependencies
 

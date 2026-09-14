@@ -72,6 +72,39 @@
       }
     },
     {
+      "name": "show-me",
+      "description": "Explain the current topic with concise diagrams, code-shape sketches, and focused HTML artifacts",
+      "ownership": "upstream",
+      "category": "Visualization",
+      "provenance": {
+        "repository": "https://github.com/humanlayer/skills",
+        "ref": "main"
+      },
+      "runtimes": {
+        "claude": {
+          "kind": "plugin",
+          "source": {
+            "source": "git-subdir",
+            "url": "https://github.com/humanlayer/skills.git",
+            "path": "plugins/show-me",
+            "ref": "main"
+          }
+        },
+        "codex": {
+          "kind": "skills",
+          "source": "humanlayer/skills",
+          "agent": "codex",
+          "skills": ["show-me"]
+        },
+        "cursor": {
+          "kind": "skills",
+          "source": "humanlayer/skills",
+          "agent": "cursor",
+          "skills": ["show-me"]
+        }
+      }
+    },
+    {
       "name": "mattpocock-skills",
       "description": "Upstream specialist skills for research, review, design, debugging, and engineering handoffs",
       "ownership": "upstream",
