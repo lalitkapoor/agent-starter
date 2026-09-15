@@ -1,4 +1,4 @@
-# Semantic System Model
+# agent-starter Architecture
 
 This repository is a curated catalog and installer for coding-agent plugins. It
 maintains one engineering plugin and selects additional upstream plugins or
@@ -16,9 +16,9 @@ The root `.claude-plugin/marketplace.json` and
 installation indexes, not alternate homes for plugin content.
 
 Repository policy is generated into `AGENTS.md` from `.agents/` sources.
-Persistent architecture knowledge for this catalog lives under
-`.agents/architecture/`. A consuming project keeps its own policy, architecture
-state, and project-specific skills.
+This file is the catalog's cross-cutting architecture model. A consuming project
+keeps its own policy, colocated architecture documents, and project-specific
+skills.
 
 ## Major subsystems
 
@@ -57,7 +57,8 @@ RESPONSIBILITIES:
   - Preserve this repository's architecture state and maintenance skills.
 
 MODEL:
-  `.agents/core/`, `.agents/architecture/`, `.agents/skills/`, and generated root adapters
+  `AGENTS.md`, `ARCHITECTURE.md`, `.agents/core/`, `.agents/skills/`, and
+  generated root adapters
 
 SUBSYSTEM: Project installer
 
@@ -83,8 +84,9 @@ the semantic-architecture skill for architecture-sensitive work, and the
 technical-communication skill for engineering writing.
 `technical-communication` APPLIES to comments, commits, pull requests,
 documentation, RFCs, architecture diagrams, specifications, and handoffs.
-`semantic-architecture` READS the consuming repository's
-`.agents/architecture/` rather than this catalog's state when installed there.
+`semantic-architecture` READS the nearest `ARCHITECTURE.md` for each affected
+subsystem in a consuming repository rather than this catalog's state when
+installed there.
 
 ## System-wide sources of truth
 
@@ -106,7 +108,7 @@ SOURCE_OF_TRUTH:
 DATA: Repository architectural intent
 
 SOURCE_OF_TRUTH:
-  `.agents/architecture/`
+  `ARCHITECTURE.md`
 
 ## System-wide invariants
 
@@ -135,9 +137,10 @@ SOURCE_OF_TRUTH:
 
 ### INV-0005 — Project state is host-owned
 
-- **Statement:** A consuming project's `AGENTS.md`, `.agents/architecture/`,
-  and `.agents/skills/` remain owned by that project. The installer may add a
-  marked integration block but must not overwrite surrounding content.
+- **Statement:** A consuming project's `AGENTS.md`, colocated
+  `ARCHITECTURE.md` files, and `.agents/skills/` remain owned by that project.
+  The installer may add a marked integration block but must not overwrite
+  surrounding content.
 
 ### INV-0006 — Legacy compatibility is explicit
 
@@ -208,6 +211,31 @@ CONSEQUENCES:
   - `catalog.json` is the root distribution contract.
   - `.agents/plugins/marketplace.json` is a generated Codex catalog view, not a package directory.
   - Consuming projects can install one maintained plugin or the curated set.
+
+SOURCE:
+  user-discussed
+
+DECISION: ARCHITECTURE_DOCUMENTS_ARE_COLOCATED
+
+STATUS:
+  accepted
+
+DECISION:
+  Consuming projects store semantic architecture in `ARCHITECTURE.md` files
+  beside the meaningful subsystems they describe. A repository-root
+  `ARCHITECTURE.md` is reserved for genuinely system-wide relationships and
+  guarantees.
+
+WHY:
+  Agents can discover the nearest architecture document from the files they
+  are changing, and the model remains close to the implementation it describes.
+
+CONSEQUENCES:
+  - `setup.sh` establishes the discovery rule but does not create architecture
+    files or a project-level architecture directory.
+  - Agents create a document only when a subsystem has meaningful independent
+    semantics; they do not create one for every source file.
+  - This catalog keeps its own cross-cutting model in the root `ARCHITECTURE.md`.
 
 SOURCE:
   user-discussed

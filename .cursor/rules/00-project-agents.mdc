@@ -10,4 +10,4 @@ Read and follow `AGENTS.md`.
 This repository is an `agent-starter` catalog. Use the installed `agent-engineering-system` plugin's canonical skills when Cursor has loaded it.
 Use installed pstack as the primary non-trivial engineering workflow when available.
 For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read the complete `technical-communication` skill before drafting.
-For architectural work, also use the plugin semantic-architecture skill and progressively inspect the relevant path under `.agents/architecture/`.
+For architectural work, also use the plugin semantic-architecture skill and read the nearest `ARCHITECTURE.md` for the affected subsystem.

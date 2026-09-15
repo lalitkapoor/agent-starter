@@ -14,8 +14,8 @@ required=(
   "plugins/agent-engineering-system/skills/semantic-architecture/SKILL.md"
   "plugins/agent-engineering-system/skills/technical-communication/SKILL.md"
   ".agents/core/AGENT_RULES.md"
-  ".agents/architecture/system.md"
-  ".agents/architecture/_templates/system.md"
+  "ARCHITECTURE.md"
+  "docs/ARCHITECTURE_TEMPLATE.md"
   ".agents/skills/project-research/SKILL.md"
   "docs/UPSTREAM_SKILLS.md"
 )
@@ -28,6 +28,7 @@ done
 [[ ! -e "$ROOT/.codex-plugin/plugin.json" ]] || { echo "root .codex-plugin/plugin.json must not make the catalog look like one plugin" >&2; exit 1; }
 [[ ! -e "$ROOT/.claude-plugin/plugin.json" ]] || { echo "root .claude-plugin/plugin.json must be a marketplace only" >&2; exit 1; }
 [[ ! -e "$ROOT/skills" ]] || { echo "root skills/ must not duplicate a maintained plugin skill tree" >&2; exit 1; }
+[[ ! -e "$ROOT/.agents/architecture" ]] || { echo "catalog architecture must live in root ARCHITECTURE.md" >&2; exit 1; }
 
 python3 - "$ROOT" <<'PY'
 import json
@@ -253,7 +254,7 @@ for relative in (
     if heading_numbers != list(range(1, len(heading_numbers) + 1)):
         raise SystemExit(f"{relative} headings must be contiguous from 1")
 
-architecture = require_relative(".agents/architecture/system.md").read_text()
+architecture = require_relative("ARCHITECTURE.md").read_text()
 try:
     invariant_section = architecture.split("## System-wide invariants\n", 1)[1].split("\n## System boundaries", 1)[0]
 except IndexError:

@@ -1,7 +1,7 @@
-# <Subsystem> Semantic Model
+# <Subsystem> Architecture
 
 Parent:
-`../system.md` or the nearest parent semantic model.
+`../ARCHITECTURE.md` or the nearest parent `ARCHITECTURE.md`.
 
 Scope:
 <!-- What this model covers and intentionally excludes. -->

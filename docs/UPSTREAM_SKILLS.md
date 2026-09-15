@@ -9,7 +9,9 @@ The maintained engineering plugin is under
 `code-quality`, `semantic-architecture`, and `technical-communication`.
 
 Project-owned policy and architecture state live in the consuming project.
-Project-specific skills live under that project's `.agents/skills/`.
+Architecture documents are colocated as `ARCHITECTURE.md` files beside the
+meaningful subsystems they describe. Project-specific skills live under that
+project's `.agents/skills/`.
 
 Upstream offerings supplement the maintained plugin; they do not become the
 source of truth for product behavior or architectural intent.

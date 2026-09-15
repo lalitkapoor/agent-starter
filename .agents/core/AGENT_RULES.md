@@ -54,7 +54,7 @@ For every non-trivial engineering task:
 1. Read the reusable plugin's `plugins/agent-engineering-system/skills/code-quality/SKILL.md` completely before substantial implementation.
 2. Do not rely on memory, a previous session, or a partial excerpt of that skill.
 3. Apply the subset of quality rules relevant to the task.
-4. If architectural intent or system semantics may change, also read the reusable plugin's `plugins/agent-engineering-system/skills/semantic-architecture/SKILL.md`.
+4. If architectural intent or system semantics may change, also read the reusable plugin's `plugins/agent-engineering-system/skills/semantic-architecture/SKILL.md` and the nearest `ARCHITECTURE.md`; for this catalog, start with the root file.
 5. If pstack is available, use it as the primary engineering workflow/orchestration layer.
 6. Load any project-specific skill whose trigger applies.
 7. For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read `plugins/agent-engineering-system/skills/technical-communication/SKILL.md` completely before drafting.
@@ -829,7 +829,7 @@ This repository is the curated multi-harness plugin catalog and installer.
 - Runtime: Node.js catalog/bootstrap helpers plus POSIX shell setup and verification scripts.
 - Catalog: `catalog.json`, with generated Claude `.claude-plugin/marketplace.json` and Codex `.agents/plugins/marketplace.json` views.
 - Maintained plugin: `plugins/agent-engineering-system/`, containing the canonical `code-quality`, `semantic-architecture`, and `technical-communication` skills.
-- Persistent architecture: `.agents/architecture/`.
+- Persistent architecture: root `ARCHITECTURE.md`.
 - Repository-specific skills: `.agents/skills/`.
 
 ## Canonical Commands
@@ -851,9 +851,10 @@ This repository is the curated multi-harness plugin catalog and installer.
   copied into the maintained plugin.
 - **INV-0004 — Upstream dependencies are not commit-pinned** — Upstream
   offerings follow declared refs rather than commit SHA pins.
-- **INV-0005 — Project state is host-owned** — A consuming project's
-  architecture state stays in that host repository and is not stored in plugin
-  data; its project-specific skills stay under that project's `.agents/skills/`.
+- **INV-0005 — Project state is host-owned** — A consuming project's colocated
+  `ARCHITECTURE.md` files stay in that host repository and are not stored in
+  plugin data; its project-specific skills stay under that project's
+  `.agents/skills/`.
 - **INV-0006 — Legacy compatibility is explicit** — Skill-only copies are
   fallback outputs from an explicit compatibility path and are never canonical
   plugin content.
@@ -868,7 +869,7 @@ This repository is the curated multi-harness plugin catalog and installer.
 
 - Portable, Codex-native, and Claude-native plugin metadata differs by harness; all views for the maintained plugin point to the same nested package and skill files.
 - `npx skills` installs skill files, not full plugin components; it is a fallback for upstream skill-only offerings or explicit legacy compatibility.
-- Consuming repositories must supply their own `AGENTS.md`, architecture model, and project-specific skills.
+- Consuming repositories must supply their own `AGENTS.md`, colocated `ARCHITECTURE.md` files, and project-specific skills.
 
 ---
 

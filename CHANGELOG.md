@@ -12,6 +12,7 @@ engineering plugin are recorded here.
 - Install pstack and selected Matt Pocock skills as separate upstream offerings.
 - Curate HumanLayer's upstream `show-me` skill with a native Claude route and skill-only Codex/Cursor routes.
 - Format architecture invariants with stable `INV-0000` IDs and clearly separated fields.
+- Make consuming-project architecture documents discoverable and colocated with meaningful subsystems.
 - Follow declared upstream refs without commit-pinning pstack, HumanLayer, or Matt Pocock content.
 - Renumber core policy and code-quality headings locally so each document reads coherently.
 - Make skill-only compatibility an explicit fallback rather than the normal installation path.

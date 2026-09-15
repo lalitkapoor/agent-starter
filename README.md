@@ -28,8 +28,9 @@ This does four things:
 4. adds a marked integration block to the product's `AGENTS.md` and, when selected, its `CLAUDE.md` or Cursor rule.
 
 The installer does not copy this repository's architecture model into the
-product. The product keeps its own architecture state and project-specific
-skills.
+product or create architecture files automatically. The product keeps its own
+architecture documents beside the subsystems they describe and its own
+project-specific skills.
 
 To see exactly what would happen without changing the product:
 
@@ -73,7 +74,7 @@ agent-starter/
 ├── .claude-plugin/marketplace.json            # generated Claude catalog view
 ├── .agents/plugins/marketplace.json           # generated Codex catalog view
 ├── .agents/core/                              # catalog repository policy
-├── .agents/architecture/                      # catalog architecture state
+├── ARCHITECTURE.md                            # catalog cross-cutting model
 ├── .agents/skills/                            # catalog-specific skills only
 └── setup.sh                                   # consuming-project installer
 ```
@@ -234,12 +235,19 @@ my-product/
 ├── CLAUDE.md                          # thin Claude adapter, if selected
 ├── .cursor/rules/00-agent-starter.mdc # thin Cursor adapter, if selected
 ├── .agents/
-│   ├── architecture/
-│   │   └── system.md                  # what this product means
-│   └── skills/
-│       └── product-specific-skill/
+│   └── skills/                         # product-specific skills
 └── src/
+    ├── auth/
+    │   ├── ARCHITECTURE.md             # auth subsystem model
+    │   └── ...
+    └── billing/
+        ├── ARCHITECTURE.md             # billing subsystem model
+        └── ...
 ```
+
+Architecture documents are colocated with meaningful subsystems rather than
+created for every source file. A product-root `ARCHITECTURE.md` is optional and
+should contain only genuinely cross-system relationships and guarantees.
 
 The generated Agent Starter block is bounded by markers:
 
@@ -250,29 +258,31 @@ The generated Agent Starter block is bounded by markers:
 - Use the `agent-engineering-system` plugin supplied by the `agent-starter` catalog for `code-quality`, `semantic-architecture`, and `technical-communication`; enable it in the runtime when it is only registered.
 - For comments, commit messages, pull requests, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing, read the complete `technical-communication` skill before drafting.
 - Use pstack as the primary workflow for non-trivial engineering work when it is installed.
+- For architecture-sensitive work, read the nearest `ARCHITECTURE.md` for each affected subsystem; create or update one beside the subsystem only when it has meaningful independent semantics.
+- Keep architecture documents beside the subsystem code they describe.
 <!-- END AGENT-STARTER -->
 ```
 
 Setup updates only this marked block. It preserves the surrounding product
-instructions. The product should add its own architecture model under
-`.agents/architecture/` rather than copying this catalog's
-`.agents/architecture/`.
+instructions. It does not copy this catalog's `ARCHITECTURE.md` into the
+product or decide which product directories deserve architecture documents.
 
 During a non-trivial change, an agent combines:
 
 ```text
 product AGENTS.md
   + installed agent-engineering-system plugin
-  + product .agents/architecture/
+  + nearest product ARCHITECTURE.md files
   + product .agents/skills/
   + pstack, when installed
   + selected upstream specialist skills
 ```
 
-The maintained `semantic-architecture` skill explains how to update the model;
-the product's `.agents/architecture/` files record the model itself. The
-maintained `technical-communication` skill explains how to communicate the
-result in code comments, commits, PRs, RFCs, diagrams, and specifications.
+The maintained `semantic-architecture` skill explains how to locate and update
+the model; the product's colocated `ARCHITECTURE.md` files record the model
+itself. The maintained `technical-communication` skill explains how to
+communicate the result in code comments, commits, PRs, RFCs, diagrams, and
+specifications.
 
 ## Native runtime routes
 
@@ -392,7 +402,8 @@ The Agent Starter block requires agents to:
 - use `semantic-architecture` when product architecture or system semantics may change;
 - use `technical-communication` for comments, commit messages, PRs, technical documentation, RFCs, architecture diagrams, technical specifications, and other engineering writing;
 - use pstack as the primary workflow when available;
-- keep product architecture state and project-specific skills in the product repository.
+- read the nearest `ARCHITECTURE.md` for each affected subsystem and update it when its semantics change;
+- keep project-specific skills in the product repository.
 
 `AGENTS.md` is policy. It is not a replacement for the installed skills, and it
 does not contain the product's architecture model.
